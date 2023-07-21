@@ -19,7 +19,7 @@
         <div class="w-100 flex justify-center">
           <nuxt-link to="/"
             class="flex items-center justify-center w-1/6 sm:px-4 py-2 sm:py-2 bg-gradient-to-tr sm:p-4 rounded-lg transition-all duration-200 hover:bg-yn-sky hover:shadow-lg">
-            <span>go home</span>
+            <span>home</span>
           </nuxt-link>
         </div>
       </div>
