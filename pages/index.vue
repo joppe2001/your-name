@@ -5,7 +5,7 @@
 
       <div class="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-20">
         <div
-          class="backdrop-blur p-4 sm:p-6 lg:p-8 border-4 border-yn-sunset rounded-xl shadow-lg hover:shadow-2xl transition-all duration-200 opacity-80 flex flex-col justify-between"
+          class="backdrop-blur-lg p-4 sm:p-6 lg:p-8 border-4 border-yn-sunset rounded-xl shadow-lg hover:shadow-2xl transition-all duration-200 opacity-80 flex flex-col justify-between"
           :class="{ 'bg-yn-cherry-blossom shadow-yn-sunset': isHoveredMitsuha }" @mouseover="isHoveredMitsuha = true"
           @mouseout="isHoveredMitsuha = false">
           <div>

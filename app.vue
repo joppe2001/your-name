@@ -35,7 +35,7 @@ useHead({
     {
       hid: 'og:image',
       property: 'og:image',
-      content: '/images/alsoyes.jpeg'
+      content: 'https://master--chipper-kangaroo-dec0ed.netlify.app/images/alsoyes.webp'
     },
   ]
 })
