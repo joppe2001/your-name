@@ -4,9 +4,6 @@
       <nuxt-link to="/" class="text-yn-golden text-lg ml-6 p-1 hover:text-yn-sunset hover:bg-yn-lavender transition-all duration-200 rounded">
         Home
       </nuxt-link>
-      <nuxt-link to="/about" class="text-yn-golden text-lg ml-6 p-1 hover:text-yn-sunset hover:bg-yn-lavender transition-all duration-200 rounded">
-        About
-      </nuxt-link>
     </div>
   </nav>
 </template>
