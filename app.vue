@@ -1,6 +1,7 @@
 <template>
   <NuxtLayout id="app" class="flex min-h-screen flex-col"
     :style="`background: url(${backgroundImage}) no-repeat center; background-size: cover;`">
+    <!-- <img preload :src="{backgroundImage}" style="background-size: cover; z-index: -1;"/> -->
     <baseHeader />
     <NuxtPage class="flex-grow" />
     <baseFooter />
@@ -8,8 +9,6 @@
 </template>
 
 <script setup>
-// Get current route
-const route = useRoute()
 import { useHead } from 'unhead'
 
 useHead({
@@ -41,8 +40,8 @@ useHead({
   ]
 })
 
+const route = useRoute()
 
-// Compute the background image URL based on the current route
 const backgroundImage = computed(() => {
   switch (route.fullPath) {
     case '/mitsuha':
@@ -50,7 +49,7 @@ const backgroundImage = computed(() => {
     case '/taki':
       return '/images/taki.webp'
     default:
-      return '/images/alsoyes.jpeg'
+      return '/images/alsoyes.webp'
   }
 })
 </script>
