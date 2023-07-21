@@ -36,7 +36,7 @@ useHead({
     {
       hid: 'og:image',
       property: 'og:image',
-      content: '/images/alsoyes.png'
+      content: '/images/alsoyes.jpeg'
     },
   ]
 })
