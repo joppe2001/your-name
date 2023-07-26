@@ -17,5 +17,8 @@
     "nuxt": "^3.6.3",
     "nuxt-seo-experiments": "^3.0.6",
     "postcss": "^8.4.26"
+  },
+  "dependencies": {
+    "firebase": "^10.1.0"
   }
 }
