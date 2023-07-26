@@ -63,6 +63,7 @@
   
 <script setup lang="ts">
 import { Auth, signInWithEmailAndPassword } from 'firebase/auth'
+import { store } from '@/store'
 
 const showModal = ref(false)
 
@@ -85,7 +86,7 @@ async function loginUser() {
         if (user) {
             await user.getIdToken(true); // This forces a token refresh
             if (user.displayName !== null) {
-                localStorage.setItem('userName', user.displayName);
+                store.user = user.displayName
             }
             showModal.value = true
         }
