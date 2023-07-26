@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
     <div class="flex items-center justify-center p-4 sm:p-11">
         <div class="max-w-xs sm:max-w-md lg:max-w-3xl">
             <h1 class="text-yn-deep-purple font-extrabold text-3xl sm:text-4xl lg:text-5xl mb-4 sm:mb-6 text-center">Login
@@ -99,3 +100,9 @@ async function loginUser() {
 
 </script>
   
+=======
+    <div>
+        lmao
+    </div>
+</template>
+>>>>>>> c8d77982676f0af178704b3038602de60108cd6e
