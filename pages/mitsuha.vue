@@ -24,9 +24,9 @@
             named Taki. They begin to communicate through notes left for each other.</p>
         </div>
         <div class="w-100 flex justify-center">
-          <nuxt-link to="/"
+          <nuxt-link to="characterGlowup/mitsuha"
             class="flex items-center justify-center w-1/6 sm:px-4 py-2 sm:py-2 bg-gradient-to-tr sm:p-4 rounded-lg transition-all duration-200 hover:bg-yn-cherry-blossom hover:shadow-lg">
-            <p>home</p>
+            <p style="text-align: center;">character evolution</p>
           </nuxt-link>
         </div>
         <div>

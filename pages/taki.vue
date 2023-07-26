@@ -17,9 +17,9 @@
           <p class="text-yn-night-sky text-xs sm:text-sm">Taki starts to have dreams about living in a rural town as a high school girl named Mitsuha. These dreams become more vivid and intense over time.</p>
         </div>
         <div class="w-100 flex justify-center">
-          <nuxt-link to="/"
-            class="flex items-center justify-center w-1/6 sm:px-4 py-2 sm:py-2 bg-gradient-to-tr sm:p-4 rounded-lg transition-all duration-200 hover:bg-yn-sky hover:shadow-lg">
-            <span>home</span>
+          <nuxt-link to="characterGlowup/taki"
+            class="flex items-center justify-center w-1/6 sm:px-4 py-2 sm:py-2 bg-gradient-to-tr sm:p-4 rounded-lg transition-all duration-200 hover:bg-yn-sand hover:shadow-lg">
+            <span>character evolution</span>
           </nuxt-link>
         </div>
       </div>

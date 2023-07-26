@@ -6,4 +6,7 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     'nuxt-seo-experiments',
   ],
+  plugins: [
+    '~/plugins/firebase.js'
+  ]
 });

@@ -1,7 +1,6 @@
 <template>
   <NuxtLayout id="app" class="flex min-h-screen flex-col"
     :style="`background: url(${backgroundImage}) no-repeat center; background-size: cover;`">
-    <!-- <img preload :src="{backgroundImage}" style="background-size: cover; z-index: -1;"/> -->
     <baseHeader />
     <NuxtPage class="flex-grow" />
     <baseFooter />
@@ -46,7 +45,11 @@ const backgroundImage = computed(() => {
   switch (route.fullPath) {
     case '/mitsuha':
       return '/images/mitsuha.webp'
-    case '/taki':
+    case '/taki' || '/characterGlowup/taki':
+      return '/images/taki.webp'
+    case '/characterGlowup/mitsuha':
+      return '/images/mitsuha.webp'
+    case '/characterGlowup/taki':
       return '/images/taki.webp'
     default:
       return '/images/alsoyes.webp'
