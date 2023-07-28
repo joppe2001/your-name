@@ -5,17 +5,17 @@
         Home
       </nuxt-link>
       <div v-if="!isLoggedIn">
-        <nuxt-link to="/login" class="text-yn-golden text-lg ml-6 p-1 hover:text-yn-sunset hover:bg-yn-lavender transition-all duration-200 rounded">
+        <nuxt-link to="/login" class="text-yn-golden text-m ml-6 hover:text-yn-sunset hover:bg-yn-lavender transition-all duration-200 rounded">
           Login
         </nuxt-link>
-        <nuxt-link to="/register" class="text-yn-golden text-lg ml-6 p-1 hover:text-yn-sunset hover:bg-yn-lavender transition-all duration-200 rounded">
+        <nuxt-link to="/register" class="text-yn-golden text-m ml-6 hover:text-yn-sunset hover:bg-yn-lavender transition-all duration-200 rounded">
           Register
         </nuxt-link>
       </div>
       <div v-else>
-        <LogOut class="text-yn-golden text-lg ml-6 p-1 hover:text-yn-sunset hover:bg-yn-lavender transition-all duration-200 rounded" />
-        <nuxt-link to="/account" class="text-yn-golden text-lg ml-6 p-1 hover:text-yn-sunset hover:bg-yn-lavender transition-all duration-200 rounded">
-          {{ user }}
+        <LogOut class="text-yn-golden text-m ml-6 hover:text-yn-sunset hover:bg-yn-lavender transition-all duration-200 rounded" />
+        <nuxt-link to="/account" class="text-yn-golden text-m ml-6 hover:text-yn-sunset hover:bg-yn-lavender transition-all duration-200 rounded">
+          account
         </nuxt-link>
       </div>
     </div>
@@ -25,6 +25,5 @@
  import { useUsersStore } from '@/stores/users'
 const store = useUsersStore()
 const isLoggedIn = computed(() => store.loggedIn === true)
-const user = computed(() => store.user)
 </script>
 
