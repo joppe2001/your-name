@@ -13,6 +13,7 @@
         </nuxt-link>
       </div>
       <div v-else>
+        <LogOut class="text-yn-golden text-lg ml-6 p-1 hover:text-yn-sunset hover:bg-yn-lavender transition-all duration-200 rounded" />
         <nuxt-link to="/account" class="text-yn-golden text-lg ml-6 p-1 hover:text-yn-sunset hover:bg-yn-lavender transition-all duration-200 rounded">
           {{ store.user }}
         </nuxt-link>
@@ -24,5 +25,5 @@
  import { useUsersStore } from '@/stores/users'
 // check if store.user is not empty string
 const store = useUsersStore()
-const isLoggedIn = computed(() => store.user !== '')
+const isLoggedIn = computed(() => store.user !== null)
 </script>

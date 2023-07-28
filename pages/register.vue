@@ -53,7 +53,7 @@
               </h3>
               <div class="mt-2">
                 <p class="text-sm text-gray-500">
-                  Your account has been created!
+                  Your account has been created and you have been logged in!
                 </p>
               </div>
             </div>
@@ -72,6 +72,10 @@
 
 <script setup lang="ts">
 import { Auth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
+import { useUsersStore } from '@/stores/users';
+
+const store = useUsersStore()
+const router = useRouter()
 
 // add username to the account
 
@@ -98,6 +102,8 @@ async function registerUser() {
     if (user) {
       await updateProfile(user, { displayName: creds.userName });
       // No need to call user.reload() here, it's handled automatically.
+      store.user = user.displayName
+      await router.push('/')
     }
     creds.userName = ""
     creds.email = ""
