@@ -5,5 +5,6 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     '@vueuse/nuxt',
     'nuxt-seo-experiments',
+    '@pinia/nuxt',
   ],
 });

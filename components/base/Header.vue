@@ -21,7 +21,8 @@
   </nav>
 </template>
 <script setup>
- import { store } from '@/store'
+ import { useUsersStore } from '@/stores/users'
 // check if store.user is not empty string
-const isLoggedIn = computed(() => store.user !== null)
+const store = useUsersStore()
+const isLoggedIn = computed(() => store.user !== '')
 </script>

@@ -63,7 +63,9 @@
   
 <script setup lang="ts">
 import { Auth, signInWithEmailAndPassword } from 'firebase/auth'
-import { store } from '@/store'
+import { useUsersStore } from '@/stores/users'
+
+const store = useUsersStore()
 
 const showModal = ref(false)
 
@@ -87,6 +89,7 @@ async function loginUser() {
             await user.getIdToken(true); // This forces a token refresh
             if (user.displayName !== null) {
                 store.user = user.displayName
+                localStorage.setItem('username', user.displayName); // Store the username in local storage
             }
             showModal.value = true
         }
@@ -96,6 +99,15 @@ async function loginUser() {
         }
     }
 }
+
+// Fetch the username from local storage when component is mounted
+onMounted(() => {
+    const username = localStorage.getItem('username');
+    if (username !== null) {
+        store.user = username;
+    }
+});
+
 
 </script>
   
