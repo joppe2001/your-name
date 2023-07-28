@@ -5,10 +5,10 @@
         Home
       </nuxt-link>
       <div v-if="!isLoggedIn">
-        <nuxt-link to="/login" class="text-yn-golden text-m ml-6 hover:text-yn-sunset hover:bg-yn-lavender transition-all duration-200 rounded">
+        <nuxt-link to="/login" class="text-yn-golden text-m ml-6 p-1 hover:text-yn-sunset hover:bg-yn-lavender transition-all duration-200 rounded">
           Login
         </nuxt-link>
-        <nuxt-link to="/register" class="text-yn-golden text-m ml-6 hover:text-yn-sunset hover:bg-yn-lavender transition-all duration-200 rounded">
+        <nuxt-link to="/register" class="text-yn-golden text-m ml-6 p-1 hover:text-yn-sunset hover:bg-yn-lavender transition-all duration-200 rounded">
           Register
         </nuxt-link>
       </div>

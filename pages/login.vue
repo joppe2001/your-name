@@ -63,10 +63,8 @@
   
 <script setup lang="ts">
 import { Auth, signInWithEmailAndPassword } from 'firebase/auth'
-import { useUsersStore } from '@/stores/users'
 
-const store = useUsersStore()
-
+const router = useRouter()
 const showModal = ref(false)
 
 const creds = reactive({
@@ -86,13 +84,9 @@ async function loginUser() {
         creds.password = ""
 
         if (user) {
-            await user.getIdToken(true); // This forces a token refresh
-            if (user.displayName !== '') {
-                store.setUser(user.displayName)
-                console.log(user.displayName);
-                
-            }
             showModal.value = true
+      await router.push('/')
+
         }
     } catch (error: unknown) {
         if (error instanceof Error) {

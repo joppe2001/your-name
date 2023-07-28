@@ -72,9 +72,7 @@
 
 <script setup lang="ts">
 import { Auth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
-import { useUsersStore } from '@/stores/users';
 
-const store = useUsersStore()
 const router = useRouter()
 
 // add username to the account
@@ -101,10 +99,6 @@ async function registerUser() {
     // Make sure to handle if user is null
     if (user) {
       await updateProfile(user, { displayName: creds.userName });
-      await user.reload();
-      console.log('Updated displayName:', user.displayName); // New debug statement
-      store.setUser(user.displayName);
-      console.log(store.user);
 
       await router.push('/')
     }
