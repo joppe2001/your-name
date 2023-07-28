@@ -14,7 +14,7 @@
       </div>
       <div v-else>
         <nuxt-link to="/account" class="text-yn-golden text-lg ml-6 p-1 hover:text-yn-sunset hover:bg-yn-lavender transition-all duration-200 rounded">
-          {{ store.user}}
+          {{ store.user }}
         </nuxt-link>
       </div>
     </div>
