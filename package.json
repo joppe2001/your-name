@@ -20,6 +20,7 @@
     "postcss": "^8.4.26"
   },
   "dependencies": {
+    "cookie-universal-nuxt": "^2.2.2",
     "firebase": "^10.1.0",
     "pinia": "^2.1.6"
   }

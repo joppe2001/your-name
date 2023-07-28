@@ -87,9 +87,10 @@ async function loginUser() {
 
         if (user) {
             await user.getIdToken(true); // This forces a token refresh
-            if (user.displayName !== null) {
-                store.user = user.displayName
-                localStorage.setItem('username', user.displayName); // Store the username in local storage
+            if (user.displayName !== '') {
+                store.setUser(user.displayName)
+                console.log(user.displayName);
+                
             }
             showModal.value = true
         }
@@ -99,15 +100,5 @@ async function loginUser() {
         }
     }
 }
-
-// Fetch the username from local storage when component is mounted
-onMounted(() => {
-    const username = localStorage.getItem('username');
-    if (username !== null) {
-        store.user = username;
-    }
-});
-
-
 </script>
   

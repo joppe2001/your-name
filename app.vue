@@ -9,6 +9,7 @@
 
 <script setup>
 import { useHead } from 'unhead'
+import { useUsersStore } from '@/stores/users';
 
 useHead({
   htmlAttrs: {
@@ -55,4 +56,6 @@ const backgroundImage = computed(() => {
       return '/images/alsoyes.webp'
   }
 })
+const store = useUsersStore();
+console.log(store.user);
 </script>

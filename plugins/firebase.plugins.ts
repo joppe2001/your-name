@@ -1,5 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { useUsersStore } from '@/stores/users';
+import { useCookie } from 'nuxt/app';
 export default defineNuxtPlugin((nuxtApp) => {
   // Import the functions you need from the SDKs you need
   // TODO: Add SDKs for Firebase products that you want to use
@@ -22,15 +24,19 @@ export default defineNuxtPlugin((nuxtApp) => {
   const auth = getAuth(app);
   // Make the auth instance accessible to the components through nuxtApp.provide
   nuxtApp.provide('auth', auth);
+  const store = useUsersStore();
 
   // Listen to changes in the auth state and redirect to /login if not authenticated
   onAuthStateChanged(auth, (user) => {
     if (user) {
       // User is signed in. You could do additional work here such as fetch the user's profile.
       console.log('User is signed in');
+      
+      store.loggedIn = true;
     } else {
       // User is signed out.
       console.log('User is signed out');
+      store.loggedIn = false;
     }
   });
 });
