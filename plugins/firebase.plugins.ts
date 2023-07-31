@@ -15,19 +15,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
   // firebase configuration based on server or client
-  let firebaseConfig = {};
-  if (process.server) {
-    firebaseConfig = {
-      apiKey: config.private.FIREBASE_API_KEY,
-      authDomain: config.private.FIREBASE_AUTH_DOMAIN,
-      projectId: config.private.FIREBASE_PROJECT_ID,
-      storageBucket: config.private.FIREBASE_STORAGE_BUCKET,
-      messagingSenderId: config.private.FIREBASE_MESSAGING_SENDER_ID,
-      appId: config.private.FIREBASE_APP_ID,
-      measurementId: config.private.FIREBASE_MEASUREMENT_ID
-    };
-  } else if (process.client) {
-    firebaseConfig = {
+   const firebaseConfig = {
       apiKey: config.public.FIREBASE_API_KEY,
       authDomain: config.public.FIREBASE_AUTH_DOMAIN,
       projectId: config.public.FIREBASE_PROJECT_ID,
@@ -36,7 +24,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       appId: config.public.FIREBASE_APP_ID,
       measurementId: config.public.FIREBASE_MEASUREMENT_ID
     };
-  }
+ 
   console.log('firebaseConfig', firebaseConfig);
 
   // Initialize Firebase
