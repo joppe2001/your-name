@@ -56,6 +56,4 @@ const backgroundImage = computed(() => {
       return '/images/alsoyes.webp'
   }
 })
-const store = useUsersStore();
-console.log(store.user);
 </script>

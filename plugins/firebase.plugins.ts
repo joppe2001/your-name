@@ -4,7 +4,6 @@ import { useUsersStore } from '@/stores/users';
 import { getFirestore, collection, getDocs, addDoc } from 'firebase/firestore';
 
 export default defineNuxtPlugin((nuxtApp) => {
-  console.log('Firebase plugin is loaded');
   const config = useRuntimeConfig();
 
   // Import the functions you need from the SDKs you need
@@ -25,7 +24,6 @@ export default defineNuxtPlugin((nuxtApp) => {
       measurementId: config.public.FIREBASE_MEASUREMENT_ID
     };
  
-  console.log('firebaseConfig', firebaseConfig);
 
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
@@ -47,16 +45,16 @@ export default defineNuxtPlugin((nuxtApp) => {
   });
 
   // add user info
-  const addUser = async (name: string, email: string) => {
+  const addUser = async (name: string, content: string) => {
     await addDoc(users, {
       name: name,
-      email: email
+      content: content
     });
   };
 
   // add post
   const addPost = async (title: string, content: any) => {
-    await addDoc(users, {
+    await addDoc(posts, {
       title: title,
       content: content
     });

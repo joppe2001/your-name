@@ -2,7 +2,7 @@
     <div class="body">
         <form @submit.prevent="submitForm">
             <input type="text" name="title" v-model="postInfo.title" placeholder="title">
-            <input type="text" name="content" v-model="postInfo.content">
+            <input type="text" name="content" v-model="postInfo.content" placeholder="content">
             <button type="submit">Add postInfo</button>
         </form>
     </div>
@@ -24,7 +24,6 @@ const submitForm = async () => {
         postInfo.value.title = ''
         postInfo.value.content = ''
     }
-    window.alert()
 }
 </script>
 
