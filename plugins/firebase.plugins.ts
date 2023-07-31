@@ -27,14 +27,6 @@ export default defineNuxtPlugin((nuxtApp) => {
   const users = collection(db, 'users');
   const posts = collection(db, 'posts');
 
-  // add user info
-  const addUser = async (name: string, content: string) => {
-    await addDoc(users, {
-      name: name,
-      content: content
-    });
-  };
-
   // add post
   const addPost = async (title: string, content: any) => {
     await addDoc(posts, {
@@ -51,12 +43,9 @@ export default defineNuxtPlugin((nuxtApp) => {
     if (user) {
       store.loggedIn = true;
       (store.user as any) = user.displayName;
-      console.log('User is signed in:', user.displayName)
-      addUser('user.displayName', 'test');
     } else {
       store.loggedIn = false;
       store.user = '';
-      console.log('User is signed out');
       
     }
   });
@@ -66,7 +55,6 @@ export default defineNuxtPlugin((nuxtApp) => {
       users,
       auth,
       store,
-      addUser,
       addPost
     }
   };
