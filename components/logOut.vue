@@ -11,8 +11,7 @@ const nuxtApp = useNuxtApp();
 async function logoutUser() {
     try {
         await signOut(nuxtApp.$auth as Auth);
-        store.user = null; // Reset the user in the store
-        localStorage.removeItem('username'); // Remove the username from local storage
+        (store.user as any) = null; // Reset the user in the store
     } catch (error: unknown) {
         if (error instanceof Error) {
             console.error(error.message);  // Log the error message to the console
