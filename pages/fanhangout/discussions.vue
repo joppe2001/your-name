@@ -9,18 +9,18 @@
 </template>
 
 <script setup>
-
+import { useUsersStore } from '@/stores/users';
 const { $addPost } = useNuxtApp()
 const addPost = $addPost
-
+const store = useUsersStore()
 const postInfo = ref({
     title: '',
     content: ''
 })
 
-const submitForm = async () => {
-    if (postInfo.value.title && postInfo.value.content) {
-        await addPost(postInfo.value.title, postInfo.value.content)
+const submitForm = () => {
+    if (postInfo.value.title && postInfo.value.content && store.uid !== null) {
+        addPost(postInfo.value.title, postInfo.value.content)
         postInfo.value.title = ''
         postInfo.value.content = ''
     }

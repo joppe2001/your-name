@@ -30,19 +30,9 @@ export default defineNuxtPlugin((nuxtApp) => {
   const auth = getAuth(app);
 
   // Get a list of users from the database
-  const db = getFirestore();
+  const db = getFirestore(app);
   const users = collection(db, 'users');
   const posts = collection(db, ' posts');
-
-  // get user info
-  getDocs(users).then((querySnapshot) => {
-    console.log('Current users in DB:', querySnapshot.docs);
-  });
-
-  //get posts
-  getDocs(posts).then((querySnapshot) => {
-    console.log('Current posts in DB:', querySnapshot.docs);
-  });
 
   // add user info
   const addUser = async (name: string, content: string) => {
@@ -68,9 +58,13 @@ export default defineNuxtPlugin((nuxtApp) => {
     if (user) {
       store.loggedIn = true;
       (store.user as any) = user.displayName;
+      console.log('User is signed in:', user.displayName)
+      addUser('user.displayName', 'test');
     } else {
       store.loggedIn = false;
       store.user = '';
+      console.log('User is signed out');
+      
     }
   });
   return {
