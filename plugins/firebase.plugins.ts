@@ -1,17 +1,10 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { useUsersStore } from '@/stores/users';
-import { getFirestore, collection, getDocs, addDoc } from 'firebase/firestore';
+import { getFirestore, collection, addDoc } from 'firebase/firestore';
 
 export default defineNuxtPlugin((nuxtApp) => {
   const config = useRuntimeConfig();
-
-  // Import the functions you need from the SDKs you need
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
   // firebase configuration based on server or client
    const firebaseConfig = {
@@ -32,7 +25,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   // Get a list of users from the database
   const db = getFirestore(app);
   const users = collection(db, 'users');
-  const posts = collection(db, ' posts');
+  const posts = collection(db, 'posts');
 
   // add user info
   const addUser = async (name: string, content: string) => {
