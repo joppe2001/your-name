@@ -78,7 +78,6 @@
 
 	onMounted(async () => {
 		posts.value = await fetchPosts();
-        console.log(posts); // Fetch posts when component mounts and store them in the reactive variable
 	});
 
 	const submitForm = async () => {
