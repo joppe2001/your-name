@@ -45,7 +45,7 @@
 				<p class="text-yn-night-sky text-sm sm:text-lg mb-4 sm:mb-8">
 					{{ post.content }}
 				</p>
-				<img :src=post.image class="w-full h-auto" />
+				<img src="https://firebasestorage.googleapis.com/v0/b/your-name-f7fa7.appspot.com/o/images%2Falsoyes.webp?alt=media&token=a8eb3f4d-8f37-4668-a1e6-ee01c92e800d" class="w-full h-auto rounded" />
 			</div>
 		</div>
 

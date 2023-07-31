@@ -1,11 +1,12 @@
 <template>
   <NuxtLayout id="app" class="flex min-h-screen flex-col"
-    :style="`background: url(${backgroundImage}) no-repeat center; background-size: cover;`">
+    :style="`background: url(${backgroundImage}) no-repeat center fixed; background-size: cover;`">
     <baseHeader />
     <NuxtPage class="flex-grow" />
     <baseFooter />
   </NuxtLayout>
 </template>
+
 
 <script setup>
 import { useHead } from 'unhead'
