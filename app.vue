@@ -9,7 +9,6 @@
 
 <script setup>
 import { useHead } from 'unhead'
-import { useUsersStore } from '@/stores/users';
 
 useHead({
   htmlAttrs: {
