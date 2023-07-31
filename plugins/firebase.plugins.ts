@@ -7,7 +7,6 @@ export default defineNuxtPlugin((nuxtApp) => {
   console.log('Firebase plugin is loaded');
   const config = useRuntimeConfig()
 
-  console.log('Runtime config:', config.firebase.FIREBASE_API_KEY);
   
   // Import the functions you need from the SDKs you need
   // TODO: Add SDKs for Firebase products that you want to use
