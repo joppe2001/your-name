@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "cookie-universal-nuxt": "^2.2.2",
+    "dotenv": "^16.3.1",
     "firebase": "^10.1.0",
     "pinia": "^2.1.6"
   }

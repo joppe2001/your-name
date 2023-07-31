@@ -1,5 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  app: {},
   devtools: { enabled: true },
   modules: [
     '@nuxtjs/tailwindcss',
@@ -10,20 +11,22 @@ export default defineNuxtConfig({
   plugins: ['~/plugins/firebase.plugins.ts'],
   runtimeConfig: {
     public: {
-      FIREBASE_API_KEY: 'AIzaSyAEOtm0PC-niQDE_OqtOQJSckNxJODmfIw',
-      FIREBASE_AUTH_DOMAIN: 'your-name-f7fa7.firebaseapp.com',
-      FIREBASE_PROJECT_ID: 'your-name-f7fa7',
-      FIREBASE_STORAGE_BUCKET: 'your-name-f7fa7.appspot.com',
-      FIREBASE_MESSAGING_SENDER_ID: '987814488076',
-      FIREBASE_APP_ID: '1:987814488076:web:77c00d16b14ec94e47a629',
-      FIREBASE_MEASUREMENT_ID: 'G-0SRPY6RNM6'
+      FIREBASE_API_KEY: process.env.FIREBASE_API_KEY,
+      FIREBASE_AUTH_DOMAIN: process.env.FIREBASE_AUTH_DOMAIN,
+      FIREBASE_PROJECT_ID: process.env.FIREBASE_PROJECT_ID,
+      FIREBASE_STORAGE_BUCKET: process.env.FIREBASE_STORAGE_BUCKET,
+      FIREBASE_MESSAGING_SENDER_ID: process.env.FIREBASE_MESSAGING_SENDER_ID,
+      FIREBASE_APP_ID: process.env.FIREBASE_APP_ID,
+      FIREBASE_MEASUREMENT_ID: process.env.FIREBASE_MEASUREMENT_ID
     },
-    FIREBASE_API_KEY: 'AIzaSyAEOtm0PC-niQDE_OqtOQJSckNxJODmfIw',
-    FIREBASE_AUTH_DOMAIN: 'your-name-f7fa7.firebaseapp.com',
-    FIREBASE_PROJECT_ID: 'your-name-f7fa7',
-    FIREBASE_STORAGE_BUCKET: 'your-name-f7fa7.appspot.com',
-    FIREBASE_MESSAGING_SENDER_ID: '987814488076',
-    FIREBASE_APP_ID: '1:987814488076:web:77c00d16b14ec94e47a629',
-    FIREBASE_MEASUREMENT_ID: 'G-0SRPY6RNM6', 
+    private: {
+      FIREBASE_API_KEY: process.env.FIREBASE_API_KEY,
+      FIREBASE_AUTH_DOMAIN: process.env.FIREBASE_AUTH_DOMAIN,
+      FIREBASE_PROJECT_ID: process.env.FIREBASE_PROJECT_ID,
+      FIREBASE_STORAGE_BUCKET: process.env.FIREBASE_STORAGE_BUCKET,
+      FIREBASE_MESSAGING_SENDER_ID: process.env.FIREBASE_MESSAGING_SENDER_ID,
+      FIREBASE_APP_ID: process.env.FIREBASE_APP_ID,
+      FIREBASE_MEASUREMENT_ID: process.env.FIREBASE_MEASUREMENT_ID
+    }
   }
 });

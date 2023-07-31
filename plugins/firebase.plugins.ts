@@ -18,7 +18,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   let firebaseConfig = {};
   if (process.server) {
     firebaseConfig = {
-      apiKey: config.FIREBASE_API_KEY,
+      apiKey: config.private.FIREBASE_API_KEY,
       authDomain: config.FIREBASE_AUTH_DOMAIN,
       projectId: config.FIREBASE_PROJECT_ID,
       storageBucket: config.FIREBASE_STORAGE_BUCKET,
