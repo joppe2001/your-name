@@ -8,6 +8,8 @@
 
 <script setup>
 import { useUsersStore } from '@/stores/users'
+import { computed } from 'vue'
+
 const store = useUsersStore()
 const user = computed(() => store.user)
 const middleWare = ({ store, redirect }) => {

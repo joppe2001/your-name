@@ -26,6 +26,7 @@
 </template>
 <script setup>
  import { useUsersStore } from '@/stores/users'
+ import {computed} from 'vue'
 const store = useUsersStore()// import { computed } from 'vue'
 const isLoggedIn = computed(() => store.loggedIn === true)
 </script>

@@ -72,6 +72,7 @@
 
 <script setup lang="ts">
 import { Auth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
+import { computed } from 'vue'
 
 const router = useRouter()
 
