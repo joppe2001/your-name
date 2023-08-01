@@ -25,7 +25,7 @@
         </div>
         <div class="w-100 flex justify-center">
           <nuxt-link to="characterGlowup/mitsuha"
-            class="flex items-center justify-center w-1/6 sm:px-4 py-2 sm:py-2 bg-gradient-to-tr sm:p-4 rounded-lg transition-all duration-200 hover:bg-yn-cherry-blossom hover:shadow-lg">
+            class="flex items-center justify-center px-5 sm:px-4 py-1 mt-3 sm:py-2 bg-gradient-to-tr sm:p-4 rounded-lg transition-all duration-200 hover:bg-yn-cherry-blossom hover:shadow-lg">
             <p style="text-align: center;">character evolution</p>
           </nuxt-link>
         </div>
