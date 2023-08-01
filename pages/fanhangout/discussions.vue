@@ -20,8 +20,8 @@
 			<input
 				type="string"
 				name="image"
-                v-model="postInfo.image"
-                placeholder="image url"
+				v-model="postInfo.image"
+				placeholder="image url"
 				class="p-2 mb-2 border border-yn-lavender rounded bg-yn-lavender placeholder-yn-night-sky text-yn-night-sky"
 			/>
 			<button
@@ -45,7 +45,10 @@
 				<p class="text-yn-night-sky text-sm sm:text-lg mb-4 sm:mb-8">
 					{{ post.content }}
 				</p>
-				<img src="https://firebasestorage.googleapis.com/v0/b/your-name-f7fa7.appspot.com/o/images%2Falsoyes.webp?alt=media&token=a8eb3f4d-8f37-4668-a1e6-ee01c92e800d" class="w-full h-auto rounded" />
+				<img
+					:src="post.imageUrl"
+					class="w-full h-auto rounded"
+				/>
 			</div>
 		</div>
 
@@ -63,7 +66,15 @@
 
 <script setup>
 	import { ref, onMounted } from "vue";
-
+	import { getAuth } from "firebase/auth";
+	const auth = getAuth();
+	const getUserid = () => {
+		if (auth.currentUser) {
+			return auth.currentUser.uid;
+		} else {
+			return null;
+		}
+	};
 
 	const { $addPost, $imageRef, $getPosts } = useNuxtApp();
 	const addPost = $addPost;
@@ -85,12 +96,18 @@
 			(postInfo.value.title && postInfo.value.content) ||
 			postInfo.value.image
 		) {
-			await addPost(postInfo.value.title, postInfo.value.content, postInfo.value.image);
+			const userid = getUserid();
+			await addPost(
+				postInfo.value.title,
+				postInfo.value.content,
+				postInfo.value.image,
+				userid
+			);
 			success.value = true;
 			postInfo.value.title = "";
 			postInfo.value.content = "";
 			postInfo.value.image = "";
-			posts.value = await fetchPosts(); // Update posts after adding a new one
+			posts.value = await fetchPosts();
 		} else {
 			alert("Please fill in all fields");
 		}

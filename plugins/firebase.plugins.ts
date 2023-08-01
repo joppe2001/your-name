@@ -27,11 +27,10 @@ export default defineNuxtPlugin((nuxtApp) => {
 	const users = collection(db, "users");
 	const storage = getStorage(app);
 
+
+
 	// Get a list of posts from the database
 	const posts = collection(db, "posts");
-
-	// get Doc function
-
 	// Specify the path to the image relative to the root of your Firebase Storage
 	const imagePath = "images/alsoyes.webp";
 
@@ -39,24 +38,29 @@ export default defineNuxtPlugin((nuxtApp) => {
 	const imageRef = ref(storage, imagePath);
 
 	// Add post, has to have a title but content and image are optional
-	const addPost = async (title: string, content: string, imageUrl: string) => {
-		try {
-			const docRef = await addDoc(posts, {
-				title,
-				content,
-        imageUrl,
-			});
-			console.log("Document written with ID: ", docRef.id);
-		} catch (e) {
-			console.error("Error adding document: ", e);
-		}
-	};
+
+	const addPost = async (title: string, content: string, imageUrl: string, userId: string) => {
+    try {
+        const docRef = await addDoc(posts, {
+            title,
+            content,
+            imageUrl,
+            userId  // add userId to the document
+        });
+        console.log("Document written with ID: ", docRef.id);
+    } catch (e) {
+        console.error("Error adding document: ", e);
+    }
+};
 
 	const getPosts = async () => {
 		const postsSnapshot = await getDocs(posts);
 		const postData = postsSnapshot.docs.map((doc) => doc.data());
     return postData;
 	};
+	// get post id only
+
+ 
 	// Provide the auth and store objects to the nuxt app
 	const store = useUsersStore();
 
