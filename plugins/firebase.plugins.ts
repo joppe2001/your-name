@@ -35,7 +35,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 	// Specify the path to the image relative to the root of your Firebase Storage
 	const imagePath = "images/alsoyes.webp";
 
-	// Create a reference to the image
+	// Create a reference to the image 
 	const imageRef = ref(storage, imagePath);
 
 	// Add post, has to have a title but content and image are optional
