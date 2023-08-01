@@ -65,7 +65,7 @@
 		>
 			<div class="bg-white m-auto p-5 border border-gray-500 w-4/5">
 				<button class="float-right" @click="success = false">&times;</button>
-				<p>Post successfully added!</p>
+				<p>Post successfully added!</p> 
 			</div>
 		</div>
 	</div>
@@ -119,4 +119,5 @@
 			alert("Please fill in all fields");
 		}
 	};
+	// test
 </script>
