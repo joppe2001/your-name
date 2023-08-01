@@ -1,10 +1,29 @@
-<!-- account page for the user ( if they are logged in ofcourse ) -->
 <template>
-    <div v-if="!isLoading" class="flex flex-col items-center justify-center">
-        <h1 class="text-3xl font-bold">Account</h1>
-        <p class="text-xl">Welcome, {{ user }}</p>
-    </div>
-    <div v-else class="loadingSpinner">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div v-if="!isLoading" class="flex items-center justify-center min-h-screen">
+            <div class="w-full max-w-2xl mx-auto rounded-xl shadow-md overflow-hidden">
+                <div class=" px-6 py-4">
+                    <div class="text-center">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">
+                            Welcome, {{ user }}
+                        </h3>
+                        <div class="space-y-6">
+                            <nuxt-link to="/change-username" class="flex items-center transition-all duration-300 justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-yn-cherry-blossom hover:bg-yn-lavender">
+                                Change Username
+                            </nuxt-link>
+                            <nuxt-link to="/change-password" class="flex items-center transition-all duration-300 justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-yn-cherry-blossom hover:bg-yn-lavender">
+                                Change Password
+                            </nuxt-link>
+                            <nuxt-link to="/reset-password" class="flex items-center transition-all duration-300 justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-yn-cherry-blossom hover:bg-yn-lavender">
+                                Reset Password
+                            </nuxt-link>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div v-else class="loadingSpinner">
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
 			width="32"
@@ -67,31 +86,35 @@
 			</g>
 		</svg>
 	</div>
+    </div>
 </template>
 
 <script setup>
-import { useUsersStore } from '@/stores/users'
-import { computed, onMounted } from 'vue'
+    import { useUsersStore } from "@/stores/users";
+    import { computed, onMounted } from "vue";
 
-const store = useUsersStore()
-const user = computed(() => store.user)
-const isLoading = ref(true)
-onMounted(() => {
-    setTimeout(() => {
-        isLoading.value = false
-    }, 800)
-})
+    const store = useUsersStore();
+    const user = computed(() => store.user);
+    const isLoading = ref(true);
+
+    onMounted(() => {
+        setTimeout(() => {
+            isLoading.value = false;
+        }, 800);
+    });
 </script>
 
 <style scoped>
-.loadingSpinner {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+    .loadingSpinner {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
 
-.loadingSpinner svg {
-    width: 50px;
-    height: 50px;
-}
+    .loadingSpinner svg {
+        width: 50px;
+        height: 50px;
+    }
+
 </style>
