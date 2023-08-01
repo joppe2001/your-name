@@ -39,16 +39,29 @@
 				class="p-4 sm:p-8 border-4 border-yn-lavender rounded-xl shadow-lg hover:shadow-2xl transition-all duration-200 backdrop-blur-md mb-4 max-w-xs sm:max-w-md lg:max-w-4xl mx-auto"
 				id="post"
 			>
-				<h1 class="text-yn-night-sky text-2xl sm:text-3xl mb-4">
-					{{ post.title }}
-				</h1>
-				<p class="text-yn-night-sky text-sm sm:text-lg mb-4 sm:mb-8">
-					{{ post.content }}
-				</p>
-				<img
-					:src="post.imageUrl"
-					class="w-full h-auto rounded"
-				/>
+				<div class="flex row">
+					<div>
+						<h1 class="text-yn-night-sky text-2xl sm:text-3xl mb-4">
+							{{ post.title }}
+						</h1>
+						<p class="text-yn-night-sky text-sm sm:text-lg mb-4 sm:mb-8">
+							{{ post.content }}
+						</p>
+						<img :src="post.imageUrl" class="w-1/3 h-auto rounded" />
+					</div>
+					<div
+						class="p-4 sm:p-8 border-4 border-yn-lavender rounded-xl shadow-lg hover:shadow-2xl transition-all duration-200 backdrop-blur-md mb-4 max-w-xs sm:max-w-md lg:max-w-4xl mx-auto"
+						id="post"
+					>
+						comment section
+					</div>
+				</div>
+			</div>
+			<div
+				class="p-4 sm:p-8 border-4 border-yn-lavender rounded-xl shadow-lg hover:shadow-2xl transition-all duration-200 backdrop-blur-md mb-4 max-w-xs sm:max-w-md lg:max-w-4xl mx-auto"
+				id="post"
+			>
+				comment section
 			</div>
 		</div>
 
@@ -76,7 +89,7 @@
 		}
 	};
 
-	const { $addPost, $imageRef, $getPosts } = useNuxtApp();
+	const { $addPost, $getPosts } = useNuxtApp();
 	const addPost = $addPost;
 	const fetchPosts = $getPosts;
 	const postInfo = ref({

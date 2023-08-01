@@ -11,7 +11,6 @@
 <script setup>
 import { useHead } from 'unhead'
 import { computed } from 'vue'
-
 useHead({
   htmlAttrs: {
     lang: 'en',
