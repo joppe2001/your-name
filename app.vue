@@ -35,7 +35,7 @@ useHead({
     {
       hid: 'og:image',
       property: 'og:image',
-      content: 'https://master--chipper-kangaroo-dec0ed.netlify.app/images/alsoyes.webp'
+      content: 'https://your-name-anime.netlify.app/images/alsoyes.webp'
     },
   ]
 })
