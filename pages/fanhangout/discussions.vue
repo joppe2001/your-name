@@ -57,12 +57,6 @@
 					</div>
 				</div>
 			</div>
-			<div
-				class="p-4 sm:p-8 border-4 border-yn-lavender rounded-xl shadow-lg hover:shadow-2xl transition-all duration-200 backdrop-blur-md mb-4 max-w-xs sm:max-w-md lg:max-w-4xl mx-auto"
-				id="post"
-			>
-				comment section
-			</div>
 		</div>
 
 		<div
