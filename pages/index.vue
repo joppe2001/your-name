@@ -20,7 +20,7 @@
         </div>
 
         <div
-          class="backdrop-blur p-4 sm:p-6 lg:p-8 border-4 border-yn-sunset rounded-xl shadow-lg hover:shadow-2xl transition-all duration-200 opacity-80 flex flex-col justify-between"
+          class="backdrop-blur-lg p-4 sm:p-6 lg:p-8 border-4 border-yn-sunset rounded-xl shadow-lg hover:shadow-2xl transition-all duration-200 opacity-80 flex flex-col justify-between"
           :class="{ 'bg-yn-soft-lilac shadow-yn-soft-lilac': isHoveredTaki }" 
           @mouseover="isHoveredTaki = true"
           @mouseout="isHoveredTaki = false">
@@ -29,9 +29,8 @@
             <p class="text-black text-sm sm:text-lg mb-4 sm:mb-8">Taki is a high school boy living in Tokyo. He is balancing his part-time
               job at an Italian restaurant and dreams of becoming an architect or an artist.</p>
           </div>
-          <nuxt-link
-            to="/taki"
-            class="flex items-center justify-center px-2 sm:px-4 py-2 sm:py-3 bg-gradient-to-tr from-yn-sunset via-yn-sunset to-yn-sunset-light border-2 border-yn-night-sky text-sm sm:text-lg text-white rounded shadow hover:border-yn-golden hover:shadow-none hover:-translate-y-[-2px] transition-all duration-200">
+          <nuxt-link to="/taki"
+            class="flex items-center justify-center py-2 sm:py-3 bg-gradient-to-tr from-yn-sunset via-yn-sunset to-yn-sunset-light border-2 border-yn-night-sky text-sm sm:text-lg text-white rounded shadow-xl hover:border-yn-golden hover:shadow-none hover:-translate-y-[-2px] transition-all duration-200">
             <span>Learn more about Taki</span>
           </nuxt-link>
         </div>
