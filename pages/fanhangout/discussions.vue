@@ -4,6 +4,7 @@
 			@submit.prevent="submitForm"
 			class="flex flex-col w-1/2 mx-auto mb-8 p-4 sm:p-8 border-4 border-yn-lavender rounded-xl shadow-lg hover:shadow-2xl transition-all duration-200 backdrop-blur-md"
 		>
+		<h1 class="text-center mb-3 text-2xl text-yn-cherry-blossom ">add your thoughts</h1>
 			<input
 				type="text"
 				name="title"
@@ -36,25 +37,24 @@
 			<div
 				v-for="post in posts"
 				:key="post.id"
-				class="p-4 sm:p-8 border-4 border-yn-lavender rounded-xl shadow-lg hover:shadow-2xl transition-all duration-200 backdrop-blur-md mb-4 max-w-xs sm:max-w-md lg:max-w-4xl mx-auto"
+				class="main-container p-4 sm:p-8 border-4 border-yn-lavender rounded-xl shadow-lg hover:shadow-2xl transition-all duration-200 backdrop-blur-md mb-4 max-w-xs sm:max-w-md lg:max-w-4xl mx-auto"
 				id="post"
 			>
-				<div class="flex row">
-					<div>
+				<div class="big-container">
+					<div class="text-container">
 						<h1 class="text-yn-night-sky text-2xl sm:text-3xl mb-4">
 							{{ post.title }}
 						</h1>
 						<p class="text-yn-night-sky text-sm sm:text-lg mb-4 sm:mb-8">
 							{{ post.content }}
 						</p>
-						<img :src="post.imageUrl" class="w-1/3 h-auto rounded" />
 					</div>
-					<div
-						class="p-4 sm:p-8 border-4 border-yn-lavender rounded-xl shadow-lg hover:shadow-2xl transition-all duration-200 backdrop-blur-md mb-4 max-w-xs sm:max-w-md lg:max-w-4xl mx-auto"
-						id="post"
-					>
-						comment section
+					<div class="image-container">
+						<img :src="post.imageUrl" class="rounded" />
 					</div>
+				</div>
+				<div class="comments">
+					<p>comment section</p>
 				</div>
 			</div>
 		</div>
@@ -158,11 +158,11 @@
 	const posts = ref([]); // Create a reactive variable to store the posts
 
 	onMounted(async () => {
-  posts.value = await fetchPosts();
-  setTimeout(() => {
-    isLoading.value = false;
-  }, 800);
-});
+		posts.value = await fetchPosts();
+		setTimeout(() => {
+			isLoading.value = false;
+		}, 800);
+	});
 
 	const submitForm = async () => {
 		if (
@@ -194,16 +194,59 @@
 			width: 75%;
 		}
 	}
+	.loadingSpinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+	.loadingSpinner svg {
+		margin: -25px 0 0 -25px;
+		width: 50px;
+		height: 50px;
+	}
 
-.loadingSpinner {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-}
-.loadingSpinner svg {
-	margin: -25px 0 0 -25px;
-	width: 50px;
-	height: 50px;
-}
+	.main-container {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+	}
+	.big-container {
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-around;
+	}
+	.text-container {
+		display: flex;
+		flex-direction: column;
+	}
+	.image-container {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+	}
+
+	.image-container img {
+		height: auto;
+		width: 80px;
+	}
+
+	.comments {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		height: auto;
+		align-items: center;
+		background: rgb(244, 174, 234);
+		opacity: 0.6;
+		border-radius: 5px;
+		margin-top: 10px;
+		padding: 8px 0;
+		transition: 0.3s;
+	}
+
+	.comments:hover {
+		opacity: 1;
+		box-shadow: 0 0 2px 1px rgb(243, 198, 236);
+	}
 </style>
