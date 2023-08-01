@@ -3,6 +3,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useUsersStore } from "@/stores/users";
 import { getFirestore, collection, addDoc, getDocs } from "firebase/firestore";
 import { getStorage, ref } from "firebase/storage";
+import { getPerformance } from "firebase/performance";
 
 export default defineNuxtPlugin((nuxtApp) => {
 	const config = useRuntimeConfig();
@@ -21,6 +22,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 	// Initialize Firebase
 	const app = initializeApp(firebaseConfig);
 	const auth = getAuth(app);
+	const perf = getPerformance(app);
 
 	// Get a list of users from the database
 	const db = getFirestore(app);
