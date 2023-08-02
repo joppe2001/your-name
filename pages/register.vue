@@ -72,10 +72,12 @@
 
 <script setup lang="ts">
 import { Auth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
+import { setDoc, doc } from 'firebase/firestore';
 import { computed } from 'vue'
 
 const router = useRouter()
-
+const { $db } = useNuxtApp()
+const db = $db
 // add username to the account
 
 const creds = reactive({
@@ -87,7 +89,7 @@ const creds = reactive({
 let passMatch = computed(() => creds.password === creds.passwordConfirm)
 const showModal = ref(false)
 const nuxtApp = useNuxtApp()
-async function registerUser() {
+const registerUser = async () => {
   try {
     if (creds.password !== creds.passwordConfirm) {
       throw new Error("Passwords do not match.")
@@ -100,6 +102,12 @@ async function registerUser() {
     // Make sure to handle if user is null
     if (user) {
       await updateProfile(user, { displayName: creds.userName });
+
+      // Add displayName to Firestore
+      await setDoc(doc(db, 'users', user.uid), {
+        displayName: creds.userName,
+        uid: user.uid
+      });
 
       await router.push('/')
     }
@@ -114,6 +122,7 @@ async function registerUser() {
     }
   }
 }
+
 
 function closeModal() {
   showModal.value = false

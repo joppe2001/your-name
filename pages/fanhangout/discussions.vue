@@ -23,7 +23,7 @@
                 <div class="big-container">
                     <div class="text-container">
                         <h1 class="text-yn-night-sky text-2xl sm:text-3xl mb-4">
-                            {{ post.title }}
+                            {{ post.title + ' by ' + userNames.get(post.userId)}}
                         </h1>
                         <p class="text-yn-night-sky text-sm sm:text-lg mb-4 sm:mb-8">
                             {{ post.content }}
@@ -54,8 +54,9 @@
                         <div class="comments-display transition-all duration-300  mt-4 max-h-32 overflow-auto border border-yn-lavender rounded bg-yn-lavender text-yn-night-sky p-4"
                             v-show="showComments">
                             <div v-for="comment in post.comments" :key="comment.id">
-                                <p>{{ userName + ': ' + comment.comment }}</p>
+                                <p>{{ userNames.get(comment.userId) + ': ' + comment.comment }}</p>
                             </div>
+
                         </div>
                     </div>
 
@@ -94,25 +95,17 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { onMounted } from "vue";
 import { getAuth } from "firebase/auth";
-const auth = getAuth();
-let userName = auth.currentUser.displayName
-const getUserid = () => {
-    if (auth.currentUser) {
-        return auth.currentUser.uid;
-    } else {
-        return null;
-    }
-}
+import { collection, getDocs } from "firebase/firestore";
 
-// get user.displayname based on userid
+const { $db, $addPost, $getPosts, $addComment } = useNuxtApp();
+
+const userNames = ref(new Map());
+const auth = getAuth();
+const db = $db;
 
 const isLoading = ref(true);
-const { $addPost, $getPosts, $addComment } = useNuxtApp();
-const addPost = $addPost;
-const fetchPosts = $getPosts;
-const addComment = $addComment;
 const postInfo = ref({
     title: "",
     content: "",
@@ -121,24 +114,50 @@ const postInfo = ref({
 });
 const showComments = ref(false);
 const success = ref(false);
-const posts = ref([]); // Create a reactive variable to store the posts
+const posts = ref([]);
 
-onMounted(async () => {
-    let fetchedPosts = await fetchPosts();
-    posts.value = fetchedPosts.map(post => ({ ...post, comment: '' }));
-    setTimeout(() => {
-        isLoading.value = false;
-    }, 800);
+
+const getUserid = () => {
+    return auth.currentUser ? auth.currentUser.uid : null;
+}
+const getDisplayName = async (userId) => {
+    const usersRef = collection(db, 'users');
+    const userSnapshot = await getDocs(usersRef);
+    let displayName = "";
+
+    userSnapshot.forEach((doc) => {
+        let userData = doc.data();
+        if (userData.uid === userId) {  // Adjusted this line
+            displayName = userData.displayName;
+            return;
+        }
+    });
+
+    return displayName;
+}
+
+
+watchEffect(async () => {
+    try {
+        for (let post of posts.value) {
+            for (let comment of post.comments) {
+                if (!userNames.value.has(comment.userId)) {
+                    const displayName = await getDisplayName(comment.userId);
+                    userNames.value.set(comment.userId, displayName);
+                }
+            }
+        }
+    } catch (error) {
+        console.error('Error fetching display names:', error);
+    }
 });
 
 
-const submitForm = async () => {
-    if (
-        (postInfo.value.title && postInfo.value.content) ||
-        postInfo.value.image
-    ) {
+
+async function submitForm() {
+    if ((postInfo.value.title && postInfo.value.content) || postInfo.value.image) {
         const userid = getUserid();
-        await addPost(
+        await $addPost(
             postInfo.value.title,
             postInfo.value.content,
             postInfo.value.image,
@@ -148,12 +167,13 @@ const submitForm = async () => {
         postInfo.value.title = "";
         postInfo.value.content = "";
         postInfo.value.image = "";
-        posts.value = await fetchPosts();
+        posts.value = await $getPosts();
     } else {
         alert("Please fill in all fields");
     }
 };
-const submitComment = async (postId) => {
+
+async function submitComment(postId) {
     for (let post of posts.value) {
         if (post.id === postId) {
             if (post.comment === "") {
@@ -161,16 +181,31 @@ const submitComment = async (postId) => {
                 return;
             } else {
                 const userid = getUserid();
-                await addComment(postId, post.comment, userid);
+                await $addComment(postId, post.comment, userid);
                 post.comment = "";
-                posts.value = await fetchPosts();
+                posts.value = await $getPosts();
             }
         }
     }
 };
 
-	// test
+onMounted(async () => {
+    const fetchedPosts = await $getPosts();
+    posts.value = fetchedPosts.map(post => ({ ...post, comment: '' }));
+
+    // Use the getDisplayName function here
+    for (const post of posts.value) {
+        for (const comment of post.comments) {
+            const displayName = await getDisplayName(comment.userId);
+        }
+    }
+    setTimeout(() => {
+        isLoading.value = false;
+    }, 800);
+});
+
 </script>
+
 
 <style scoped>
 @media (max-width: 640px) {

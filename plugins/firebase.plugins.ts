@@ -106,6 +106,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     return postData;
 };
 
+
   // get post id only
 
   // Provide the auth and store objects to the nuxt app
