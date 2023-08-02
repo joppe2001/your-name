@@ -41,14 +41,21 @@
                                     <input type="text" name="comment" v-model="post.comment" placeholder="Add a comment..."
                                         class="comments__input flex-grow p-2 mr-1 border border-gray-200 rounded bg-gray-100 placeholder-gray-700 text-gray-700" />
                                     <button type="submit"
-                                        class="comments__submit border border-green-500 rounded bg-green-500 text-white cursor-pointer hover:bg-green-600 transition-all duration-200"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2A10 10 0 0 0 2 12a9.89 9.89 0 0 0 2.26 6.33l-2 2a1 1 0 0 0-.21 1.09A1 1 0 0 0 3 22h9a10 10 0 0 0 0-20Zm0 18H5.41l.93-.93a1 1 0 0 0 0-1.41A8 8 0 1 1 12 20Zm3-9h-2V9a1 1 0 0 0-2 0v2H9a1 1 0 0 0 0 2h2v2a1 1 0 0 0 2 0v-2h2a1 1 0 0 0 0-2Z"/></svg>
+                                        class="comments__submit border border-green-500 rounded bg-green-500 text-white cursor-pointer hover:bg-green-600 transition-all duration-200"><svg
+                                            xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24">
+                                            <path fill="currentColor"
+                                                d="M12 2A10 10 0 0 0 2 12a9.89 9.89 0 0 0 2.26 6.33l-2 2a1 1 0 0 0-.21 1.09A1 1 0 0 0 3 22h9a10 10 0 0 0 0-20Zm0 18H5.41l.93-.93a1 1 0 0 0 0-1.41A8 8 0 1 1 12 20Zm3-9h-2V9a1 1 0 0 0-2 0v2H9a1 1 0 0 0 0 2h2v2a1 1 0 0 0 2 0v-2h2a1 1 0 0 0 0-2Z" />
+                                        </svg>
                                     </button>
                                 </form>
                             </div>
                             <button
                                 class="comments__toggle p-3 rounded border-green-500 bg-green-500 text-white cursor-pointer hover:bg-green-600 transition-all duration-200"
                                 @click="post.showComments = !post.showComments">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="m21.21 10.29l-1.73-1.72a4.37 4.37 0 0 0 .65-2.26a4.31 4.31 0 1 0-4.32 4.32a4.35 4.35 0 0 0 2.26-.63l1.72 1.73a1 1 0 0 0 1.42 0a1 1 0 0 0 0-1.44ZM17.45 8a2.32 2.32 0 0 1-3.95-1.69a2.29 2.29 0 0 1 .68-1.63a2.32 2.32 0 0 1 3.27 0a2.31 2.31 0 0 1 0 3.27Zm2.05 6a1 1 0 0 0-1.22.72A7 7 0 0 1 11.5 20H5.91l.64-.63a1 1 0 0 0 0-1.41a7 7 0 0 1-2-5a7 7 0 0 1 4.32-6.44a1 1 0 1 0-.74-1.86a9 9 0 0 0-3.66 14l-1.68 1.63a1 1 0 0 0-.21 1.09a1 1 0 0 0 .92.62h8a9 9 0 0 0 8.72-6.75A1 1 0 0 0 19.5 14Z"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                                    <path fill="currentColor"
+                                        d="m21.21 10.29l-1.73-1.72a4.37 4.37 0 0 0 .65-2.26a4.31 4.31 0 1 0-4.32 4.32a4.35 4.35 0 0 0 2.26-.63l1.72 1.73a1 1 0 0 0 1.42 0a1 1 0 0 0 0-1.44ZM17.45 8a2.32 2.32 0 0 1-3.95-1.69a2.29 2.29 0 0 1 .68-1.63a2.32 2.32 0 0 1 3.27 0a2.31 2.31 0 0 1 0 3.27Zm2.05 6a1 1 0 0 0-1.22.72A7 7 0 0 1 11.5 20H5.91l.64-.63a1 1 0 0 0 0-1.41a7 7 0 0 1-2-5a7 7 0 0 1 4.32-6.44a1 1 0 1 0-.74-1.86a9 9 0 0 0-3.66 14l-1.68 1.63a1 1 0 0 0-.21 1.09a1 1 0 0 0 .92.62h8a9 9 0 0 0 8.72-6.75A1 1 0 0 0 19.5 14Z" />
+                                </svg>
                             </button>
                         </div>
                         <transition name="modal">
@@ -71,7 +78,8 @@
                                         <div
                                             class="comments__display transition-all duration-300 mt-4 max-h-32 overflow-auto border border-gray-200 rounded bg-gray-100 text-gray-700 p-4">
                                             <div v-for="comment in post.comments" :key="comment.id" class="comment">
-                                                <p class="p-1">{{ userNames.get(comment.userId) + ': ' + comment.comment }}</p>
+                                                <p class="p-1">{{ userNames.get(comment.userId) + ': ' + comment.comment }}
+                                                </p>
                                                 <hr>
                                             </div>
                                         </div>
@@ -373,6 +381,7 @@ onMounted(async () => {
     justify-content: center;
     align-items: center;
 }
+
 .comments__submit {
     height: 100%;
 }</style>
