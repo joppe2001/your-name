@@ -71,16 +71,13 @@
                                         <div
                                             class="comments__display transition-all duration-300 mt-4 max-h-32 overflow-auto border border-gray-200 rounded bg-gray-100 text-gray-700 p-4">
                                             <div v-for="comment in post.comments" :key="comment.id" class="comment">
-                                                <p>{{ userNames.get(comment.userId) + ': ' + comment.comment }}</p>
+                                                <p class="p-1">{{ userNames.get(comment.userId) + ': ' + comment.comment }}</p>
                                                 <hr>
                                             </div>
                                         </div>
                                     </div>
-
                                     <!-- Comment form -->
-
                                 </div>
-
                             </div>
                         </transition>
                     </div>
@@ -288,7 +285,7 @@ onMounted(async () => {
 
     .modal-container {
         padding: inherit;
-        width: 60vw;
+        max-width: 50vw;
     }
 }
 
