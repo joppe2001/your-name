@@ -16,52 +16,50 @@
             </button>
         </form>
 
-        <div class="flex-grow">
-            <div v-for="post in posts" :key="post.id"
-                class="main-container p-4 sm:p-8 border-4 border-yn-lavender rounded-xl shadow-lg hover:shadow-2xl transition-all duration-200 backdrop-blur-md mb-4 max-w-xs sm:max-w-md lg:max-w-4xl mx-auto"
-                id="post">
-                <div class="big-container">
-                    <div class="text-container">
-                        <h1 class="text-yn-night-sky text-2xl sm:text-3xl mb-4">
-                            {{ post.title + ' by ' + userNames.get(post.userId)}}
+        <div class="flex-grow w-full main">
+            <div v-for="post in posts" :key="post.id" id="post"
+                class="post main-container p-4 sm:p-8 border-4 border-yn-lavender rounded-xl shadow-lg hover:shadow-2xl transition-all duration-200 backdrop-blur-md mb-4 max-w-3/4 sm:max-w-3/4 lg:max-w-3/4  flex flex-col items-center justify-center">
+                <div class="post__content w-5/6 p-4 sm:p-8">
+                    <div class="post__text text-center">
+                        <h1 class="post__title text-yn-night-sky text-2xl sm:text-3xl mb-4">
+                            {{ post.title + ' by ' + userNames.get(post.userId) }}
                         </h1>
-                        <p class="text-yn-night-sky text-sm sm:text-lg mb-4 sm:mb-8">
+                        <p class="post__description text-yn-night-sky text-sm sm:text-lg mb-4 sm:mb-8">
                             {{ post.content }}
                         </p>
                     </div>
-                    <div class="image-container">
-                        <img :src="post.imageUrl" class="rounded" />
+                    <div class="post__image">
+                        <img :src="post.imageUrl" class="rounded mx-auto" />
                     </div>
                 </div>
-                <div class="comments">
-                    <form @submit.prevent="submitComment(post.id)" class="flex items-center">
+                <div class="post__comments w-full p-4 sm:p-8">
+                    <form @submit.prevent="submitComment(post.id)" class="comments__form flex items-center justify-center">
                         <input type="text" name="comment" v-model="post.comment" placeholder="Add a comment..."
-                            class="flex-grow p-2 mr-2 border border-yn-lavender rounded bg-yn-lavender placeholder-yn-night-sky text-yn-night-sky" />
+                            class="comments__input flex-grow p-2 mr-2 border border-yn-lavender rounded bg-yn-lavender placeholder-yn-night-sky text-yn-night-sky" />
                         <button type="submit"
-                            class="p-1 border border-yn-lavender rounded bg-yn-lavender text-yn-night-sky cursor-pointer hover:bg-yn-cherry-blossom transition-all duration-200">
+                            class="comments__submit p-1 border border-yn-lavender rounded bg-yn-lavender text-yn-night-sky cursor-pointer hover:bg-yn-cherry-blossom transition-all duration-200">
                             <svg xmlns="http://www.w3.org/2000/svg" width="10" height="30" viewBox="0 0 15 16">
                                 <path fill="currentColor"
                                     d="M12.49 7.14L3.44 2.27c-.76-.41-1.64.3-1.4 1.13l1.24 4.34c.05.18.05.36 0 .54l-1.24 4.34c-.24.83.64 1.54 1.4 1.13l9.05-4.87a.98.98 0 0 0 0-1.72Z" />
                             </svg>
                         </button>
                     </form>
-                    <div>
+                    <div class="comments__view">
                         <button
-                            class="p-2 mt-3 rounded border-yn-lavender bg-yn-lavender text-yn-night-sky cursor-pointer hover:bg-yn-cherry-blossom transition-all duration-200"
+                            class="comments__toggle p-2 mt-3 rounded border-yn-lavender bg-yn-lavender text-yn-night-sky cursor-pointer hover:bg-yn-cherry-blossom transition-all duration-200"
                             @click="showComments = !showComments">
                             {{ showComments ? 'Hide Comments' : 'Show Comments' }}
                         </button>
-                        <div class="comments-display transition-all duration-300  mt-4 max-h-32 overflow-auto border border-yn-lavender rounded bg-yn-lavender text-yn-night-sky p-4"
+                        <div class="comments__display transition-all duration-300 mt-4 max-h-32 overflow-auto border border-yn-lavender rounded bg-yn-lavender text-yn-night-sky p-4"
                             v-show="showComments">
-                            <div v-for="comment in post.comments" :key="comment.id">
+                            <div v-for="comment in post.comments" :key="comment.id" class="comment">
                                 <p>{{ userNames.get(comment.userId) + ': ' + comment.comment }}</p>
                             </div>
-
                         </div>
                     </div>
-
                 </div>
             </div>
+
         </div>
 
 
@@ -214,6 +212,17 @@ onMounted(async () => {
     }
 }
 
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.post__comments {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 .loadingSpinner {
     display: flex;
     justify-content: center;
@@ -229,7 +238,12 @@ onMounted(async () => {
 .main-container {
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: 80%;
+}
+@media (min-width: 840px) {
+    .main-container {
+        width: 60%;
+    }
 }
 
 .big-container {
