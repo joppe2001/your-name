@@ -5,35 +5,32 @@
 			@submit.prevent="submitForm"
 			class="flex flex-col w-1/2 mx-auto mb-8 p-4 sm:p-8 border-4 border-yn-lavender rounded-xl shadow-lg hover:shadow-2xl transition-all duration-200 backdrop-blur-md"
 		>
-			<h1 class="text-center mb-3 text-2xl text-yn-cherry-blossom">
-				add your thoughts
+			<h1 class="text-center mb-3 text-2xl text-yn-deep-purple font-bold">
+				post it!
 			</h1>
 			<input
 				type="text"
 				name="title"
 				v-model="postInfo.title"
 				placeholder="title"
-				class="p-2 mb-2 border border-yn-lavender rounded bg-yn-lavender placeholder-yn-night-sky text-yn-night-sky"
+				class="p-2 mb-4 border border-yn-lavender rounded bg-yn-soft-lilac placeholder-yn-night-sky text-yn-lavender focus:outline-none focus:border-yn-golden transition duration-500 ease-in-out"
 			/>
 			<textarea
 				name="content"
 				v-model="postInfo.content"
 				placeholder="content"
-				class="p-2 mb-2 border border-yn-lavender rounded bg-yn-lavender placeholder-yn-night-sky text-yn-night-sky"
+				class="p-2 mb-4 border border-yn-lavender rounded bg-yn-soft-lilac placeholder-yn-night-sky text-yn-lavender h-40 focus:outline-none focus:border-yn-lavender transition duration-500 ease-in-out"
 			/>
 			<input
 				type="string"
 				name="image"
 				v-model="postInfo.image"
 				placeholder="image url"
-				class="p-2 mb-2 border border-yn-lavender rounded bg-yn-lavender placeholder-yn-night-sky text-yn-night-sky"
+				class="p-2 mb-4 border border-yn-lavender rounded bg-yn-soft-lilac placeholder-yn-night-sky text-yn-lavender focus:outline-none focus:border-yn-golden transition duration-500 ease-in-out"
 			/>
-			<button
-				type="submit"
-				class="p-2 border border-yn-lavender rounded bg-yn-lavender text-yn-night-sky cursor-pointer hover:bg-yn-cherry-blossom transition-all duration-200"
-			>
-				Add postInfo
-			</button>
+			<div class="wrapper">
+				<a @click.prevent="submitForm()"> Share post </a>
+			</div>
 		</form>
 
 		<div class="flex-grow w-full main">
@@ -499,7 +496,6 @@
 		align-items: center;
 	}
 
-
 	a {
 		display: flex;
 		justify-content: center;
@@ -514,6 +510,7 @@
 		text-align: center;
 		position: relative;
 		transition: all 0.25s ease-out;
+        cursor: pointer;
 	}
 
 	a span {
@@ -528,7 +525,7 @@
 		left: 0;
 		width: 0;
 		height: 100%;
-		background: #61dea0;
+		background: rgb(180, 173, 204);
 		transition: all 0.25s ease-out;
 		border-radius: 2px;
 		z-index: -1;
