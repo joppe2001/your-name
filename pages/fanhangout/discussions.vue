@@ -38,22 +38,27 @@
                         <input type="text" name="comment" v-model="post.comment" placeholder="Add a comment..."
                             class="flex-grow p-2 mr-2 border border-yn-lavender rounded bg-yn-lavender placeholder-yn-night-sky text-yn-night-sky" />
                         <button type="submit"
-                            class="p-2 border border-yn-lavender rounded bg-yn-lavender text-yn-night-sky cursor-pointer hover:bg-yn-cherry-blossom transition-all duration-200">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="25" viewBox="0 0 15 16">
+                            class="p-1 border border-yn-lavender rounded bg-yn-lavender text-yn-night-sky cursor-pointer hover:bg-yn-cherry-blossom transition-all duration-200">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="30" viewBox="0 0 15 16">
                                 <path fill="currentColor"
                                     d="M12.49 7.14L3.44 2.27c-.76-.41-1.64.3-1.4 1.13l1.24 4.34c.05.18.05.36 0 .54l-1.24 4.34c-.24.83.64 1.54 1.4 1.13l9.05-4.87a.98.98 0 0 0 0-1.72Z" />
                             </svg>
                         </button>
                     </form>
-
-                    <div class="comments-display mt-4 max-h-32 overflow-auto">
-                        <h2 class="text-yn-night-sky text-lg mb-2">Comments:</h2>
-                        <ul>
-                            <li v-for="comment in post.comments" :key="comment.id" class="mb-2 text-yn-night-sky">
-                                {{ comment.comment }}
-                            </li>
-                        </ul>
+                    <div>
+                        <button
+                            class="p-2 mt-3 rounded border-yn-lavender bg-yn-lavender text-yn-night-sky cursor-pointer hover:bg-yn-cherry-blossom transition-all duration-200"
+                            @click="showComments = !showComments">
+                            {{ showComments ? 'Hide Comments' : 'Show Comments' }}
+                        </button>
+                        <div class="comments-display transition-all duration-300  mt-4 max-h-32 overflow-auto border border-yn-lavender rounded bg-yn-lavender text-yn-night-sky p-4"
+                            v-show="showComments">
+                            <div v-for="comment in post.comments" :key="comment.id">
+                                <p>{{ userName + ': ' + comment.comment }}</p>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -92,13 +97,17 @@
 import { ref, onMounted } from "vue";
 import { getAuth } from "firebase/auth";
 const auth = getAuth();
+let userName = auth.currentUser.displayName
 const getUserid = () => {
     if (auth.currentUser) {
         return auth.currentUser.uid;
     } else {
         return null;
     }
-};
+}
+
+// get user.displayname based on userid
+
 const isLoading = ref(true);
 const { $addPost, $getPosts, $addComment } = useNuxtApp();
 const addPost = $addPost;
@@ -110,6 +119,7 @@ const postInfo = ref({
     image: "",
     comments: [],
 });
+const showComments = ref(false);
 const success = ref(false);
 const posts = ref([]); // Create a reactive variable to store the posts
 
@@ -215,8 +225,7 @@ const submitComment = async (postId) => {
     flex-direction: column;
     width: 100%;
     height: auto;
-    align-items: center;
-    background: rgb(244, 174, 234);
+    align-items: flex-start;
     opacity: 0.6;
     border-radius: 5px;
     margin-top: 10px;
@@ -224,7 +233,13 @@ const submitComment = async (postId) => {
     transition: 0.3s;
 }
 
+/* make scrollbar invisible */
+.comments::-webkit-scrollbar {
+    display: none;
+}
+
 .comments:hover {
     opacity: 1;
     box-shadow: 0 0 2px 1px rgb(243, 198, 236);
-}</style>
+}
+</style>

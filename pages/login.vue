@@ -91,6 +91,7 @@ async function loginUser() {
     } catch (error: unknown) {
         if (error instanceof Error) {
             console.error(error.message);  // Log the error message to the console
+            window.alert(error.message);   // Show a popup with the error message
         }
     }
 }
