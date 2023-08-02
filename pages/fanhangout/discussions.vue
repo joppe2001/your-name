@@ -76,7 +76,7 @@
 
                                         <!-- Comments display -->
                                         <div
-                                            class="comments__display transition-all duration-300 mt-4 max-h-32 overflow-auto border border-gray-200 rounded bg-gray-100 text-gray-700 p-4">
+                                            class="comments__display transition-all duration-300 mt-4 max-h-96 overflow-auto border border-gray-200 rounded bg-gray-100 text-gray-700 p-4">
                                             <div v-for="comment in post.comments" :key="comment.id" class="comment">
                                                 <p class="p-1">{{ userNames.get(comment.userId) + ': ' + comment.comment }}
                                                 </p>
@@ -190,12 +190,6 @@ watchEffect(async () => {
     }
 })
 
-
-
-
-
-
-
 async function submitForm() {
     if ((postInfo.value.title && postInfo.value.content) || postInfo.value.image) {
         const userid = getUserid();
@@ -300,6 +294,7 @@ onMounted(async () => {
 .modal-container {
     padding: 8px;
     width: 90vw;
+    height: auto;
 }
 
 .big-container {
