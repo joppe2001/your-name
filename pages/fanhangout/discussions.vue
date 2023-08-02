@@ -19,7 +19,7 @@
         <div class="flex-grow w-full main">
             <div v-for="post in posts" :key="post.id" id="post"
                 class="post main-container p-4 sm:p-8 border-4 border-yn-lavender rounded-xl shadow-lg hover:shadow-2xl transition-all duration-200 backdrop-blur-md mb-4 max-w-3/4 sm:max-w-3/4 lg:max-w-3/4  flex flex-col items-center justify-center">
-                <div class="post__content w-5/6 p-4 sm:p-8">
+                <div class="post__content w-5/6 p-2 sm:p-8">
                     <div class="post__text text-center">
                         <h1 class="post__title text-yn-night-sky text-2xl sm:text-3xl mb-4">
                             {{ post.title + ' by ' + userNames.get(post.userId) }}
@@ -33,29 +33,77 @@
                     </div>
                 </div>
                 <div class="post__comments w-full p-4 sm:p-8">
-                    <form @submit.prevent="submitComment(post.id)" class="comments__form flex items-center justify-center">
-                        <input type="text" name="comment" v-model="post.comment" placeholder="Add a comment..."
-                            class="comments__input flex-grow p-2 mr-2 border border-yn-lavender rounded bg-yn-lavender placeholder-yn-night-sky text-yn-night-sky" />
-                        <button type="submit"
-                            class="comments__submit p-1 border border-yn-lavender rounded bg-yn-lavender text-yn-night-sky cursor-pointer hover:bg-yn-cherry-blossom transition-all duration-200">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="30" viewBox="0 0 15 16">
-                                <path fill="currentColor"
-                                    d="M12.49 7.14L3.44 2.27c-.76-.41-1.64.3-1.4 1.13l1.24 4.34c.05.18.05.36 0 .54l-1.24 4.34c-.24.83.64 1.54 1.4 1.13l9.05-4.87a.98.98 0 0 0 0-1.72Z" />
-                            </svg>
-                        </button>
-                    </form>
+
                     <div class="comments__view">
-                        <button
-                            class="comments__toggle p-2 mt-3 rounded border-yn-lavender bg-yn-lavender text-yn-night-sky cursor-pointer hover:bg-yn-cherry-blossom transition-all duration-200"
-                            @click="showComments = !showComments">
-                            {{ showComments ? 'Hide Comments' : 'Show Comments' }}
-                        </button>
-                        <div class="comments__display transition-all duration-300 mt-4 max-h-32 overflow-auto border border-yn-lavender rounded bg-yn-lavender text-yn-night-sky p-4"
-                            v-show="showComments">
-                            <div v-for="comment in post.comments" :key="comment.id" class="comment">
-                                <p>{{ userNames.get(comment.userId) + ': ' + comment.comment }}</p>
+                        <div class="w-100 flex">
+                            <div class="flex items-center justify-center">
+                                <form @submit.prevent="submitComment(post.id)" class="comments__form">
+                                    <input type="text" name="comment" v-model="post.comment" placeholder="Add a comment..."
+                                        class="comments__input flex-grow p-2 mr-1 border border-gray-200 rounded bg-gray-100 placeholder-gray-700 text-gray-700" />
+                                    <button type="submit"
+                                        class="comments__submit border border-green-500 rounded bg-green-500 text-white cursor-pointer hover:bg-green-600 transition-all duration-200"><svg
+                                            xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                                            <g fill="none">
+                                                <path fill="currentColor"
+                                                    d="M12 21a9 9 0 1 0-9-9c0 1.488.36 2.89 1 4.127L3 21l4.873-1c1.236.639 2.64 1 4.127 1Z"
+                                                    opacity=".16" />
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M12 21a9 9 0 1 0-9-9c0 1.488.36 2.89 1 4.127L3 21l4.873-1c1.236.639 2.64 1 4.127 1Z" />
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                                    stroke-width="2" d="m15 10l-4 4l-2-2" />
+                                            </g>
+                                        </svg>
+                                    </button>
+                                </form>
                             </div>
+                            <button
+                                class="comments__toggle p-3 rounded border-green-500 bg-green-500 text-white cursor-pointer hover:bg-green-600 transition-all duration-200"
+                                @click="post.showComments = !post.showComments">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                                    <g fill="none">
+                                        <path fill="currentColor"
+                                            d="M12 21a9 9 0 1 0-9-9c0 1.488.36 2.89 1 4.127L3 21l4.873-1c1.236.639 2.64 1 4.127 1Z"
+                                            opacity=".16" />
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M12 21a9 9 0 1 0-9-9c0 1.488.36 2.89 1 4.127L3 21l4.873-1c1.236.639 2.64 1 4.127 1Z" />
+                                    </g>
+                                </svg>
+                            </button>
                         </div>
+                        <transition name="modal">
+                            <div class="modal-mask fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center"
+                                v-show="post.showComments" @click.self="post.showComments = false">
+                                <div class="modal-wrapper">
+                                    <!-- Modal container -->
+                                    <div class="modal-container bg-white rounded shadow-lg px-10 py-6 relative" @click.stop>
+                                        <!-- Modal close -->
+                                        <div class="modal-close absolute top-0.5 right-1 cursor-pointer"
+                                            @click="post.showComments = false">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                viewBox="0 0 24 24">
+                                                <path fill="currentColor"
+                                                    d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10s10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17L12 13.41L8.41 17L7 15.59L10.59 12L7 8.41L8.41 7L12 10.59L15.59 7L17 8.41L13.41 12L17 15.59z" />
+                                            </svg>
+                                        </div>
+
+                                        <!-- Comments display -->
+                                        <div
+                                            class="comments__display transition-all duration-300 mt-4 max-h-32 overflow-auto border border-gray-200 rounded bg-gray-100 text-gray-700 p-4">
+                                            <div v-for="comment in post.comments" :key="comment.id" class="comment">
+                                                <p>{{ userNames.get(comment.userId) + ': ' + comment.comment }}</p>
+                                                <hr>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Comment form -->
+
+                                </div>
+
+                            </div>
+                        </transition>
                     </div>
                 </div>
             </div>
@@ -109,6 +157,7 @@ const postInfo = ref({
     content: "",
     image: "",
     comments: [],
+    showComments: false,
 });
 const showComments = ref(false);
 const success = ref(false);
@@ -138,17 +187,28 @@ const getDisplayName = async (userId) => {
 watchEffect(async () => {
     try {
         for (let post of posts.value) {
+            // Get the display name of the user who posted the post
+            if (!userNames.value.has(post.userId)) {
+                const displayName = await getDisplayName(post.userId)
+                userNames.value.set(post.userId, displayName)
+            }
+
+            // Get the display names of the users who have commented on the post
             for (let comment of post.comments) {
                 if (!userNames.value.has(comment.userId)) {
-                    const displayName = await getDisplayName(comment.userId);
-                    userNames.value.set(comment.userId, displayName);
+                    const displayName = await getDisplayName(comment.userId)
+                    userNames.value.set(comment.userId, displayName)
                 }
             }
         }
     } catch (error) {
-        console.error('Error fetching display names:', error);
+        console.error('Error fetching display names:', error)
     }
-});
+})
+
+
+
+
 
 
 
@@ -208,7 +268,7 @@ onMounted(async () => {
 <style scoped>
 @media (max-width: 640px) {
     form {
-        width: 75%;
+        width: 70%;
     }
 }
 
@@ -223,6 +283,7 @@ onMounted(async () => {
     flex-direction: column;
     align-items: center;
 }
+
 .loadingSpinner {
     display: flex;
     justify-content: center;
@@ -240,10 +301,21 @@ onMounted(async () => {
     flex-direction: column;
     width: 80%;
 }
+
 @media (min-width: 840px) {
     .main-container {
         width: 60%;
     }
+
+    .modal-container {
+        padding: inherit;
+        width: 60vw;
+    }
+}
+
+.modal-container {
+    padding: 8px;
+    width: 90vw;
 }
 
 .big-container {
@@ -269,6 +341,8 @@ onMounted(async () => {
     width: 80px;
 }
 
+
+
 .comments {
     display: flex;
     flex-direction: column;
@@ -282,13 +356,48 @@ onMounted(async () => {
     transition: 0.3s;
 }
 
+.comments__view {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+}
+
+.comments__input {
+    width: 70%;
+    justify-content: center;
+    align-items: center;
+}
+
 /* make scrollbar invisible */
-.comments::-webkit-scrollbar {
-    display: none;
+.comments__form {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-right: 5px;
+}
+
+.comments__form button {
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .comments:hover {
     opacity: 1;
     box-shadow: 0 0 2px 1px rgb(243, 198, 236);
 }
-</style>
+
+.comments__toggle {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.comments__submit {
+    height: 100%;
+}</style>
