@@ -183,6 +183,8 @@
 				await setDoc(doc(db, "users", user.uid), {
 					displayName: creds.userName,
 					uid: user.uid,
+          likedPosts: [],
+          dislikedPosts: []
 				});
 
 				await router.push("/");
