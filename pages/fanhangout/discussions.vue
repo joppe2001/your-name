@@ -60,7 +60,17 @@
                                     </svg>
                                 </a>
                             </div>
-                            <button @click="$likePost(post.id, userId)" style="background: rgb(129, 129, 238);">like</button>
+                            <button @click="$likePost(post.id, userId)">
+                                <div style="position: relative; display: inline-block;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" style="opacity: 0.3;">
+                                        <path fill="currentColor"
+                                            d="m12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5C2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                                    </svg>
+                                    <span
+                                        style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">{{
+                                            post.likes }}</span>
+                                </div>
+                            </button>
                         </div>
                         <transition name="modal">
                             <div class="modal-mask fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center"
@@ -243,7 +253,7 @@ async function submitComment(postId) {
 onMounted(async () => {
     const fetchedPosts = await $getPosts();
     posts.value = fetchedPosts.map((post) => ({ ...post, comment: "" }));
-
+    console.log(posts.value);
     // Use the getDisplayName function here
     for (const post of posts.value) {
         for (const comment of post.comments) {

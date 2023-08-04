@@ -99,15 +99,30 @@ export default defineNuxtPlugin((nuxtApp) => {
       throw new Error('Post does not exist');
     }
   };
-
+  const getLikesForPost = async (postId: string) => {
+    const postRef = doc(db, 'posts', postId);
+    const postSnap = await getDoc(postRef);
+  
+    if (postSnap.exists()) {
+      const postData = postSnap.data();
+      return postData ? postData.likes : 0;
+    } else {
+      throw new Error('Post does not exist');
+    }
+  };
+  
   const getPosts = async () => {
     const postsSnapshot = await getDocs(posts);
-    const postData = postsSnapshot.docs.map((doc) => ({
-        id: doc.id, // include the document ID here
-        ...doc.data()
-    }));
+    const postData = [];
+    for (let doc of postsSnapshot.docs) {
+      let post = doc.data();
+      post.id = doc.id; // include the document ID here
+      post.likes = await getLikesForPost(post.id); // add likes for each post here
+      postData.push(post);
+    }
     return postData;
-};
+  };
+  
 
 const likePost = async (postId: string, userId: string) => {
   if (!userId) {
@@ -151,12 +166,12 @@ const getLikes = async (postId: string) => {
     const postData = postSnap.data();
     if (!postData) throw new Error('Post data is undefined');
 
-    const likes = postData.likes || [];
-    return likes;
+    return postData.likes;
   } else {
     throw new Error('Post does not exist');
   }
 };
+
 const dislikePost = async (postId: string, userId: string) => {
   const postRef = doc(db, 'posts', postId);
   const postSnap = await getDoc(postRef);
