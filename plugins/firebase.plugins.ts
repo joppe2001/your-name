@@ -110,6 +110,19 @@ export default defineNuxtPlugin((nuxtApp) => {
       throw new Error('Post does not exist');
     }
   };
+
+  const getDislikesForPost = async (postId: string) => {
+    const postRef = doc(db, 'posts', postId);
+    const postSnap = await getDoc(postRef);
+
+    if (postSnap.exists()) {
+      const postData = postSnap.data();
+      return postData ? postData.dislikes : 0;
+    } else {
+      throw new Error('Post does not exist');
+    }
+  };
+
   
   const getPosts = async () => {
     const postsSnapshot = await getDocs(posts);
@@ -118,13 +131,65 @@ export default defineNuxtPlugin((nuxtApp) => {
       let post = doc.data();
       post.id = doc.id; // include the document ID here
       post.likes = await getLikesForPost(post.id); // add likes for each post here
+      post.dislikes = await getDislikesForPost(post.id); // add dislikes for each post here
       postData.push(post);
     }
     return postData;
   };
   
 
-const likePost = async (postId: string, userId: string) => {
+  const likePost = async (postId: string, userId: string) => {
+    if (!userId) {
+      throw new Error('User ID is undefined or null');
+    }
+  
+    const postRef = doc(db, 'posts', postId);
+    const userRef = doc(db, 'users', userId);
+    const postSnap = await getDoc(postRef);
+    const userSnap = await getDoc(userRef);
+  
+    if (postSnap.exists() && userSnap.exists()) {
+      const userData = userSnap.data();
+      if (!userData) throw new Error('User data is undefined');
+  
+      const likedPosts = userData.likedPosts || [];
+      const dislikedPosts = userData.dislikedPosts || [];
+  
+      if (!likedPosts.includes(postId) && !dislikedPosts.includes(postId)) {
+        await updateDoc(postRef, {
+          likes: increment(1)
+        });
+  
+        await updateDoc(userRef, {
+          likedPosts: arrayUnion(postId)
+        });
+        return { status: 'success' }; // Return success status when like is successful
+      } else {
+        console.log("User has already liked or disliked this post");
+        return { status: 'already_liked' }; // Return specific status when user has already liked the post
+      }
+    } else {
+      throw new Error('Post or user does not exist');
+    }
+  };
+  
+
+
+const getLikes = async (postId: string) => {
+  const postRef = doc(db, 'posts', postId);
+  const postSnap = await getDoc(postRef);
+
+  if (postSnap.exists()) {
+    const postData = postSnap.data();
+    if (!postData) throw new Error('Post data is undefined');
+
+    return postData.likes;
+  } else {
+    throw new Error('Post does not exist');
+  }
+};
+
+const dislikePost = async (postId: string, userId: string) => {
   if (!userId) {
     throw new Error('User ID is undefined or null');
   }
@@ -143,53 +208,22 @@ const likePost = async (postId: string, userId: string) => {
 
     if (!likedPosts.includes(postId) && !dislikedPosts.includes(postId)) {
       await updateDoc(postRef, {
-        likes: increment(1)
+        dislikes: increment(1)
       });
 
       await updateDoc(userRef, {
-        likedPosts: arrayUnion(postId)
+        dislikedPosts: arrayUnion(postId)
       });
+      return { status: 'success' }; // Return success status when like is successful
     } else {
       console.log("User has already liked or disliked this post");
+      return { status: 'already_disliked' }; // Return specific status when user has already liked the post
     }
   } else {
     throw new Error('Post or user does not exist');
   }
 };
 
-
-const getLikes = async (postId: string) => {
-  const postRef = doc(db, 'posts', postId);
-  const postSnap = await getDoc(postRef);
-
-  if (postSnap.exists()) {
-    const postData = postSnap.data();
-    if (!postData) throw new Error('Post data is undefined');
-
-    return postData.likes;
-  } else {
-    throw new Error('Post does not exist');
-  }
-};
-
-const dislikePost = async (postId: string, userId: string) => {
-  const postRef = doc(db, 'posts', postId);
-  const postSnap = await getDoc(postRef);
-
-  if (postSnap.exists()) {
-    // Add the user's ID to the "dislikes" array field
-    await updateDoc(postRef, {
-      dislikes: arrayUnion(userId)
-    });
-
-    // Increment the dislike count by 1
-    await updateDoc(postRef, {
-      dislikeCount: increment(1)
-    });
-  } else {
-    throw new Error('Post does not exist');
-  }
-};
 
 const getDislikes = async (postId: string) => {
   const postRef = doc(db, 'posts', postId);

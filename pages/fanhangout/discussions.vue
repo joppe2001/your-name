@@ -60,10 +60,11 @@
                                     </svg>
                                 </a>
                             </div>
-                            <button @click="$likePost(post.id, userId)">
-                                <div style="position: relative; display: inline-block;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" style="opacity: 0.3;">
-                                        <path fill="currentColor"
+                            <button @click="likePostHandler(post.id, userId)">
+                                <div class="like-button" style="position: relative; display: inline-block;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
+                                        style="opacity: 0.3;">
+                                        <path
                                             d="m12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5C2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                                     </svg>
                                     <span
@@ -71,7 +72,21 @@
                                             post.likes }}</span>
                                 </div>
                             </button>
+                            <button @click="dislikePostHandler(post.id, userId)">
+                                <div class="dislike-button" style="position: relative; display: inline-block;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
+                                        style="opacity: 0.3;">
+                                        <path fill="currentColor"
+                                            d="m2.808 1.394l18.384 18.384l-1.414 1.415l-3.746-3.747L12 21.486l-8.478-8.493a6 6 0 0 1 .033-8.023L1.394 2.808l1.414-1.414Zm17.435 3.364a6 6 0 0 1 .236 8.235l-1.635 1.636L7.26 3.046a5.99 5.99 0 0 1 4.741 1.483a5.998 5.998 0 0 1 8.242.229Z" />
+                                    </svg>
+                                    <span
+                                        style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">{{
+                                            post.dislikes }}</span>
+                                </div>
+                            </button>
                         </div>
+                        <p v-if="likeStatus === 'already_liked' || dislikeStatus === 'already_disliked'" class="text-red-500">already liked or disliked</p>
+
                         <transition name="modal">
                             <div class="modal-mask fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center"
                                 v-show="post.showComments" @click.self="post.showComments = false">
@@ -146,12 +161,23 @@ import { onMounted } from "vue";
 import { getAuth } from "firebase/auth";
 import { collection, getDocs } from "firebase/firestore";
 
-const { $db, $addPost, $getPosts, $addComment, $likePost } = useNuxtApp();
+const { $db, $addPost, $getPosts, $addComment, $likePost, $dislikePost } = useNuxtApp();
 
 const userNames = ref(new Map());
 const auth = getAuth();
 const db = $db;
 
+const likeStatus = ref('');
+
+const likePostHandler = async (postId, userId) => {
+    const result = await $likePost(postId, userId);
+    likeStatus.value = result.status;
+}
+const dislikeStatus = ref('');
+const dislikePostHandler = async (postId, userId) => {
+    const result = await $dislikePost(postId, userId);
+    dislikeStatus.value = result.status;
+}
 const isLoading = ref(true);
 const postInfo = ref({
     title: "",
@@ -162,7 +188,6 @@ const postInfo = ref({
     likes: 0,
     dislikes: 0,
 });
-const showComments = ref(false);
 const success = ref(false);
 const posts = ref([]);
 
@@ -440,5 +465,33 @@ a:hover {
 
 a:hover:after {
     width: 100%;
+}
+
+.like-button,
+.dislike-button {
+    transition: transform 0.3s;
+}
+
+.like-button:hover,
+.dislike-button:hover {
+    transform: scale(1.2);
+}
+
+.like-button svg path,
+.dislike-button svg path {
+    opacity: 0.3;
+    transition: opacity 0.3s, fill 0.3s ease-in-out;
+    fill: currentColor;
+}
+
+.like-button:hover svg path {
+    opacity: 1;
+    fill: red;
+}
+
+.dislike-button:hover svg path {
+    opacity: 1;
+    fill: rgb(2, 4, 11);
+    /* Change this to the color you want for the dislike button */
 }
 </style>
