@@ -19,7 +19,7 @@
 
         <div class="flex-grow w-full main">
             <div v-for="post in posts" :key="post.id" id="post"
-                class="post main-container p-4 sm:p-8 border-4 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-200 backdrop-blur-md mb-4 max-w-3/4 sm:max-w-3/4 lg:max-w-3/4 flex flex-col items-center justify-center">
+                class="post main-container p-4 sm:p-8 border-4 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-200 backdrop-blur-lg mb-4 max-w-3/4 sm:max-w-3/4 lg:max-w-3/4 flex flex-col items-center justify-center">
                 <div class="post__content w-5/6 p-2">
                     <div class="post__text text-center">
                         <h1 class="post__title text-yn-night-sky text-2xl sm:text-3xl mb-4">
@@ -88,10 +88,10 @@
 
                         <div class="comments__display transition-all duration-300 mt-4 overflow-auto border border-gray-200 rounded  text-gray-700 p-4"
                             :class="{ 'scrollable-comments': post.comments.length > 5 }" v-if="post.comments.length">
-                            <p class="text-lg">comments: </p>
+                            <p class="text-lg text-white">comments: </p>
                             <hr />
                             <div v-for="comment in post.comments" :key="comment.id" class="comment">
-                                <p class="p-1">
+                                <p class="p-1 text-white">
                                     {{
                                         userNames.get(comment.userId) +
                                         ": " +
