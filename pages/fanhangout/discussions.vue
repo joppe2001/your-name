@@ -382,6 +382,12 @@ onMounted(async () => {
     max-height: 200px; /* you can adjust this height as per your requirement */
     overflow-y: auto;
 }
+
+@media (min-width: 640px) {
+    .scrollable-comments {
+        width: 100%;
+    }
+}
 .comments__view {
     display: flex;
     width: 100%;
@@ -499,7 +505,8 @@ a:hover:after {
 .buttons {
     width: 100%;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
+    gap: 20px;
     margin-top: 30px;
 }
 </style>
