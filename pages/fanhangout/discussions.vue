@@ -93,7 +93,7 @@
                         </div>
                         <div class="error-message">
                             <div v-if="post.status === 'already_liked' || post.status === 'already_disliked'" class="text-red-500">
-                                you have already liked or disliked this post.
+                                already liked/ disliked.
                             </div>
                             <div v-else-if="post.status === 'success'" class="text-green-500">liked/ disliked</div>
                         </div>
