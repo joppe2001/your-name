@@ -86,12 +86,10 @@
                             </div>
                         </div>
 
-                        <div class="comments__display transition-all duration-300 mt-4 overflow-auto border border-gray-200 rounded  text-gray-700 p-4"
+                        <div class="comments__display transition-all duration-300 mt-4 overflow-auto   text-gray-700 p-4"
                             :class="{ 'scrollable-comments': post.comments.length > 5 }" v-if="post.comments.length">
-                            <p class="text-lg text-white">comments: </p>
-                            <hr />
-                            <div v-for="comment in post.comments" :key="comment.id" class="comment bg-gray-500">
-                                <p class="p-1 text-white">
+                            <div v-for="comment in post.comments" :key="comment.id" class="comment bg-white backdrop-blur-md">
+                                <p class="p-1 text-black">
                                     {{
                                         userNames.get(comment.userId) +
                                         ": " +
@@ -576,8 +574,8 @@ a:hover:after {
 }
 
 .comment {
-    border-radius: 10px;
-    margin: 2px 0;
+    border-radius: 5px;
+    margin: 4px 0;
 }
 
 .buttons {
@@ -604,7 +602,7 @@ input[type="text"] {
 
 ::-webkit-scrollbar-thumb {
     border-radius: 25px;
-    background: linear-gradient(to bottom, #ffffff00, #ce6bd7, #6e3572 , #e3eeff00);
+    background: linear-gradient(to bottom, #ce6bd7, #6e3572 );
 }
 
 .content {
