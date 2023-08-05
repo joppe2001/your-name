@@ -21,6 +21,6 @@
 ::-webkit-scrollbar-thumb
 {
     border-radius: 25px;
-	background: linear-gradient(to bottom,#7a12f218, #7a12f2f4,  #9745fc, #c2a2df, #e0d6e817);	
+	background: linear-gradient(to bottom,#ffffff00, #ce6bd7, #6e3572 ,#e3eeff45 , #e3eeff00);	
 }
 </style>

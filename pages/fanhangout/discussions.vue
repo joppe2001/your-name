@@ -2,16 +2,16 @@
     <div class="flex flex-col p-4" v-if="!isLoading">
         <!-- form -->
         <form @submit.prevent="submitForm"
-            class="flex flex-col w-1/2 mx-auto mb-8 p-4 sm:p-8 border-4 border-yn-lavender rounded-xl shadow-lg hover:shadow-2xl transition-all duration-200 backdrop-blur-md">
+            class="form flex flex-col w-1/2 mx-auto mb-8 p-4 sm:p-8 border-4 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-200 backdrop-blur-md">
             <h1 class="text-center mb-3 text-2xl text-yn-deep-purple font-bold">
                 post it!
             </h1>
             <input type="text" name="title" v-model="postInfo.title" placeholder="title"
-                class="p-2 mb-4 border border-yn-lßavender rounded bg-yn-soft-lilac placeholder-yn-night-sky text-yn-lavender focus:outline-none focus:border-yn-golden transition duration-500 ease-in-out" />
+                class="content p-2 mb-4 border rounded  placeholder-yn-night-sky focus:outline-none focus:border-yn-golden transition duration-500 ease-in-out" />
             <textarea name="content" v-model="postInfo.content" placeholder="content"
-                class="p-2 mb-4 border border-yn-lavender rounded bg-yn-soft-lilac placeholder-yn-night-sky text-yn-lavender h-40 focus:outline-none focus:border-yn-lavender transition duration-500 ease-in-out" />
+                class="content p-2 mb-4 border rounded placeholder-yn-night-sky h-40 focus:outline-none focus transition duration-500 ease-in-out" />
             <input type="string" name="image" v-model="postInfo.image" placeholder="image url"
-                class="p-2 mb-4 border border-yn-lavender rounded bg-yn-soft-lilac placeholder-yn-night-sky text-yn-lavender focus:outline-none focus:border-yn-golden transition duration-500 ease-in-out" />
+                class="content p-2 mb-4 border rounded placeholder-yn-night-sky focus:outline-none focus:border-yn-golden transition duration-500 ease-in-out" />
             <div class="wrapper">
                 <a @click.prevent="submitForm()"> Share post </a>
             </div>
@@ -19,7 +19,7 @@
 
         <div class="flex-grow w-full main">
             <div v-for="post in posts" :key="post.id" id="post"
-                class="post main-container p-4 sm:p-8 border-4 border-yn-lavender rounded-xl shadow-lg hover:shadow-2xl transition-all duration-200 backdrop-blur-md mb-4 max-w-3/4 sm:max-w-3/4 lg:max-w-3/4 flex flex-col items-center justify-center">
+                class="post main-container p-4 sm:p-8 border-4 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-200 backdrop-blur-md mb-4 max-w-3/4 sm:max-w-3/4 lg:max-w-3/4 flex flex-col items-center justify-center">
                 <div class="post__content w-5/6 p-2">
                     <div class="post__text text-center">
                         <h1 class="post__title text-yn-night-sky text-2xl sm:text-3xl mb-4">
@@ -359,7 +359,12 @@ onMounted(async () => {
         width: 70%;
     }
 }
-
+.form {
+    border: 10px solid;
+    border-image-slice: 1;
+    border-width: 5px;
+    border-image-source: linear-gradient(to bottom,#ffffff00, #ce6bd7, #e3eeff00);
+}
 .main {
     display: flex;
     flex-direction: column;
@@ -595,6 +600,14 @@ input[type="text"] {
 
 ::-webkit-scrollbar-thumb {
     border-radius: 25px;
-    background: linear-gradient(to bottom, #7a12f229, #9745fc, #c2a2df, #e0d6e817);
+    background: linear-gradient(to bottom, #ffffff00, #ce6bd7, #6e3572 , #e3eeff00);
+}
+
+.content {
+    background: none;
+    border: 2px solid;
+    border-image-slice: 1;
+    border-width: 2px;
+    border-image-source: linear-gradient(to right,#ffffff00, #ce6bd7, #6e3572 , #e3eeff00);
 }
 </style>
