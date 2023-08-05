@@ -15,7 +15,7 @@
       <div v-else>
         <LogOut class="text-yn-golden text-m ml-4 p-1 hover:text-yn-sunset hover:bg-yn-lavender transition-all duration-200 rounded" />
         <nuxt-link to="/fanhangout/discussions" class="text-yn-golden text-m ml-4 p-1 hover:text-yn-sunset hover:bg-yn-lavender transition-all duration-200 rounded">
-          discussion
+          Posts
         </nuxt-link>
         <nuxt-link to="/account" class="text-yn-golden text-m ml-4 p-1 hover:text-yn-sunset hover:bg-yn-lavender transition-all duration-200 rounded">
           account
