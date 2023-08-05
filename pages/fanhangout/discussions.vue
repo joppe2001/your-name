@@ -69,7 +69,8 @@
                                         :class="post.status === 'already_liked' ? 'liked' : ''">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
                                             <path fill="currentColor"
-                                                d="m2.808 1.394l18.384 18.384l-1.414 1.415l-3.746-3.747L12 21.486l-8.478-8.493a6 6 0 0 1 .033-8.023L1.394 2.808l1.414-1.414Zm17.435 3.364a6 6 0 0 1 .236 8.235l-1.635 1.636L7.26 3.046a5.99 5.99 0 0 1 4.741 1.483a5.998 5.998 0 0 1 8.242.229Z"  :style="{ fill: dislikedPostsIds.includes(post.id) ? 'blue' : ''}"/>
+                                                d="m2.808 1.394l18.384 18.384l-1.414 1.415l-3.746-3.747L12 21.486l-8.478-8.493a6 6 0 0 1 .033-8.023L1.394 2.808l1.414-1.414Zm17.435 3.364a6 6 0 0 1 .236 8.235l-1.635 1.636L7.26 3.046a5.99 5.99 0 0 1 4.741 1.483a5.998 5.998 0 0 1 8.242.229Z"
+                                                :style="{ fill: dislikedPostsIds.includes(post.id) ? 'blue' : '' }" />
                                         </svg>
                                         <span
                                             style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); transition: 0.3s ease-out">{{
@@ -191,47 +192,47 @@ const getDislikedPosts = async () => {
 };
 
 const likePostHandler = debounce(async (postId, userId) => {
-  const result = await $likePost(postId, userId);
-  const post = posts.value.find(post => post.id === postId);
-  likedPostsIds.value = await getLikedPosts();
+    const result = await $likePost(postId, userId);
+    const post = posts.value.find(post => post.id === postId);
+    likedPostsIds.value = await getLikedPosts();
 
-  // If post was previously disliked, remove from disliked posts
-  if (result.status === 'undisliked') {
-    dislikedPostsIds.value = dislikedPostsIds.value.filter(id => id !== postId);
-  }
-
-  post.lastAction = 'liked';
-  if (post) {
-    if (result.status === 'success') {
-      post.likes += 1;
-    } else if (result.status === 'undisliked') {
-      post.likes += 1;
-      post.dislikes -= 1;
+    // If post was previously disliked, remove from disliked posts
+    if (result.status === 'undisliked') {
+        dislikedPostsIds.value = dislikedPostsIds.value.filter(id => id !== postId);
     }
-    posts.value = posts.value.map(p => p.id === postId ? { ...p, status: result.status } : p);
-  }
+
+    post.lastAction = 'liked';
+    if (post) {
+        if (result.status === 'success') {
+            post.likes += 1;
+        } else if (result.status === 'undisliked') {
+            post.likes += 1;
+            post.dislikes -= 1;
+        }
+        posts.value = posts.value.map(p => p.id === postId ? { ...p, status: result.status } : p);
+    }
 }, 300);
 
 const dislikePostHandler = debounce(async (postId, userId) => {
-  const result = await $dislikePost(postId, userId);
-  const post = posts.value.find(post => post.id === postId);
-  dislikedPostsIds.value = await getDislikedPosts();
+    const result = await $dislikePost(postId, userId);
+    const post = posts.value.find(post => post.id === postId);
+    dislikedPostsIds.value = await getDislikedPosts();
 
-  // If post was previously liked, remove from liked posts
-  if (result.status === 'unliked') {
-    likedPostsIds.value = likedPostsIds.value.filter(id => id !== postId);
-  }
-
-  post.lastAction = 'disliked';
-  if (post) {
-    if (result.status === 'success') {
-      post.dislikes += 1;
-    } else if (result.status === 'unliked') {
-      post.dislikes += 1;
-      post.likes -= 1;
+    // If post was previously liked, remove from liked posts
+    if (result.status === 'unliked') {
+        likedPostsIds.value = likedPostsIds.value.filter(id => id !== postId);
     }
-    posts.value = posts.value.map(p => p.id === postId ? { ...p, status: result.status } : p);
-  }
+
+    post.lastAction = 'disliked';
+    if (post) {
+        if (result.status === 'success') {
+            post.dislikes += 1;
+        } else if (result.status === 'unliked') {
+            post.dislikes += 1;
+            post.likes -= 1;
+        }
+        posts.value = posts.value.map(p => p.id === postId ? { ...p, status: result.status } : p);
+    }
 }, 300);
 
 
@@ -388,6 +389,10 @@ onMounted(async () => {
     display: flex;
     flex-direction: column;
     width: 80%;
+    border: 10px solid;
+    border-image-slice: 1;
+    border-width: 5px;
+    border-image-source: linear-gradient(to bottom,#ffffff00, #ce6bd7, #e3eeff00);
 }
 
 @media (min-width: 640px) {
@@ -494,7 +499,7 @@ a {
     align-items: center;
     height: 40px;
     border-radius: 5px;
-    font-size: 18px;
+    font-size: 1.1rem;
     font-family: sans-serif;
     text-decoration: none;
     color: #333;
@@ -576,5 +581,20 @@ a:hover:after {
 
 input[type="text"] {
     background: none;
-    border: 0.5px solid #333;
-}</style>
+}
+
+::-webkit-scrollbar-track {
+    border-radius: 0 10px 10px 0;
+    opacity: 0;
+}
+
+::-webkit-scrollbar {
+    border-radius: 0 10px 10px 0;
+    width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 25px;
+    background: linear-gradient(to bottom, #7a12f229, #9745fc, #c2a2df, #e0d6e817);
+}
+</style>
