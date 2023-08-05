@@ -39,7 +39,7 @@
                             <div class="flex items-center justify-center comment-group">
                                 <form @submit.prevent="submitComment(post.id)" class="comments__form">
                                     <input type="text" name="comment" v-model="post.comment" placeholder="Add a comment..."
-                                        class="comments__input flex-grow p-2 mr-1 border border-gray-200 rounded bg-gray-100 placeholder-gray-700 text-gray-700" />
+                                        class="comments__input flex-grow p-2 mr-1 border rounded placeholder-gray-700 text-gray-700" />
                                     <div class="wrapper">
                                         <a href="#" @click.prevent="submitComment(post.id)" class="comments__submit p-1">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
@@ -55,7 +55,9 @@
                                 <button @click="likePostHandler(post.id, userId)">
                                     <div class="like-button" style="position: relative; display: inline-block;">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
-                                            style="opacity: 0.3;">
+                                            style="opacity: 0.3;
+                                            "
+                                             :style="post.status === 'already_liked' ? 'fill: red' : ''">
                                             <path
                                                 d="m12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5C2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                                         </svg>
@@ -65,7 +67,8 @@
                                     </div>
                                 </button>
                                 <button @click="dislikePostHandler(post.id, userId)">
-                                    <div class="dislike-button" style="position: relative; display: inline-block;">
+                                    <div class="dislike-button" style="position: relative; display: inline-block;"
+                                    :class="post.status === 'already_liked' ? 'liked' : ''">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
                                             style="opacity: 0.3;">
                                             <path fill="currentColor"
@@ -85,10 +88,12 @@
                             </div>
                         </div>
 
-                        <div class="comments__display transition-all duration-300 mt-4 overflow-auto border border-gray-200 rounded bg-gray-100 text-gray-700 p-4"
+                        <div class="comments__display transition-all duration-300 mt-4 overflow-auto border border-gray-200 rounded  text-gray-700 p-4"
                             :class="{ 'scrollable-comments': post.comments.length > 5 }"
                             v-if="post.comments.length"
                             >
+                            <p class="text-lg">comments: </p>
+                            <hr />
                             <div v-for="comment in post.comments" :key="comment.id" class="comment">
                                 <p class="p-1">
                                     {{
@@ -162,7 +167,7 @@ const likePostHandler = debounce(async (postId, userId) => {
     }
 }, 300);
 
-const dislikePostHandler = async (postId, userId) => {
+const dislikePostHandler = debounce(async(postId, userId) => {
     const result = await $dislikePost(postId, userId);
     const post = posts.value.find(post => post.id === postId);
     post.lastAction = 'disliked';
@@ -175,7 +180,7 @@ const dislikePostHandler = async (postId, userId) => {
         }
         posts.value = posts.value.map(p => p.id === postId ? { ...p, status: result.status } : p);
     }
-}
+}, 300)
 
 
 
@@ -490,6 +495,15 @@ a:hover:after {
     fill: red;
 }
 
+.liked {
+    fill: red;
+}
+
+.disliked {
+    fill: rgb(23, 61, 197);
+    /* Change this to the color you want for the dislike button */
+}   
+
 .dislike-button:hover svg path {
     opacity: 1;
     fill: rgb(23, 61, 197);
@@ -508,5 +522,10 @@ a:hover:after {
     justify-content: center;
     gap: 20px;
     margin-top: 30px;
+}
+
+input[type="text"] {
+    background: none;
+    border: 0.5px solid #333;
 }
 </style>
