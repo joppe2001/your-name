@@ -90,7 +90,7 @@
                             :class="{ 'scrollable-comments': post.comments.length > 5 }" v-if="post.comments.length">
                             <p class="text-lg text-white">comments: </p>
                             <hr />
-                            <div v-for="comment in post.comments" :key="comment.id" class="comment">
+                            <div v-for="comment in post.comments" :key="comment.id" class="comment bg-gray-500">
                                 <p class="p-1 text-white">
                                     {{
                                         userNames.get(comment.userId) +
@@ -98,7 +98,6 @@
                                         comment.comment
                                     }}
                                 </p>
-                                <hr />
                             </div>
                         </div>
                     </div>
@@ -574,6 +573,11 @@ a:hover:after {
     width: 100%;
     display: flex;
     justify-content: space-around;
+}
+
+.comment {
+    border-radius: 10px;
+    margin: 2px 0;
 }
 
 .buttons {
