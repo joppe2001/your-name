@@ -73,8 +73,8 @@
                                                 :style="{ fill: dislikedPostsIds.includes(post.id) ? 'blue' : '' }" />
                                         </svg>
                                         <span
-                                            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); transition: 0.3s ease-out">{{
-                                                post.dislikes }}</span>
+                                            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); transition: 0.3s ease-out">
+                                            {{ post.dislikes }}</span>
                                     </div>
                                 </button>
                             </div>
@@ -88,7 +88,8 @@
 
                         <div class="comments__display transition-all duration-300 mt-4 overflow-auto   text-gray-700 p-4"
                             :class="{ 'scrollable-comments': post.comments.length > 5 }" v-if="post.comments.length">
-                            <div v-for="comment in post.comments" :key="comment.id" class="comment bg-white backdrop-blur-md">
+                            <div v-for="comment in post.comments" :key="comment.id" class="comment bg-white backdrop-blur"
+                                style="word-wrap: break-word">
                                 <p class="p-1 text-black">
                                     {{
                                         userNames.get(comment.userId) +
@@ -97,6 +98,7 @@
                                     }}
                                 </p>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -356,12 +358,14 @@ onMounted(async () => {
         width: 70%;
     }
 }
+
 .form {
     border: 10px solid;
     border-image-slice: 1;
     border-width: 5px;
-    border-image-source: linear-gradient(to bottom,#ffffff00, #ce6bd7, #e3eeff00);
+    border-image-source: linear-gradient(to bottom, #ffffff00, #ce6bd7, #e3eeff00);
 }
+
 .main {
     display: flex;
     flex-direction: column;
@@ -394,7 +398,7 @@ onMounted(async () => {
     border: 10px solid;
     border-image-slice: 1;
     border-width: 5px;
-    border-image-source: linear-gradient(to bottom,#ffffff00, #ce6bd7, #e3eeff00);
+    border-image-source: linear-gradient(to bottom, #ffffff00, #ce6bd7, #e3eeff00);
 }
 
 @media (min-width: 640px) {
@@ -444,12 +448,14 @@ onMounted(async () => {
     align-items: flex-start;
     border-radius: 5px;
     transition: 0.3s;
+
 }
 
 .scrollable-comments {
     max-height: 200px;
     /* you can adjust this height as per your requirement */
-    overflow-y: auto;
+    overflow: auto;
+
 }
 
 @media (min-width: 640px) {
@@ -573,6 +579,10 @@ a:hover:after {
     justify-content: space-around;
 }
 
+.comments__display {
+    width: 100%;
+}
+
 .comment {
     border-radius: 5px;
     margin: 4px 0;
@@ -602,7 +612,7 @@ input[type="text"] {
 
 ::-webkit-scrollbar-thumb {
     border-radius: 25px;
-    background: linear-gradient(to bottom, #ce6bd7, #6e3572 );
+    background: linear-gradient(to bottom, #ce6bd7, #6e3572);
 }
 
 .content {
@@ -610,6 +620,5 @@ input[type="text"] {
     border: 2px solid;
     border-image-slice: 1;
     border-width: 2px;
-    border-image-source: linear-gradient(to right,#ffffff00, #ce6bd7, #6e3572 , #e3eeff00);
-}
-</style>
+    border-image-source: linear-gradient(to right, #ffffff00, #ce6bd7, #6e3572, #e3eeff00);
+}</style>
