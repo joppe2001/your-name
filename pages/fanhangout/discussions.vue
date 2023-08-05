@@ -7,7 +7,7 @@
                 post it!
             </h1>
             <input type="text" name="title" v-model="postInfo.title" placeholder="title"
-                class="p-2 mb-4 border border-yn-lavender rounded bg-yn-soft-lilac placeholder-yn-night-sky text-yn-lavender focus:outline-none focus:border-yn-golden transition duration-500 ease-in-out" />
+                class="p-2 mb-4 border border-yn-lßavender rounded bg-yn-soft-lilac placeholder-yn-night-sky text-yn-lavender focus:outline-none focus:border-yn-golden transition duration-500 ease-in-out" />
             <textarea name="content" v-model="postInfo.content" placeholder="content"
                 class="p-2 mb-4 border border-yn-lavender rounded bg-yn-soft-lilac placeholder-yn-night-sky text-yn-lavender h-40 focus:outline-none focus:border-yn-lavender transition duration-500 ease-in-out" />
             <input type="string" name="image" v-model="postInfo.image" placeholder="image url"
@@ -92,7 +92,8 @@
                             </div>
                         </div>
                         <div class="error-message">
-                            <div v-if="post.status === 'already_liked' || post.status === 'already_disliked'" class="text-red-500">
+                            <div v-if="post.status === 'already_liked' || post.status === 'already_disliked'"
+                                class="text-red-500">
                                 already {{ post.lastAction }}.
                             </div>
                             <div v-else-if="post.status === 'success'" class="text-green-500">{{ post.lastAction }}</div>
@@ -178,25 +179,39 @@ const userNames = ref(new Map());
 const auth = getAuth();
 const db = $db;
 
-const lastAction = ref('');
 
 const likePostHandler = async (postId, userId) => {
-    const result = await $likePost(postId, userId);
-    const post = posts.value.find(post => post.id === postId);
-    post.lastAction = 'liked'
-    if (post) {
-        posts.value = posts.value.map(p => p.id === postId ? { ...p, status: result.status } : p);
+  const result = await $likePost(postId, userId);
+  const post = posts.value.find(post => post.id === postId);
+  post.lastAction = 'liked'
+  if (post) {
+    if(result.status === 'success') {
+      post.likes += 1;
+    } else if(result.status === 'undisliked') {
+      post.likes += 1;
+      post.dislikes -= 1;
     }
+    posts.value = posts.value.map(p => p.id === postId ? { ...p, status: result.status } : p);
+  }
 }
 
 const dislikePostHandler = async (postId, userId) => {
-    const result = await $dislikePost(postId, userId);
-    const post = posts.value.find(post => post.id === postId);
-    post.lastAction = 'disliked';
-    if (post) {
-        posts.value = posts.value.map(p => p.id === postId ? { ...p, status: result.status } : p);
+  const result = await $dislikePost(postId, userId);
+  const post = posts.value.find(post => post.id === postId);
+  post.lastAction = 'disliked';
+  if (post) {
+    if(result.status === 'success') {
+      post.dislikes += 1;
+    } else if(result.status === 'unliked') {
+      post.dislikes += 1;
+      post.likes -= 1;
     }
+    posts.value = posts.value.map(p => p.id === postId ? { ...p, status: result.status } : p);
+  }
 }
+
+
+
 const isLoading = ref(true);
 const postInfo = ref({
     title: "",
