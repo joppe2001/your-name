@@ -171,6 +171,7 @@
 import { onMounted } from "vue";
 import { getAuth } from "firebase/auth";
 import { collection, getDocs } from "firebase/firestore";
+import debounce from "lodash.debounce";
 
 const { $db, $addPost, $getPosts, $addComment, $likePost, $dislikePost } = useNuxtApp();
 
@@ -179,10 +180,10 @@ const auth = getAuth();
 const db = $db;
 
 
-const likePostHandler = async (postId, userId) => {
+const likePostHandler = debounce(async (postId, userId) => {
   const result = await $likePost(postId, userId);
   const post = posts.value.find(post => post.id === postId);
-  post.lastAction = 'liked'
+  post.lastAction = 'liked';
   if (post) {
     if(result.status === 'success') {
       post.likes += 1;
@@ -192,7 +193,7 @@ const likePostHandler = async (postId, userId) => {
     }
     posts.value = posts.value.map(p => p.id === postId ? { ...p, status: result.status } : p);
   }
-}
+}, 300);
 
 const dislikePostHandler = async (postId, userId) => {
   const result = await $dislikePost(postId, userId);
