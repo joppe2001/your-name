@@ -113,7 +113,7 @@
         </div>
     </div>
     <div v-else class="loadingSpinner">
-        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24">
             <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2">
                 <path stroke-dasharray="2 4" stroke-dashoffset="6"
                     d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21">
@@ -140,7 +140,7 @@ import { getAuth } from "firebase/auth";
 import { collection, getDocs, getDoc, doc } from "firebase/firestore";
 import debounce from "lodash.debounce";
 
-const { $db, $addPost, $getPosts, $addComment, $likePost, $dislikePost, $getUsers } = useNuxtApp();
+const { $db, $addPost, $getPosts, $addComment, $likePost, $dislikePost } = useNuxtApp();
 
 const userNames = ref(new Map());
 const auth = getAuth();
@@ -360,10 +360,9 @@ onMounted(async () => {
 }
 
 .form {
-    border: 10px solid;
+    border: none;
     border-image-slice: 1;
-    border-width: 5px;
-    border-image-source: linear-gradient(to bottom, #ffffff00, #ce6bd7, #e3eeff00);
+    border-width: none;
 }
 
 .main {
@@ -387,18 +386,17 @@ onMounted(async () => {
 
 .loadingSpinner svg {
     margin: -25px 0 0 -25px;
-    width: 50px;
-    height: 50px;
+    width: 75px;
+    height: 75px;
+    color: rgba(128, 128, 128, 0.561);
 }
 
 .main-container {
     display: flex;
     flex-direction: column;
     width: 80%;
-    border: 10px solid;
+    border: none;
     border-image-slice: 1;
-    border-width: 5px;
-    border-image-source: linear-gradient(to bottom, #ffffff00, #ce6bd7, #e3eeff00);
 }
 
 @media (min-width: 640px) {
@@ -584,7 +582,7 @@ a:hover:after {
 }
 
 .comment {
-    border-radius: 5px;
+    border-radius: 2px;
     margin: 4px 0;
 }
 
@@ -612,13 +610,16 @@ input[type="text"] {
 
 ::-webkit-scrollbar-thumb {
     border-radius: 25px;
-    background: linear-gradient(to bottom, #ce6bd7, #6e3572);
+    background: #FC7753;
 }
 
 .content {
     background: none;
-    border: 2px solid;
+    border: none;
     border-image-slice: 1;
-    border-width: 2px;
-    border-image-source: linear-gradient(to right, #ffffff00, #ce6bd7, #6e3572, #e3eeff00);
-}</style>
+    border-width: 1px;
+    -webkit-box-shadow: inset 0px 0px 2px 1px #fc7853c1;
+    box-shadow: inset 0px 0px 2px 1px #fc78535a;
+    border-radius: 5px;
+}
+</style>
