@@ -93,9 +93,9 @@
                         </div>
                         <div class="error-message">
                             <div v-if="post.status === 'already_liked' || post.status === 'already_disliked'" class="text-red-500">
-                                already liked/ disliked.
+                                already {{ post.lastAction }}.
                             </div>
-                            <div v-else-if="post.status === 'success'" class="text-green-500">liked/ disliked</div>
+                            <div v-else-if="post.status === 'success'" class="text-green-500">{{ post.lastAction }}</div>
                         </div>
 
                         <transition name="modal">
@@ -178,11 +178,12 @@ const userNames = ref(new Map());
 const auth = getAuth();
 const db = $db;
 
-const likeStatus = ref('');
+const lastAction = ref('');
 
 const likePostHandler = async (postId, userId) => {
     const result = await $likePost(postId, userId);
     const post = posts.value.find(post => post.id === postId);
+    post.lastAction = 'liked'
     if (post) {
         posts.value = posts.value.map(p => p.id === postId ? { ...p, status: result.status } : p);
     }
@@ -191,6 +192,7 @@ const likePostHandler = async (postId, userId) => {
 const dislikePostHandler = async (postId, userId) => {
     const result = await $dislikePost(postId, userId);
     const post = posts.value.find(post => post.id === postId);
+    post.lastAction = 'disliked';
     if (post) {
         posts.value = posts.value.map(p => p.id === postId ? { ...p, status: result.status } : p);
     }
@@ -500,7 +502,7 @@ a:hover:after {
 
 .dislike-button:hover svg path {
     opacity: 1;
-    fill: rgb(2, 4, 11);
+    fill: rgb(23, 61, 197);
     /* Change this to the color you want for the dislike button */
 }
 

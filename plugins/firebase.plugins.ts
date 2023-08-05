@@ -10,7 +10,8 @@ import {
   updateDoc,
   arrayUnion,
   doc,
-  increment
+  increment,
+  arrayRemove
 } from 'firebase/firestore';
 import { getStorage, ref } from 'firebase/storage';
 
@@ -155,37 +156,30 @@ export default defineNuxtPlugin((nuxtApp) => {
       const likedPosts = userData.likedPosts || [];
       const dislikedPosts = userData.dislikedPosts || [];
   
-      if (!likedPosts.includes(postId) && !dislikedPosts.includes(postId)) {
+      if (likedPosts.includes(postId)) {
+        return { status: 'already_liked' }; // Return specific status when user has already liked the post
+      } else {
+        if (dislikedPosts.includes(postId)) {
+          // If the user has previously disliked the post, undo the dislike
+          await updateDoc(postRef, {
+            dislikes: increment(-1)
+          });
+          await updateDoc(userRef, {
+            dislikedPosts: arrayRemove(postId)
+          });
+        }
+        // Then, proceed with liking the post
         await updateDoc(postRef, {
           likes: increment(1)
         });
-  
         await updateDoc(userRef, {
           likedPosts: arrayUnion(postId)
         });
         return { status: 'success' }; // Return success status when like is successful
-      } else {
-        return { status: 'already_liked' }; // Return specific status when user has already liked the post
       }
     } else {
       throw new Error('Post or user does not exist');
     }
-  };
-  
-
-
-const getLikes = async (postId: string) => {
-  const postRef = doc(db, 'posts', postId);
-  const postSnap = await getDoc(postRef);
-
-  if (postSnap.exists()) {
-    const postData = postSnap.data();
-    if (!postData) throw new Error('Post data is undefined');
-
-    return postData.likes;
-  } else {
-    throw new Error('Post does not exist');
-  }
 };
 
 const dislikePost = async (postId: string, userId: string) => {
@@ -223,22 +217,6 @@ const dislikePost = async (postId: string, userId: string) => {
 };
 
 
-const getDislikes = async (postId: string) => {
-  const postRef = doc(db, 'posts', postId);
-  const postSnap = await getDoc(postRef);
-  
-  if (postSnap.exists()) {
-    const postData = postSnap.data();
-    if (!postData) throw new Error('Post data is undefined');
-
-    const dislikes = postData.dislikes || [];
-    return dislikes;
-  } else {
-    throw new Error('Post does not exist');
-  }
-};
-
-
   // get post id only
 
   // Provide the auth and store objects to the nuxt app
@@ -267,8 +245,6 @@ const getDislikes = async (postId: string) => {
       addComment,
       likePost,
       dislikePost,
-      getLikes,
-      getDislikes
     }
   };
 });
