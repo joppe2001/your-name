@@ -65,7 +65,6 @@ export default defineNuxtPlugin((nuxtApp) => {
         likes: 0, // add likes
         dislikes: 0 // add dislikes
       });
-      console.log('Document written with ID: ', docRef.id);
     } catch (e) {
       console.log('Error adding document: ', e);
     }
