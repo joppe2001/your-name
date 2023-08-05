@@ -88,12 +88,13 @@
 
                         <div class="comments__display transition-all duration-300 mt-4 overflow-auto   text-gray-700 p-4"
                             :class="{ 'scrollable-comments': post.comments.length > 5 }" v-if="post.comments.length">
-                            <div v-for="comment in post.comments" :key="comment.id" class="comment bg-white backdrop-blur"
+                            <div v-for="comment in post.comments" :key="comment.id" class="comment comments__background commnt backdrop-blur"
                                 style="word-wrap: break-word">
                                 <p class="p-1 text-black">
-                                    {{
-                                        userNames.get(comment.userId) +
-                                        ": " +
+                                    <strong>{{
+                                        "" + userNames.get(comment.userId) + ": "
+                                    }}</strong>
+                                    {{ 
                                         comment.comment
                                     }}
                                 </p>
@@ -449,6 +450,13 @@ onMounted(async () => {
 
 }
 
+.comments__background {
+    background: rgb(181,181,181);
+    background: linear-gradient(90deg, rgba(172, 172, 172, 0.425) 0%, rgba(205, 205, 205, 0.171) 35%, rgba(249, 249, 249, 0) 100%);
+    border-radius: 5px;
+    padding: 5px;
+    margin: 5px;
+}
 .scrollable-comments {
     max-height: 200px;
     /* you can adjust this height as per your requirement */
