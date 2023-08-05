@@ -10,6 +10,5 @@
     const fetchPosts = $getPosts;
     onMounted(async () => {
         posts.value = await fetchPosts();
-        console.log(posts.value);
     });
 </script>

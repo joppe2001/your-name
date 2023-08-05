@@ -96,7 +96,6 @@
                                 class="text-red-500">
                                 already {{ post.lastAction }}.
                             </div>
-                            <div v-else-if="post.status === 'success'" class="text-green-500">{{ post.lastAction }}</div>
                         </div>
 
                         <transition name="modal">
@@ -312,7 +311,6 @@ async function submitComment(postId) {
 onMounted(async () => {
     const fetchedPosts = await $getPosts();
     posts.value = fetchedPosts.map((post) => ({ ...post, comment: "", status: 'idle' }));
-    console.log(posts.value);
     // Use the getDisplayName function here
     for (const post of posts.value) {
         for (const comment of post.comments) {
