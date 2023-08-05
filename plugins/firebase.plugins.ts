@@ -165,7 +165,6 @@ export default defineNuxtPlugin((nuxtApp) => {
         });
         return { status: 'success' }; // Return success status when like is successful
       } else {
-        console.log("User has already liked or disliked this post");
         return { status: 'already_liked' }; // Return specific status when user has already liked the post
       }
     } else {
@@ -216,7 +215,6 @@ const dislikePost = async (postId: string, userId: string) => {
       });
       return { status: 'success' }; // Return success status when like is successful
     } else {
-      console.log("User has already liked or disliked this post");
       return { status: 'already_disliked' }; // Return specific status when user has already liked the post
     }
   } else {

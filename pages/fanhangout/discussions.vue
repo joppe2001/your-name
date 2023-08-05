@@ -20,7 +20,7 @@
         <div class="flex-grow w-full main">
             <div v-for="post in posts" :key="post.id" id="post"
                 class="post main-container p-4 sm:p-8 border-4 border-yn-lavender rounded-xl shadow-lg hover:shadow-2xl transition-all duration-200 backdrop-blur-md mb-4 max-w-3/4 sm:max-w-3/4 lg:max-w-3/4 flex flex-col items-center justify-center">
-                <div class="post__content w-5/6 p-2 sm:p-8">
+                <div class="post__content w-5/6 p-2">
                     <div class="post__text text-center">
                         <h1 class="post__title text-yn-night-sky text-2xl sm:text-3xl mb-4">
                             {{ post.title + " by " + userNames.get(post.userId) }}
@@ -33,15 +33,15 @@
                         <img :src="post.imageUrl" class="rounded mx-auto" />
                     </div>
                 </div>
-                <div class="post__comments w-full p-4 sm:p-8">
+                <div class="post__comments w-full p-4">
                     <div class="comments__view">
-                        <div class="w-100 flex">
-                            <div class="flex items-center justify-center">
+                        <div class="w-100 flex-column">
+                            <div class="flex items-center justify-center comment-group">
                                 <form @submit.prevent="submitComment(post.id)" class="comments__form">
                                     <input type="text" name="comment" v-model="post.comment" placeholder="Add a comment..."
                                         class="comments__input flex-grow p-2 mr-1 border border-gray-200 rounded bg-gray-100 placeholder-gray-700 text-gray-700" />
                                     <div class="wrapper">
-                                        <a href="#" @click.prevent="submitComment(post.id)" class="comments__submit p-2">
+                                        <a href="#" @click.prevent="submitComment(post.id)" class="comments__submit p-1">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
                                                 viewBox="0 0 24 24">
                                                 <path fill="currentColor"
@@ -50,42 +50,53 @@
                                         </a>
                                     </div>
                                 </form>
-                            </div>
-                            <div class="wrapper">
-                                <a href="#" @click.prevent="post.showComments = !post.showComments"
-                                    class="comments__submit p-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24">
-                                        <path fill="currentColor"
-                                            d="m21.21 10.29l-1.73-1.72a4.37 4.37 0 0 0 .65-2.26a4.31 4.31 0 1 0-4.32 4.32a4.35 4.35 0 0 0 2.26-.63l1.72 1.73a1 1 0 0 0 1.42 0a1 1 0 0 0 0-1.44ZM17.45 8a2.32 2.32 0 0 1-3.95-1.69a2.29 2.29 0 0 1 .68-1.63a2.32 2.32 0 0 1 3.27 0a2.31 2.31 0 0 1 0 3.27Zm2.05 6a1 1 0 0 0-1.22.72A7 7 0 0 1 11.5 20H5.91l.64-.63a1 1 0 0 0 0-1.41a7 7 0 0 1-2-5a7 7 0 0 1 4.32-6.44a1 1 0 1 0-.74-1.86a9 9 0 0 0-3.66 14l-1.68 1.63a1 1 0 0 0-.21 1.09a1 1 0 0 0 .92.62h8a9 9 0 0 0 8.72-6.75A1 1 0 0 0 19.5 14Z" />
-                                    </svg>
-                                </a>
-                            </div>
-                            <button @click="likePostHandler(post.id, userId)">
-                                <div class="like-button" style="position: relative; display: inline-block;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
-                                        style="opacity: 0.3;">
-                                        <path
-                                            d="m12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5C2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                                    </svg>
-                                    <span
-                                        style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">{{
-                                            post.likes }}</span>
+                                <div class="comments">
+
+                                    <div class="wrapper">
+                                        <a href="#" @click.prevent="post.showComments = !post.showComments"
+                                            class="comments__submit p-1">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
+                                                viewBox="0 0 24 24">
+                                                <path fill="currentColor"
+                                                    d="m21.21 10.29l-1.73-1.72a4.37 4.37 0 0 0 .65-2.26a4.31 4.31 0 1 0-4.32 4.32a4.35 4.35 0 0 0 2.26-.63l1.72 1.73a1 1 0 0 0 1.42 0a1 1 0 0 0 0-1.44ZM17.45 8a2.32 2.32 0 0 1-3.95-1.69a2.29 2.29 0 0 1 .68-1.63a2.32 2.32 0 0 1 3.27 0a2.31 2.31 0 0 1 0 3.27Zm2.05 6a1 1 0 0 0-1.22.72A7 7 0 0 1 11.5 20H5.91l.64-.63a1 1 0 0 0 0-1.41a7 7 0 0 1-2-5a7 7 0 0 1 4.32-6.44a1 1 0 1 0-.74-1.86a9 9 0 0 0-3.66 14l-1.68 1.63a1 1 0 0 0-.21 1.09a1 1 0 0 0 .92.62h8a9 9 0 0 0 8.72-6.75A1 1 0 0 0 19.5 14Z" />
+                                            </svg>
+                                        </a>
+                                    </div>
                                 </div>
-                            </button>
-                            <button @click="dislikePostHandler(post.id, userId)">
-                                <div class="dislike-button" style="position: relative; display: inline-block;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
-                                        style="opacity: 0.3;">
-                                        <path fill="currentColor"
-                                            d="m2.808 1.394l18.384 18.384l-1.414 1.415l-3.746-3.747L12 21.486l-8.478-8.493a6 6 0 0 1 .033-8.023L1.394 2.808l1.414-1.414Zm17.435 3.364a6 6 0 0 1 .236 8.235l-1.635 1.636L7.26 3.046a5.99 5.99 0 0 1 4.741 1.483a5.998 5.998 0 0 1 8.242.229Z" />
-                                    </svg>
-                                    <span
-                                        style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">{{
-                                            post.dislikes }}</span>
-                                </div>
-                            </button>
+                            </div>
+                            <div class="buttons">
+                                <button @click="likePostHandler(post.id, userId)">
+                                    <div class="like-button" style="position: relative; display: inline-block;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
+                                            style="opacity: 0.3;">
+                                            <path
+                                                d="m12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5C2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                                        </svg>
+                                        <span
+                                            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">{{
+                                                post.likes }}</span>
+                                    </div>
+                                </button>
+                                <button @click="dislikePostHandler(post.id, userId)">
+                                    <div class="dislike-button" style="position: relative; display: inline-block;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
+                                            style="opacity: 0.3;">
+                                            <path fill="currentColor"
+                                                d="m2.808 1.394l18.384 18.384l-1.414 1.415l-3.746-3.747L12 21.486l-8.478-8.493a6 6 0 0 1 .033-8.023L1.394 2.808l1.414-1.414Zm17.435 3.364a6 6 0 0 1 .236 8.235l-1.635 1.636L7.26 3.046a5.99 5.99 0 0 1 4.741 1.483a5.998 5.998 0 0 1 8.242.229Z" />
+                                        </svg>
+                                        <span
+                                            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">{{
+                                                post.dislikes }}</span>
+                                    </div>
+                                </button>
+                            </div>
                         </div>
-                        <p v-if="likeStatus === 'already_liked' || dislikeStatus === 'already_disliked'" class="text-red-500">already liked or disliked</p>
+                        <div class="error-message">
+                            <div v-if="post.status === 'already_liked' || post.status === 'already_disliked'" class="text-red-500">
+                                you have already liked or disliked this post.
+                            </div>
+                            <div v-else class="text-green-500">liked/ disliked</div>
+                        </div>
 
                         <transition name="modal">
                             <div class="modal-mask fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center"
@@ -171,12 +182,18 @@ const likeStatus = ref('');
 
 const likePostHandler = async (postId, userId) => {
     const result = await $likePost(postId, userId);
-    likeStatus.value = result.status;
+    const post = posts.value.find(post => post.id === postId);
+    if (post) {
+        posts.value = posts.value.map(p => p.id === postId ? { ...p, status: result.status } : p);
+    }
 }
-const dislikeStatus = ref('');
+
 const dislikePostHandler = async (postId, userId) => {
     const result = await $dislikePost(postId, userId);
-    dislikeStatus.value = result.status;
+    const post = posts.value.find(post => post.id === postId);
+    if (post) {
+        posts.value = posts.value.map(p => p.id === postId ? { ...p, status: result.status } : p);
+    }
 }
 const isLoading = ref(true);
 const postInfo = ref({
@@ -277,7 +294,7 @@ async function submitComment(postId) {
 
 onMounted(async () => {
     const fetchedPosts = await $getPosts();
-    posts.value = fetchedPosts.map((post) => ({ ...post, comment: "" }));
+    posts.value = fetchedPosts.map((post) => ({ ...post, comment: "", status: 'idle' }));
     console.log(posts.value);
     // Use the getDisplayName function here
     for (const post of posts.value) {
@@ -309,6 +326,7 @@ onMounted(async () => {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
 }
 
 .loadingSpinner {
@@ -372,13 +390,9 @@ onMounted(async () => {
 .comments {
     display: flex;
     flex-direction: column;
-    width: 100%;
     height: auto;
     align-items: flex-start;
-    opacity: 0.6;
     border-radius: 5px;
-    margin-top: 10px;
-    padding: 8px 0;
     transition: 0.3s;
 }
 
@@ -410,11 +424,6 @@ onMounted(async () => {
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.comments:hover {
-    opacity: 1;
-    box-shadow: 0 0 2px 1px rgb(243, 198, 236);
 }
 
 .comments__toggle {
@@ -493,5 +502,18 @@ a:hover:after {
     opacity: 1;
     fill: rgb(2, 4, 11);
     /* Change this to the color you want for the dislike button */
+}
+
+.comment-group {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.buttons {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    margin-top: 50px;
 }
 </style>
