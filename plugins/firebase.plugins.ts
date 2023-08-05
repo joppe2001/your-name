@@ -132,7 +132,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       let post = doc.data();
       post.id = doc.id; // include the document ID here
       post.likes = await getLikesForPost(post.id); // add likes for each post here
-      post.dislikes = await getDislikesForPost(post.id); // add dislikes for each post here
+      post.dislikes = await getDislikesForPost(post.id); // add dislikes for each post here.
       postData.push(post);
     }
     return postData;
@@ -229,6 +229,17 @@ export default defineNuxtPlugin((nuxtApp) => {
   };
   // get post id only
 
+const getUsers = async () => {
+  const usersSnapshot = await getDocs(users);
+  const usersData = [];
+  for (let doc of usersSnapshot.docs) {
+    let user = doc.data();
+    user.id = doc.id; // include the document ID here
+    usersData.push(user);
+  }
+  return usersData;
+};
+
   // Provide the auth and store objects to the nuxt app
   const store = useUsersStore();
 
@@ -254,7 +265,8 @@ export default defineNuxtPlugin((nuxtApp) => {
       getPosts,
       addComment,
       likePost,
-      dislikePost
+      dislikePost,
+      getUsers
     }
   };
 });

@@ -1,5 +1,5 @@
 <template>
-    <button @click="logoutUser">sign out</button>
+    <button @click="confirmLogout">sign out</button>
 </template>
 <script setup lang="ts">
 import { Auth, signOut } from 'firebase/auth';
@@ -11,7 +11,7 @@ const nuxtApp = useNuxtApp();
 async function logoutUser() {
     try {
         await signOut(nuxtApp.$auth as Auth);
-        (store.user as any) = null;// Reset the user in the store
+        (store.user as any) = null; // Reset the user in the store
         nuxtApp.$router.push('/'); // Redirect to the login page
     } catch (error: unknown) {
         if (error instanceof Error) {
@@ -19,4 +19,11 @@ async function logoutUser() {
         }
     }
 }
+
+const confirmLogout = () => { 
+    if (window.confirm('Are you sure you want to sign out?')) {
+        logoutUser();
+    }
+}
 </script>
+

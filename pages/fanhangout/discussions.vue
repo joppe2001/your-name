@@ -54,28 +54,25 @@
                             <div class="buttons">
                                 <button @click="likePostHandler(post.id, userId)">
                                     <div class="like-button" style="position: relative; display: inline-block;">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
-                                            style="opacity: 0.3;
-                                            "
-                                             :style="post.status === 'already_liked' ? 'fill: red' : ''">
-                                            <path
-                                                d="m12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5C2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                                            <path fill="currentColor"
+                                                d="M13.35 20.13c-.76.69-1.93.69-2.69-.01l-.11-.1C5.3 15.27 1.87 12.16 2 8.28c.06-1.7.93-3.33 2.34-4.29c2.64-1.8 5.9-.96 7.66 1.1c1.76-2.06 5.02-2.91 7.66-1.1c1.41.96 2.28 2.59 2.34 4.29c.14 3.88-3.3 6.99-8.55 11.76l-.1.09z"
+                                                :style="{ fill: likedPostsIds.includes(post.id) ? 'red' : '' }" />
                                         </svg>
                                         <span
-                                            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">{{
+                                            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); transition: 0.3s ease-out">{{
                                                 post.likes }}</span>
                                     </div>
                                 </button>
                                 <button @click="dislikePostHandler(post.id, userId)">
                                     <div class="dislike-button" style="position: relative; display: inline-block;"
-                                    :class="post.status === 'already_liked' ? 'liked' : ''">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
-                                            style="opacity: 0.3;">
+                                        :class="post.status === 'already_liked' ? 'liked' : ''">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
                                             <path fill="currentColor"
-                                                d="m2.808 1.394l18.384 18.384l-1.414 1.415l-3.746-3.747L12 21.486l-8.478-8.493a6 6 0 0 1 .033-8.023L1.394 2.808l1.414-1.414Zm17.435 3.364a6 6 0 0 1 .236 8.235l-1.635 1.636L7.26 3.046a5.99 5.99 0 0 1 4.741 1.483a5.998 5.998 0 0 1 8.242.229Z" />
+                                                d="m2.808 1.394l18.384 18.384l-1.414 1.415l-3.746-3.747L12 21.486l-8.478-8.493a6 6 0 0 1 .033-8.023L1.394 2.808l1.414-1.414Zm17.435 3.364a6 6 0 0 1 .236 8.235l-1.635 1.636L7.26 3.046a5.99 5.99 0 0 1 4.741 1.483a5.998 5.998 0 0 1 8.242.229Z"  :style="{ fill: dislikedPostsIds.includes(post.id) ? 'blue' : ''}"/>
                                         </svg>
                                         <span
-                                            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">{{
+                                            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); transition: 0.3s ease-out">{{
                                                 post.dislikes }}</span>
                                     </div>
                                 </button>
@@ -89,9 +86,7 @@
                         </div>
 
                         <div class="comments__display transition-all duration-300 mt-4 overflow-auto border border-gray-200 rounded  text-gray-700 p-4"
-                            :class="{ 'scrollable-comments': post.comments.length > 5 }"
-                            v-if="post.comments.length"
-                            >
+                            :class="{ 'scrollable-comments': post.comments.length > 5 }" v-if="post.comments.length">
                             <p class="text-lg">comments: </p>
                             <hr />
                             <div v-for="comment in post.comments" :key="comment.id" class="comment">
@@ -142,45 +137,103 @@
 <script setup>
 import { onMounted } from "vue";
 import { getAuth } from "firebase/auth";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, getDoc, doc } from "firebase/firestore";
 import debounce from "lodash.debounce";
 
-const { $db, $addPost, $getPosts, $addComment, $likePost, $dislikePost } = useNuxtApp();
+const { $db, $addPost, $getPosts, $addComment, $likePost, $dislikePost, $getUsers } = useNuxtApp();
 
 const userNames = ref(new Map());
 const auth = getAuth();
 const db = $db;
 
+const likedPostsIds = ref([]);
+const dislikedPostsIds = ref([]);
+const getLikedPosts = async () => {
+    const userId = auth.currentUser?.uid;
+    if (!userId) {
+        console.error("User not authenticated");
+        return [];
+    }
+
+    // Fetch user document
+    const userRef = doc(db, `users/${userId}`);
+    const userSnap = await getDoc(userRef);
+    const userData = userSnap.data();
+
+    // Check if likedPosts exists
+    if (!userData || !userData.likedPosts) {
+        return [];
+    }
+
+    // Return liked post IDs directly
+    return userData.likedPosts;
+};
+
+const getDislikedPosts = async () => {
+    const userId = auth.currentUser?.uid;
+    if (!userId) {
+        console.error("User not authenticated");
+        return [];
+    }
+
+    // Fetch user document
+    const userRef = doc(db, `users/${userId}`);
+    const userSnap = await getDoc(userRef);
+    const userData = userSnap.data();
+
+    // Check if likedPosts exists
+    if (!userData || !userData.dislikedPosts) {
+        return [];
+    }
+
+    // Return liked post IDs directly
+    return userData.dislikedPosts;
+};
 
 const likePostHandler = debounce(async (postId, userId) => {
-    const result = await $likePost(postId, userId);
-    const post = posts.value.find(post => post.id === postId);
-    post.lastAction = 'liked';
-    if (post) {
-        if (result.status === 'success') {
-            post.likes += 1;
-        } else if (result.status === 'undisliked') {
-            post.likes += 1;
-            post.dislikes -= 1;
-        }
-        posts.value = posts.value.map(p => p.id === postId ? { ...p, status: result.status } : p);
+  const result = await $likePost(postId, userId);
+  const post = posts.value.find(post => post.id === postId);
+  likedPostsIds.value = await getLikedPosts();
+
+  // If post was previously disliked, remove from disliked posts
+  if (result.status === 'undisliked') {
+    dislikedPostsIds.value = dislikedPostsIds.value.filter(id => id !== postId);
+  }
+
+  post.lastAction = 'liked';
+  if (post) {
+    if (result.status === 'success') {
+      post.likes += 1;
+    } else if (result.status === 'undisliked') {
+      post.likes += 1;
+      post.dislikes -= 1;
     }
+    posts.value = posts.value.map(p => p.id === postId ? { ...p, status: result.status } : p);
+  }
 }, 300);
 
-const dislikePostHandler = debounce(async(postId, userId) => {
-    const result = await $dislikePost(postId, userId);
-    const post = posts.value.find(post => post.id === postId);
-    post.lastAction = 'disliked';
-    if (post) {
-        if (result.status === 'success') {
-            post.dislikes += 1;
-        } else if (result.status === 'unliked') {
-            post.dislikes += 1;
-            post.likes -= 1;
-        }
-        posts.value = posts.value.map(p => p.id === postId ? { ...p, status: result.status } : p);
+const dislikePostHandler = debounce(async (postId, userId) => {
+  const result = await $dislikePost(postId, userId);
+  const post = posts.value.find(post => post.id === postId);
+  dislikedPostsIds.value = await getDislikedPosts();
+
+  // If post was previously liked, remove from liked posts
+  if (result.status === 'unliked') {
+    likedPostsIds.value = likedPostsIds.value.filter(id => id !== postId);
+  }
+
+  post.lastAction = 'disliked';
+  if (post) {
+    if (result.status === 'success') {
+      post.dislikes += 1;
+    } else if (result.status === 'unliked') {
+      post.dislikes += 1;
+      post.likes -= 1;
     }
-}, 300)
+    posts.value = posts.value.map(p => p.id === postId ? { ...p, status: result.status } : p);
+  }
+}, 300);
+
 
 
 
@@ -290,8 +343,11 @@ onMounted(async () => {
         }
     }
     userId.value = getUserid();
+    likedPostsIds.value = await getLikedPosts();
+    dislikedPostsIds.value = await getDislikedPosts();
     setTimeout(() => {
         isLoading.value = false;
+
     }, 800);
 });
 </script>
@@ -384,7 +440,8 @@ onMounted(async () => {
 }
 
 .scrollable-comments {
-    max-height: 200px; /* you can adjust this height as per your requirement */
+    max-height: 200px;
+    /* you can adjust this height as per your requirement */
     overflow-y: auto;
 }
 
@@ -393,6 +450,7 @@ onMounted(async () => {
         width: 100%;
     }
 }
+
 .comments__view {
     display: flex;
     width: 100%;
@@ -481,11 +539,12 @@ a:hover:after {
 .like-button:hover,
 .dislike-button:hover {
     transform: scale(1.2);
+    color: white;
 }
 
 .like-button svg path,
 .dislike-button svg path {
-    opacity: 0.3;
+    opacity: 0.5;
     transition: opacity 0.3s, fill 0.3s ease-in-out;
     fill: currentColor;
 }
@@ -494,15 +553,6 @@ a:hover:after {
     opacity: 1;
     fill: red;
 }
-
-.liked {
-    fill: red;
-}
-
-.disliked {
-    fill: rgb(23, 61, 197);
-    /* Change this to the color you want for the dislike button */
-}   
 
 .dislike-button:hover svg path {
     opacity: 1;
@@ -527,5 +577,4 @@ a:hover:after {
 input[type="text"] {
     background: none;
     border: 0.5px solid #333;
-}
-</style>
+}</style>
