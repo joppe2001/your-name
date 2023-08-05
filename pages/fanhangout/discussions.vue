@@ -50,19 +50,6 @@
                                         </a>
                                     </div>
                                 </form>
-                                <div class="comments">
-
-                                    <div class="wrapper">
-                                        <a href="#" @click.prevent="post.showComments = !post.showComments"
-                                            class="comments__submit p-1">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
-                                                viewBox="0 0 24 24">
-                                                <path fill="currentColor"
-                                                    d="m21.21 10.29l-1.73-1.72a4.37 4.37 0 0 0 .65-2.26a4.31 4.31 0 1 0-4.32 4.32a4.35 4.35 0 0 0 2.26-.63l1.72 1.73a1 1 0 0 0 1.42 0a1 1 0 0 0 0-1.44ZM17.45 8a2.32 2.32 0 0 1-3.95-1.69a2.29 2.29 0 0 1 .68-1.63a2.32 2.32 0 0 1 3.27 0a2.31 2.31 0 0 1 0 3.27Zm2.05 6a1 1 0 0 0-1.22.72A7 7 0 0 1 11.5 20H5.91l.64-.63a1 1 0 0 0 0-1.41a7 7 0 0 1-2-5a7 7 0 0 1 4.32-6.44a1 1 0 1 0-.74-1.86a9 9 0 0 0-3.66 14l-1.68 1.63a1 1 0 0 0-.21 1.09a1 1 0 0 0 .92.62h8a9 9 0 0 0 8.72-6.75A1 1 0 0 0 19.5 14Z" />
-                                            </svg>
-                                        </a>
-                                    </div>
-                                </div>
                             </div>
                             <div class="buttons">
                                 <button @click="likePostHandler(post.id, userId)">
@@ -98,41 +85,21 @@
                             </div>
                         </div>
 
-                        <transition name="modal">
-                            <div class="modal-mask fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center"
-                                v-show="post.showComments" @click.self="post.showComments = false">
-                                <div class="modal-wrapper">
-                                    <!-- Modal container -->
-                                    <div class="modal-container bg-white rounded shadow-lg px-10 py-6 relative" @click.stop>
-                                        <!-- Modal close -->
-                                        <div class="modal-close absolute top-0.5 right-1 cursor-pointer"
-                                            @click="post.showComments = false">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                                viewBox="0 0 24 24">
-                                                <path fill="currentColor"
-                                                    d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10s10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17L12 13.41L8.41 17L7 15.59L10.59 12L7 8.41L8.41 7L12 10.59L15.59 7L17 8.41L13.41 12L17 15.59z" />
-                                            </svg>
-                                        </div>
-
-                                        <!-- Comments display -->
-                                        <div
-                                            class="comments__display transition-all duration-300 mt-4 max-h-96 overflow-auto border border-gray-200 rounded bg-gray-100 text-gray-700 p-4">
-                                            <div v-for="comment in post.comments" :key="comment.id" class="comment">
-                                                <p class="p-1">
-                                                    {{
-                                                        userNames.get(comment.userId) +
-                                                        ": " +
-                                                        comment.comment
-                                                    }}
-                                                </p>
-                                                <hr />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Comment form -->
-                                </div>
+                        <div class="comments__display transition-all duration-300 mt-4 overflow-auto border border-gray-200 rounded bg-gray-100 text-gray-700 p-4"
+                            :class="{ 'scrollable-comments': post.comments.length > 5 }"
+                            v-if="post.comments.length"
+                            >
+                            <div v-for="comment in post.comments" :key="comment.id" class="comment">
+                                <p class="p-1">
+                                    {{
+                                        userNames.get(comment.userId) +
+                                        ": " +
+                                        comment.comment
+                                    }}
+                                </p>
+                                <hr />
                             </div>
-                        </transition>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -181,33 +148,33 @@ const db = $db;
 
 
 const likePostHandler = debounce(async (postId, userId) => {
-  const result = await $likePost(postId, userId);
-  const post = posts.value.find(post => post.id === postId);
-  post.lastAction = 'liked';
-  if (post) {
-    if(result.status === 'success') {
-      post.likes += 1;
-    } else if(result.status === 'undisliked') {
-      post.likes += 1;
-      post.dislikes -= 1;
+    const result = await $likePost(postId, userId);
+    const post = posts.value.find(post => post.id === postId);
+    post.lastAction = 'liked';
+    if (post) {
+        if (result.status === 'success') {
+            post.likes += 1;
+        } else if (result.status === 'undisliked') {
+            post.likes += 1;
+            post.dislikes -= 1;
+        }
+        posts.value = posts.value.map(p => p.id === postId ? { ...p, status: result.status } : p);
     }
-    posts.value = posts.value.map(p => p.id === postId ? { ...p, status: result.status } : p);
-  }
 }, 300);
 
 const dislikePostHandler = async (postId, userId) => {
-  const result = await $dislikePost(postId, userId);
-  const post = posts.value.find(post => post.id === postId);
-  post.lastAction = 'disliked';
-  if (post) {
-    if(result.status === 'success') {
-      post.dislikes += 1;
-    } else if(result.status === 'unliked') {
-      post.dislikes += 1;
-      post.likes -= 1;
+    const result = await $dislikePost(postId, userId);
+    const post = posts.value.find(post => post.id === postId);
+    post.lastAction = 'disliked';
+    if (post) {
+        if (result.status === 'success') {
+            post.dislikes += 1;
+        } else if (result.status === 'unliked') {
+            post.dislikes += 1;
+            post.likes -= 1;
+        }
+        posts.value = posts.value.map(p => p.id === postId ? { ...p, status: result.status } : p);
     }
-    posts.value = posts.value.map(p => p.id === postId ? { ...p, status: result.status } : p);
-  }
 }
 
 
@@ -218,7 +185,6 @@ const postInfo = ref({
     content: "",
     image: "",
     comments: [],
-    showComments: false,
     likes: 0,
     dislikes: 0,
 });
@@ -412,6 +378,10 @@ onMounted(async () => {
     transition: 0.3s;
 }
 
+.scrollable-comments {
+    max-height: 200px; /* you can adjust this height as per your requirement */
+    overflow-y: auto;
+}
 .comments__view {
     display: flex;
     width: 100%;
@@ -530,6 +500,6 @@ a:hover:after {
     width: 100%;
     display: flex;
     justify-content: space-around;
-    margin-top: 50px;
+    margin-top: 30px;
 }
 </style>

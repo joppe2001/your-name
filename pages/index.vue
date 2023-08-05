@@ -40,6 +40,9 @@
 </template>
 
 <script>
+
 const isHoveredMitsuha = ref(false)
 const isHoveredTaki = ref(false)
+
+
 </script>

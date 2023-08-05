@@ -48,6 +48,8 @@ export default defineNuxtPlugin((nuxtApp) => {
 
   // Add post, has to have a title but content and image are optional
 
+  
+
   const addPost = async (
     title: string,
     content: string,
