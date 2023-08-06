@@ -46,9 +46,9 @@ const isLoggedIn = computed(() => store.loggedIn === true)
 </script>
 
 <style scoped>
-@media (max-width: 390px) {
+@media (max-width: 420px) {
   * {
-    padding: 2px;
+    padding: 1px;
   }
 
   div {
