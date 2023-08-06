@@ -502,6 +502,11 @@ onMounted(async () => {
 .comments__input {
     width: 100%;
 }
+
+.comments__input input {
+    border: 0.5px solid #ececec;
+
+}
 .comments__toggle {
     height: 100%;
     display: flex;
@@ -631,5 +636,10 @@ input[type="text"] {
     -webkit-box-shadow: inset 0px 0px 2px 1px #fc7853c1;
     box-shadow: inset 0px 0px 2px 1px #fc78535a;
     border-radius: 5px;
+}
+
+::placeholder {
+    color: white;
+    opacity: 0.7;
 }
 </style>
