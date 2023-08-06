@@ -33,25 +33,7 @@
                         <img :src="post.imageUrl" class="rounded mx-auto" />
                     </div>
                 </div>
-                <div class="post__comments w-full p-4">
-                    <div class="comments__view">
-                        <div class="w-100 flex-column">
-                            <div class="flex items-center justify-center comment-group">
-                                <form @submit.prevent="submitComment(post.id)" class="comments__form">
-                                    <input type="text" name="comment" v-model="post.comment" placeholder="Add a comment..."
-                                        class="comments__input flex-grow p-2 mr-1 border rounded placeholder-gray-700 text-gray-700" />
-                                    <div class="wrapper">
-                                        <a href="#" @click.prevent="submitComment(post.id)" class="comments__submit p-1">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
-                                                viewBox="0 0 24 24">
-                                                <path fill="currentColor"
-                                                    d="M12 2A10 10 0 0 0 2 12a9.89 9.89 0 0 0 2.26 6.33l-2 2a1 1 0 0 0-.21 1.09A1 1 0 0 0 3 22h9a10 10 0 0 0 0-20Zm0 18H5.41l.93-.93a1 1 0 0 0 0-1.41A8 8 0 1 1 12 20Zm3-9h-2V9a1 1 0 0 0-2 0v2H9a1 1 0 0 0 0 2h2v2a1 1 0 0 0 2 0v-2h2a1 1 0 0 0 0-2Z" />
-                                            </svg>
-                                        </a>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="buttons">
+                <div class="buttons">
                                 <button @click="likePostHandler(post.id, userId)">
                                     <div class="like-button" style="position: relative; display: inline-block;">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
@@ -77,6 +59,24 @@
                                             {{ post.dislikes }}</span>
                                     </div>
                                 </button>
+                            </div>
+                <div class="post__comments w-full p-4">
+                    <div class="comments__view">
+                        <div class="w-100 flex-column">
+                            <div class="flex items-center justify-center comment-group">
+                                <form @submit.prevent="submitComment(post.id)" class="comments__form">
+                                    <input type="text" name="comment" v-model="post.comment" placeholder="Add a comment..."
+                                        class="comments__input flex-grow p-2 mr-1 border rounded placeholder-gray-700 text-gray-700" />
+                                    <div class="wrapper">
+                                        <a href="#" @click.prevent="submitComment(post.id)" class="comments__submit p-1">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
+                                                viewBox="0 0 24 24">
+                                                <path fill="currentColor"
+                                                    d="M12 2A10 10 0 0 0 2 12a9.89 9.89 0 0 0 2.26 6.33l-2 2a1 1 0 0 0-.21 1.09A1 1 0 0 0 3 22h9a10 10 0 0 0 0-20Zm0 18H5.41l.93-.93a1 1 0 0 0 0-1.41A8 8 0 1 1 12 20Zm3-9h-2V9a1 1 0 0 0-2 0v2H9a1 1 0 0 0 0 2h2v2a1 1 0 0 0 2 0v-2h2a1 1 0 0 0 0-2Z" />
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                         <div class="error-message">
@@ -211,7 +211,7 @@ const likePostHandler = debounce(async (postId, userId) => {
         }
         posts.value = posts.value.map(p => p.id === postId ? { ...p, status: result.status } : p);
     }
-}, 300);
+}, 200);
 
 const dislikePostHandler = debounce(async (postId, userId) => {
     const result = await $dislikePost(postId, userId);
@@ -233,7 +233,7 @@ const dislikePostHandler = debounce(async (postId, userId) => {
         }
         posts.value = posts.value.map(p => p.id === postId ? { ...p, status: result.status } : p);
     }
-}, 300);
+}, 200);
 
 
 
@@ -590,7 +590,7 @@ a:hover:after {
 }
 
 .comment {
-    border-radius: 2px;
+    border-radius: 4px;
     margin: 4px 0;
 }
 
