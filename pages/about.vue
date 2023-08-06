@@ -18,6 +18,7 @@
 
 <style scoped>
 
+
 :root {
     --primary-gradient: linear-gradient(120deg, #F093FB 0%, #F5576C 100%);
     --secondary-color: #F5576C;
@@ -30,7 +31,6 @@
     justify-content: center;
     backdrop-filter: blur(5px);
     font-family: 'Poppins', sans-serif; /* Using a modern font family */
-    background: var(--primary-gradient);
     padding: 50px 0;
 }
 
@@ -80,5 +80,17 @@
     font-size: 1.3rem;
     line-height: 1.8;
     margin: 25px 0;
+}
+
+@media screen and (max-width: 768px) {
+    .header-section h1 {
+        font-size: 3rem;
+    }
+    .header-section p {
+        font-size: 1.2rem;
+    }
+    .content-description p {
+        font-size: 1.1rem;
+    }
 }
 </style>
