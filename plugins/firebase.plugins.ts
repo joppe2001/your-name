@@ -101,6 +101,23 @@ export default defineNuxtPlugin((nuxtApp) => {
       throw new Error('Post does not exist');
     }
   };
+
+  const getComments = async (postId: string) => {
+    if (!postId) {
+      throw new Error('Post ID is undefined or null');
+    }
+
+    const postRef = doc(db, 'posts', postId);
+    const postSnap = await getDoc(postRef);
+    
+    if (postSnap.exists()) {
+      const postData = postSnap.data();
+      return postData ? postData.comments : [];
+    } else {
+      throw new Error('Post does not exist');
+    }
+  };
+
   const getLikesForPost = async (postId: string) => {
     const postRef = doc(db, 'posts', postId);
     const postSnap = await getDoc(postRef);
@@ -312,6 +329,7 @@ const getUsers = async () => {
       getUsers,
       getLikedPosts,
       getDislikedPosts,
+      getComments
     }
   };
 });

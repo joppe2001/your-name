@@ -13,19 +13,27 @@
 							Welcome, {{ displayName }}
 						</h3>
 						<div class="space-y-6">
-							<form action=""></form>
 							<button
 								class="reset-password-btn"
 								@click="sendPasswordReset(email)"
 							>
 								reset password
 							</button>
+
+							<div class="modal-overlay" v-if="resetSent">
+								<div class="modal">
+									<span class="modal-close" @click="resetSent = false"
+										>&times;</span
+									>
+									Email successfully sent
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-
+		
 		<div v-else class="loadingSpinner">
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
@@ -89,36 +97,51 @@
 				</g>
 			</svg>
 		</div>
+		
 	</div>
 </template>
 
 <script setup>
-import { onMounted } from "vue";
-import { getAuth, sendPasswordResetEmail, onAuthStateChanged } from "firebase/auth";
+	import { onMounted } from "vue";
+	import {
+		getAuth,
+		sendPasswordResetEmail,
+		onAuthStateChanged,
+	} from "firebase/auth";
 
-const email = ref("");
-const displayName = ref("");
-const uid = ref("");
+	const { $getPosts, $getLikedPosts, $getDislikedPosts, $getComments } = useNuxtApp();
 
-const auth = getAuth();
-const isLoading = ref(true);
+	const posts = ref([]);
+	const likedPosts = ref([]);
+	const dislikedPosts = ref([]);
+	const comments = ref([]);
 
-const sendPasswordReset = async (emailValue) => {
-    await sendPasswordResetEmail(auth, emailValue);
-};
+	const email = ref("");
+	const displayName = ref("");
+	const uid = ref("");
+	const resetSent = ref(false);
 
-onMounted(() => {
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            console.log(user);
-            displayName.value = user.displayName;
-            email.value = user.email;
-            uid.value = user.uid;
-        }
-        isLoading.value = false; // Set loading to false after determining auth state
-    });
-});
+	const auth = getAuth();
+	const isLoading = ref(true);
 
+	const sendPasswordReset = async (emailValue) => {
+		await sendPasswordResetEmail(auth, emailValue);
+		resetSent.value = true;
+	};
+
+	onMounted( async () => {
+		posts.value = await $getPosts();
+		likedPosts.value = await $getLikedPosts();
+		dislikedPosts.value = await $getDislikedPosts();
+		onAuthStateChanged(auth, (user) => {
+			if (user) {
+				displayName.value = user.displayName;
+				email.value = user.email;
+				uid.value = user.uid;
+			}
+			isLoading.value = false; // Set loading to false after determining auth state
+		});
+	});
 </script>
 
 <style scoped>
@@ -159,5 +182,42 @@ onMounted(() => {
 	.reset-password-btn:active {
 		background-color: #388e3c; /* Even darker green */
 		transform: scale(1); /* Scale the button back to normal size */
+	}
+
+	.modal-overlay {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		height: 100vh;
+		background-color: rgba(
+			0,
+			0,
+			0,
+			0.5
+		); /* semi-transparent black background */
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		z-index: 999;
+	}
+
+	.modal {
+		background-color: #fff;
+		padding: 20px;
+		border-radius: 10px;
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+		position: relative;
+		width: 20%; /* Adjust as needed */
+	}
+
+	.modal-close {
+		position: absolute;
+		top: 10px;
+		right: 10px;
+		cursor: pointer;
+		font-size: 24px;
+		border: none;
+		background: none;
 	}
 </style>
