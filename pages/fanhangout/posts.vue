@@ -20,7 +20,7 @@
         <div class="flex-grow w-full main">
             <div v-for="post in posts" :key="post.id" id="post"
                 class="post main-container p-4 sm:p-8 border-4 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-200 backdrop-blur-lg mb-4 max-w-3/4 sm:max-w-3/4 lg:max-w-3/4 flex flex-col items-center justify-center">
-                <div class="post__content w-5/6 p-2">
+                <div class="post__content w-9/10 p-2">
                     <div class="post__text text-center">
                         <h1 class="post__title text-yn-night-sky text-2xl sm:text-3xl mb-4">
                             {{ post.title + " by " + userNames.get(post.userId) }}
@@ -60,13 +60,13 @@
                                     </div>
                                 </button>
                             </div>
-                <div class="post__comments w-full p-4">
+                <div class="post__comments w-full p-2">
                     <div class="comments__view">
-                        <div class="w-100 flex-column">
+                        <div class="flex-column comments__input">
                             <div class="flex items-center justify-center comment-group">
                                 <form @submit.prevent="submitComment(post.id)" class="comments__form">
                                     <input type="text" name="comment" v-model="post.comment" placeholder="Add a comment..."
-                                        class="comments__input flex-grow p-2 mr-1 border rounded placeholder-gray-700 text-gray-700" />
+                                        class="comments__input flex-grow p-1 mr-1 border rounded placeholder-gray-700 text-gray-700" />
                                     <div class="wrapper">
                                         <a href="#" @click.prevent="submitComment(post.id)" class="comments__submit p-1">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
@@ -86,11 +86,11 @@
                             </div>
                         </div>
 
-                        <div class="comments__display transition-all duration-300 mt-4 overflow-auto   text-gray-700 p-4"
+                        <div class="comments__display transition-all duration-300 mt-4 overflow-auto   text-gray-700"
                             :class="{ 'scrollable-comments': post.comments.length > 5 }" v-if="post.comments.length">
                             <div v-for="comment in post.comments" :key="comment.id" class="comment comments__background commnt backdrop-blur"
                                 style="word-wrap: break-word">
-                                <p class="p-1 text-black">
+                                <p class=" text-black">
                                     <strong>{{
                                         "" + userNames.get(comment.userId) + ": "
                                     }}</strong>
@@ -395,7 +395,7 @@ onMounted(async () => {
 .main-container {
     display: flex;
     flex-direction: column;
-    width: 80%;
+    width: 100%;
     border: none;
     border-image-slice: 1;
 }
@@ -435,9 +435,8 @@ onMounted(async () => {
     align-items: flex-end;
 }
 
-.image-container img {
+.image-container img {  
     max-height: 300px;
-    width: 80px;
 }
 
 .comments {
@@ -475,11 +474,11 @@ onMounted(async () => {
     width: 100%;
     justify-content: space-between;
     flex-direction: column;
-    align-items: center;
+    align-items: space-around;
 }
 
 .comments__input {
-    width: 70%;
+    width: 85%;
     justify-content: center;
     align-items: center;
 }
@@ -500,6 +499,9 @@ onMounted(async () => {
     align-items: center;
 }
 
+.comments__input {
+    width: 100%;
+}
 .comments__toggle {
     height: 100%;
     display: flex;
@@ -599,7 +601,7 @@ a:hover:after {
     display: flex;
     justify-content: center;
     gap: 20px;
-    margin-top: 30px;
+    margin-top: 10px;
 }
 
 input[type="text"] {
