@@ -141,7 +141,7 @@ import { getAuth } from "firebase/auth";
 import { collection, getDocs, getDoc, doc } from "firebase/firestore";
 import debounce from "lodash.debounce";
 
-const { $db, $addPost, $getPosts, $addComment, $likePost, $dislikePost } = useNuxtApp();
+const { $db, $addPost, $getPosts, $addComment, $likePost, $dislikePost, $getLikedPosts, $getDislikedPosts } = useNuxtApp();
 
 const userNames = ref(new Map());
 const auth = getAuth();
@@ -149,48 +149,8 @@ const db = $db;
 
 const likedPostsIds = ref([]);
 const dislikedPostsIds = ref([]);
-const getLikedPosts = async () => {
-    const userId = auth.currentUser?.uid;
-    if (!userId) {
-        console.error("User not authenticated");
-        return [];
-    }
-
-    // Fetch user document
-    const userRef = doc(db, `users/${userId}`);
-    const userSnap = await getDoc(userRef);
-    const userData = userSnap.data();
-
-    // Check if likedPosts exists
-    if (!userData || !userData.likedPosts) {
-        return [];
-    }
-
-    // Return liked post IDs directly
-    return userData.likedPosts;
-};
-
-const getDislikedPosts = async () => {
-    const userId = auth.currentUser?.uid;
-    if (!userId) {
-        console.error("User not authenticated");
-        return [];
-    }
-
-    // Fetch user document
-    const userRef = doc(db, `users/${userId}`);
-    const userSnap = await getDoc(userRef);
-    const userData = userSnap.data();
-
-    // Check if likedPosts exists
-    
-    if (!userData || !userData.dislikedPosts) {
-        return [];
-    }
-
-    // Return liked post IDs directly
-    return userData.dislikedPosts;
-};
+const getLikedPosts = $getLikedPosts;
+const getDislikedPosts = $getDislikedPosts;
 
 const likePostHandler = debounce(async (postId, userId) => {
     const result = await $likePost(postId, userId);
@@ -505,7 +465,7 @@ onMounted(async () => {
 }
 
 .comments__input input {
-    border: 0.5px solid #ececec;
+    border: 0.5px solid #ecececad;
 
 }
 .comments__toggle {

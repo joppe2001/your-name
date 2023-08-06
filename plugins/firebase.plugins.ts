@@ -113,6 +113,49 @@ export default defineNuxtPlugin((nuxtApp) => {
     }
   };
 
+  const getLikedPosts = async () => {
+    const userId = auth.currentUser?.uid;
+    if (!userId) {
+        console.error("User not authenticated");
+        return [];
+    }
+
+    // Fetch user document
+    const userRef = doc(db, `users/${userId}`);
+    const userSnap = await getDoc(userRef);
+    const userData = userSnap.data();
+
+    // Check if likedPosts exists
+    if (!userData || !userData.likedPosts) {
+        return [];
+    }
+
+    // Return liked post IDs directly
+    return userData.likedPosts;
+};
+
+const getDislikedPosts = async () => {
+  const userId = auth.currentUser?.uid;
+  if (!userId) {
+      console.error("User not authenticated");
+      return [];
+  }
+
+  // Fetch user document
+  const userRef = doc(db, `users/${userId}`);
+  const userSnap = await getDoc(userRef);
+  const userData = userSnap.data();
+
+  // Check if likedPosts exists
+  
+  if (!userData || !userData.dislikedPosts) {
+      return [];
+  }
+
+  // Return liked post IDs directly
+  return userData.dislikedPosts;
+};
+
   const getDislikesForPost = async (postId: string) => {
     const postRef = doc(db, 'posts', postId);
     const postSnap = await getDoc(postRef);
@@ -266,7 +309,9 @@ const getUsers = async () => {
       addComment,
       likePost,
       dislikePost,
-      getUsers
+      getUsers,
+      getLikedPosts,
+      getDislikedPosts,
     }
   };
 });
