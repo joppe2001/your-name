@@ -42,7 +42,7 @@
                                                 :style="{ fill: likedPostsIds.includes(post.id) ? 'red' : '' }" />
                                         </svg>
                                         <span
-                                            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); transition: 0.3s ease-out">{{
+                                            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); transition: 0.3s ease-out; font-weight: 700">{{
                                                 post.likes }}</span>
                                     </div>
                                 </button>
@@ -55,7 +55,7 @@
                                                 :style="{ fill: dislikedPostsIds.includes(post.id) ? '#89cff0' : '' }" />
                                         </svg>
                                         <span
-                                            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); transition: 0.3s ease-out">
+                                            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); transition: 0.3s ease-out; font-weight: 700;">
                                             {{ post.dislikes }}</span>
                                     </div>
                                 </button>
@@ -536,7 +536,7 @@ a:after {
     left: 0;
     width: 0;
     height: 100%;
-    background: rgb(180, 173, 204);
+    background: #FC7753;
     transition: all 0.25s ease-out;
     border-radius: 2px;
     z-index: -1;
