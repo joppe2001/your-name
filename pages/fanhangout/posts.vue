@@ -52,7 +52,7 @@
 						</p>
 					</div>
 					<div class="post__image">
-						<img :src="post.imageUrl" class="rounded mx-auto" />
+						<img :src="post.imageUrl" class="rounded mx-auto" loading="lazy" />
 					</div>
 				</div>
 				<div class="buttons">
