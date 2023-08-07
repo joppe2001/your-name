@@ -34,32 +34,34 @@
                     </div>
                 </div>
                 <div class="buttons">
-                                <button @click="likePostHandler(post.id, userId)">
-                                    <div class="like-button" style="position: relative; display: inline-block;">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
-                                            <path fill="currentColor"
-                                                d="M13.35 20.13c-.76.69-1.93.69-2.69-.01l-.11-.1C5.3 15.27 1.87 12.16 2 8.28c.06-1.7.93-3.33 2.34-4.29c2.64-1.8 5.9-.96 7.66 1.1c1.76-2.06 5.02-2.91 7.66-1.1c1.41.96 2.28 2.59 2.34 4.29c.14 3.88-3.3 6.99-8.55 11.76l-.1.09z" style="color: rgb(130, 130, 130)"
-                                                :style="{ fill: likedPostsIds.includes(post.id) ? 'red' : '' }" />
-                                        </svg>
-                                        <span
-                                            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); transition: 0.3s ease-out; font-weight: 700">{{
-                                                post.likes }}</span>
-                                    </div>
-                                </button>
-                                <button @click="dislikePostHandler(post.id, userId)">
-                                    <div class="dislike-button" style="position: relative; display: inline-block;"
-                                        :class="post.status === 'already_liked' ? 'liked' : ''">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
-                                            <path fill="currentColor"
-                                                d="m2.808 1.394l18.384 18.384l-1.414 1.415l-3.746-3.747L12 21.486l-8.478-8.493a6 6 0 0 1 .033-8.023L1.394 2.808l1.414-1.414Zm17.435 3.364a6 6 0 0 1 .236 8.235l-1.635 1.636L7.26 3.046a5.99 5.99 0 0 1 4.741 1.483a5.998 5.998 0 0 1 8.242.229Z" style="color: rgb(130, 130, 130)"
-                                                :style="{ fill: dislikedPostsIds.includes(post.id) ? '#89cff0' : '' }" />
-                                        </svg>
-                                        <span
-                                            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); transition: 0.3s ease-out; font-weight: 700;">
-                                            {{ post.dislikes }}</span>
-                                    </div>
-                                </button>
-                            </div>
+                    <button @click="likePostHandler(post.id, userId)">
+                        <div class="like-button" style="position: relative; display: inline-block;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                                <path fill="currentColor"
+                                    d="M13.35 20.13c-.76.69-1.93.69-2.69-.01l-.11-.1C5.3 15.27 1.87 12.16 2 8.28c.06-1.7.93-3.33 2.34-4.29c2.64-1.8 5.9-.96 7.66 1.1c1.76-2.06 5.02-2.91 7.66-1.1c1.41.96 2.28 2.59 2.34 4.29c.14 3.88-3.3 6.99-8.55 11.76l-.1.09z"
+                                    style="color: rgb(130, 130, 130)"
+                                    :style="{ fill: likedPostsIds.includes(post.id) ? 'red' : '' }" />
+                            </svg>
+                            <span
+                                style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); transition: 0.3s ease-out; font-weight: 700">{{
+                                    post.likes }}</span>
+                        </div>
+                    </button>
+                    <button @click="dislikePostHandler(post.id, userId)">
+                        <div class="dislike-button" style="position: relative; display: inline-block;"
+                            :class="post.status === 'already_liked' ? 'liked' : ''">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                                <path fill="currentColor"
+                                    d="m2.808 1.394l18.384 18.384l-1.414 1.415l-3.746-3.747L12 21.486l-8.478-8.493a6 6 0 0 1 .033-8.023L1.394 2.808l1.414-1.414Zm17.435 3.364a6 6 0 0 1 .236 8.235l-1.635 1.636L7.26 3.046a5.99 5.99 0 0 1 4.741 1.483a5.998 5.998 0 0 1 8.242.229Z"
+                                    style="color: rgb(130, 130, 130)"
+                                    :style="{ fill: dislikedPostsIds.includes(post.id) ? '#89cff0' : '' }" />
+                            </svg>
+                            <span
+                                style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); transition: 0.3s ease-out; font-weight: 700;">
+                                {{ post.dislikes }}</span>
+                        </div>
+                    </button>
+                </div>
                 <div class="post__comments w-full p-2">
                     <div class="comments__view">
                         <div class="flex-column comments__input">
@@ -88,13 +90,13 @@
 
                         <div class="comments__display transition-all duration-300 mt-4 overflow-auto   text-gray-700"
                             :class="{ 'scrollable-comments': post.comments.length > 5 }" v-if="post.comments.length">
-                            <div v-for="comment in post.comments" :key="comment.id" class="comment comments__background commnt backdrop-blur"
-                                style="word-wrap: break-word">
+                            <div v-for="comment in post.comments" :key="comment.id"
+                                class="comment comments__background commnt backdrop-blur" style="word-wrap: break-word">
                                 <p class=" text-black">
                                     <strong>{{
                                         "" + userNames.get(comment.userId) + ": "
                                     }}</strong>
-                                    {{ 
+                                    {{
                                         comment.comment
                                     }}
                                 </p>
@@ -138,20 +140,33 @@
 <script setup>
 import { onMounted } from "vue";
 import { getAuth } from "firebase/auth";
-import { collection, getDocs, getDoc, doc } from "firebase/firestore";
 import debounce from "lodash.debounce";
 
-const { $db, $addPost, $getPosts, $addComment, $likePost, $dislikePost, $getLikedPosts, $getDislikedPosts } = useNuxtApp();
+const { $addPost, $getPosts, $addComment, $likePost, $dislikePost, $getLikedPosts, $getDislikedPosts, $getDisplayName } = useNuxtApp();
 
 const userNames = ref(new Map());
 const auth = getAuth();
-const db = $db;
-
+const isLoading = ref(true);
+const success = ref(false);
+const posts = ref([]);
+const userId = ref(null)
 const likedPostsIds = ref([]);
 const dislikedPostsIds = ref([]);
 const getLikedPosts = $getLikedPosts;
 const getDislikedPosts = $getDislikedPosts;
+const getDisplayName = $getDisplayName;
+const postInfo = ref({
+    title: "",
+    content: "",
+    image: "",
+    comments: [],
+    likes: 0,
+    dislikes: 0,
+});
 
+const getUserid = () => {
+    return auth.currentUser ? auth.currentUser.uid : null;
+};
 const likePostHandler = debounce(async (postId, userId) => {
     const result = await $likePost(postId, userId);
     const post = posts.value.find(post => post.id === postId);
@@ -161,7 +176,6 @@ const likePostHandler = debounce(async (postId, userId) => {
     if (result.status === 'undisliked') {
         dislikedPostsIds.value = dislikedPostsIds.value.filter(id => id !== postId);
     }
-
     post.lastAction = 'liked';
     if (post) {
         if (result.status === 'success') {
@@ -183,7 +197,6 @@ const dislikePostHandler = debounce(async (postId, userId) => {
     if (result.status === 'unliked') {
         likedPostsIds.value = likedPostsIds.value.filter(id => id !== postId);
     }
-
     post.lastAction = 'disliked';
     if (post) {
         if (result.status === 'success') {
@@ -197,42 +210,6 @@ const dislikePostHandler = debounce(async (postId, userId) => {
 }, 200);
 
 
-
-
-const isLoading = ref(true);
-const postInfo = ref({
-    title: "",
-    content: "",
-    image: "",
-    comments: [],
-    likes: 0,
-    dislikes: 0,
-});
-const success = ref(false);
-const posts = ref([]);
-
-const getUserid = () => {
-    return auth.currentUser ? auth.currentUser.uid : null;
-};
-const userId = ref(null)
-
-const getDisplayName = async (userId) => {
-    const usersRef = collection(db, "users");
-    const userSnapshot = await getDocs(usersRef);
-    let displayName = "";
-
-    userSnapshot.forEach((doc) => {
-        let userData = doc.data();
-        if (userData.uid === userId) {
-            // Adjusted this line
-            displayName = userData.displayName;
-            return;
-        }
-    });
-
-    return displayName;
-};
-
 watchEffect(async () => {
     try {
         for (let post of posts.value) {
@@ -241,7 +218,6 @@ watchEffect(async () => {
                 const displayName = await getDisplayName(post.userId);
                 userNames.value.set(post.userId, displayName);
             }
-
             // Get the display names of the users who have commented on the post
             for (let comment of post.comments) {
                 if (!userNames.value.has(comment.userId)) {
@@ -298,12 +274,6 @@ async function submitComment(postId) {
 onMounted(async () => {
     const fetchedPosts = await $getPosts();
     posts.value = fetchedPosts.map((post) => ({ ...post, comment: "", status: 'idle' }));
-    // Use the getDisplayName function here
-    for (const post of posts.value) {
-        for (const comment of post.comments) {
-            const displayName = await getDisplayName(comment.userId);
-        }
-    }
     userId.value = getUserid();
     likedPostsIds.value = await getLikedPosts();
     dislikedPostsIds.value = await getDislikedPosts();
@@ -396,7 +366,7 @@ onMounted(async () => {
     align-items: flex-end;
 }
 
-.image-container img {  
+.image-container img {
     max-height: 300px;
 }
 
@@ -411,12 +381,13 @@ onMounted(async () => {
 }
 
 .comments__background {
-    background: rgb(181,181,181);
+    background: rgb(181, 181, 181);
     background: linear-gradient(90deg, rgba(172, 172, 172, 0.425) 0%, rgba(205, 205, 205, 0.171) 35%, rgba(249, 249, 249, 0) 100%);
     border-radius: 5px;
     padding: 5px;
     margin: 5px;
 }
+
 .scrollable-comments {
     max-height: 200px;
     /* you can adjust this height as per your requirement */
@@ -468,6 +439,7 @@ onMounted(async () => {
     border: 0.5px solid #ecececad;
 
 }
+
 .comments__toggle {
     height: 100%;
     display: flex;
@@ -602,5 +574,4 @@ input[type="text"] {
 ::placeholder {
     color: white;
     opacity: 0.7;
-}
-</style>
+}</style>

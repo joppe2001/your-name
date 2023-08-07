@@ -14,6 +14,7 @@ import {
   arrayRemove
 } from 'firebase/firestore';
 import { getStorage, ref } from 'firebase/storage';
+import debounce from "lodash.debounce";
 
 export default defineNuxtPlugin((nuxtApp) => {
   const config = useRuntimeConfig();
@@ -48,7 +49,21 @@ export default defineNuxtPlugin((nuxtApp) => {
 
   // Add post, has to have a title but content and image are optional
 
-  
+  const getDisplayName = async (userId: any) => {
+    const userSnapshot = await getDocs(users);
+    let displayName = "";
+
+    userSnapshot.forEach((doc) => {
+        let userData = doc.data();
+        if (userData.uid === userId) {
+            // Adjusted this line
+            displayName = userData.displayName;
+            return;
+        }
+    });
+
+    return displayName;
+};
 
   const addPost = async (
     title: string,
@@ -329,7 +344,8 @@ const getUsers = async () => {
       getUsers,
       getLikedPosts,
       getDislikedPosts,
-      getComments
+      getComments,
+      getDisplayName
     }
   };
 });
