@@ -1,31 +1,29 @@
 <template>
 	<div class="container mx-auto px-4 sm:px-6 lg:px-8">
-		<div
-			v-if="!isLoading"
-			class="flex items-center justify-center min-h-screen"
-		>
-			<div
-				class="w-full max-w-2xl mx-auto rounded-xl shadow-md overflow-hidden"
-			>
+		<div v-if="!isLoading" class="flex items-center justify-center min-h-screen">
+			<div class="w-full max-w-2xl mx-auto rounded-xl shadow-md overflow-hidden">
 				<div class="px-6 py-4">
 					<div class="text-center">
 						<h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">
-							Welcome, {{ displayName }}
+							Account Details
 						</h3>
-						<div class="space-y-6">
-							<button
-								class="reset-password-btn"
-								@click="sendPasswordReset(email)"
-							>
-								reset password
+						<div class="space-y-6 h-50 flex-column justify-center items-center items-display backdrop-blur-sm">
+							<p class="text-md text-gray-700 backdrop-blur-sm w-1/3 rounded">Username: {{ displayName }}</p>
+							<p class="text-md text-gray-700 backdrop-blur-sm w-1/3 rounded">Email: {{ email }}</p>
+							<p class="text-md text-gray-700 backdrop-blur-sm w-1/3 rounded">User ID: {{ uid }}</p>
+
+							<button class="account-action-btn" @click="sendPasswordReset(email)">
+								Reset Password
+							</button>
+
+							<button class="account-action-btn" @click="logout">
+								Logout
 							</button>
 
 							<div class="modal-overlay" v-if="resetSent">
 								<div class="modal">
-									<span class="modal-close" @click="resetSent = false"
-										>&times;</span
-									>
-									Email successfully sent
+									<span class="modal-close" @click="resetSent = false">&times;</span>
+									Password reset email successfully sent
 								</div>
 							</div>
 						</div>
@@ -33,71 +31,7 @@
 				</div>
 			</div>
 		</div>
-		
-		<div v-else class="loadingSpinner">
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				width="32"
-				height="32"
-				viewBox="0 0 24 24"
-			>
-				<g
-					fill="none"
-					stroke="currentColor"
-					stroke-linecap="round"
-					stroke-width="2"
-				>
-					<path
-						stroke-dasharray="2 4"
-						stroke-dashoffset="6"
-						d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21"
-					>
-						<animate
-							attributeName="stroke-dashoffset"
-							dur="0.6s"
-							repeatCount="indefinite"
-							values="6;0"
-						/>
-					</path>
-					<path
-						stroke-dasharray="30"
-						stroke-dashoffset="30"
-						d="M12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3"
-					>
-						<animate
-							fill="freeze"
-							attributeName="stroke-dashoffset"
-							begin="0.1s"
-							dur="0.3s"
-							values="30;0"
-						/>
-					</path>
-					<path stroke-dasharray="10" stroke-dashoffset="10" d="M12 8v7.5">
-						<animate
-							fill="freeze"
-							attributeName="stroke-dashoffset"
-							begin="0.5s"
-							dur="0.2s"
-							values="10;0"
-						/>
-					</path>
-					<path
-						stroke-dasharray="6"
-						stroke-dashoffset="6"
-						d="M12 15.5l3.5 -3.5M12 15.5l-3.5 -3.5"
-					>
-						<animate
-							fill="freeze"
-							attributeName="stroke-dashoffset"
-							begin="0.7s"
-							dur="0.2s"
-							values="6;0"
-						/>
-					</path>
-				</g>
-			</svg>
-		</div>
-		
+		<LoadingSpinner v-else />
 	</div>
 </template>
 
@@ -119,6 +53,7 @@
 	const displayName = ref("");
 	const uid = ref("");
 	const resetSent = ref(false);
+	const router = useRouter();
 
 	const auth = getAuth();
 	const isLoading = ref(true);
@@ -126,6 +61,12 @@
 	const sendPasswordReset = async (emailValue) => {
 		await sendPasswordResetEmail(auth, emailValue);
 		resetSent.value = true;
+	};
+
+	const logout = async () => {
+		await auth.signOut();
+		// Redirect to home page
+		await router.push("/");
 	};
 
 	onMounted( async () => {
@@ -218,5 +159,35 @@
 		font-size: 24px;
 		border: none;
 		background: none;
+	}
+
+	.account-action-btn {
+		background-color: #ecc7ec;
+		border: none;
+		color: white;
+		padding: 10px 24px;
+		text-align: center;
+		text-decoration: none;
+		display: inline-block;
+		font-size: 16px;
+		margin: 4px 2px;
+		cursor: pointer;
+		border-radius: 12px;
+		transition: background-color 0.3s, transform 0.3s;
+	}
+
+	.account-action-btn:hover {
+		background-color: #eeb3b3;
+		transform: scale(1.05);
+	}
+
+	.account-action-btn:active {
+		background-color: #388e3c;
+		transform: scale(1);
+	}
+
+	.items-display {
+		display: flex;
+    flex-direction: column;
 	}
 </style>
