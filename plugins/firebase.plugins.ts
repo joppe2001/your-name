@@ -14,7 +14,7 @@ import {
   arrayRemove
 } from 'firebase/firestore';
 import { getStorage, ref } from 'firebase/storage';
-import debounce from "lodash.debounce";
+import debounce from 'lodash.debounce';
 
 export default defineNuxtPlugin((nuxtApp) => {
   const config = useRuntimeConfig();
@@ -51,92 +51,56 @@ export default defineNuxtPlugin((nuxtApp) => {
 
   const getDisplayName = async (userId: any) => {
     const userSnapshot = await getDocs(users);
-    let displayName = "";
-
+    let displayName = '';
     userSnapshot.forEach((doc) => {
-        let userData = doc.data();
-        if (userData.uid === userId) {
-            // Adjusted this line
-            displayName = userData.displayName;
-            return;
-        }
+      let userData = doc.data();
+      if (userData.uid === userId) {
+        displayName = userData.displayName;
+        return;
+      }
     });
-
     return displayName;
-};
-
+  };
   const addPost = async (
-    title: string,
-    content: string,
-    imageUrl: string,
-    userId: string,
-    comments: { comment: string; userId: string }[] = []
+    title: any,
+    content: any,
+    imageUrl: any,
+    userId: any,
+    comments = []
   ) => {
     try {
       const docRef = await addDoc(posts, {
         title,
         content,
         imageUrl,
-        userId, // add userId to the document
+        userId,
         comments,
-        likes: 0, // add likes
-        dislikes: 0 // add dislikes
+        likes: 0,
+        dislikes: 0
       });
     } catch (e) {
       console.log('Error adding document: ', e);
     }
   };
-
-  const addComment = async (
-    postId: string,
-    comment: string,
-    userId: string
-  ) => {
+  const addComment = async (postId: string, comment: any, userId: any) => {
     if (!postId) {
       throw new Error('Post ID is undefined or null');
     }
-
     const postRef = doc(db, 'posts', postId);
     const postSnap = await getDoc(postRef);
-
     if (postSnap.exists()) {
       const postData = postSnap.data();
       if (!postData) throw new Error('Post data is undefined');
-
       const comments = postData.comments || [];
-      comments.push({
-        comment: comment,
-        userId: userId
-      });
-
-      await updateDoc(postRef, {
-        comments: comments
-      });
+      comments.push({ comment: comment, userId: userId });
+      await updateDoc(postRef, { comments: comments });
     } else {
       throw new Error('Post does not exist');
     }
   };
-
-  const getComments = async (postId: string) => {
-    if (!postId) {
-      throw new Error('Post ID is undefined or null');
-    }
-
-    const postRef = doc(db, 'posts', postId);
-    const postSnap = await getDoc(postRef);
-    
-    if (postSnap.exists()) {
-      const postData = postSnap.data();
-      return postData ? postData.comments : [];
-    } else {
-      throw new Error('Post does not exist');
-    }
-  };
-
   const getLikesForPost = async (postId: string) => {
     const postRef = doc(db, 'posts', postId);
     const postSnap = await getDoc(postRef);
-
     if (postSnap.exists()) {
       const postData = postSnap.data();
       return postData ? postData.likes : 0;
@@ -144,54 +108,37 @@ export default defineNuxtPlugin((nuxtApp) => {
       throw new Error('Post does not exist');
     }
   };
-
   const getLikedPosts = async () => {
     const userId = auth.currentUser?.uid;
     if (!userId) {
-        console.error("User not authenticated");
-        return [];
+      console.error('User not authenticated');
+      return [];
     }
-
-    // Fetch user document
     const userRef = doc(db, `users/${userId}`);
     const userSnap = await getDoc(userRef);
     const userData = userSnap.data();
-
-    // Check if likedPosts exists
     if (!userData || !userData.likedPosts) {
-        return [];
+      return [];
     }
-
-    // Return liked post IDs directly
     return userData.likedPosts;
-};
-
-const getDislikedPosts = async () => {
-  const userId = auth.currentUser?.uid;
-  if (!userId) {
-      console.error("User not authenticated");
+  };
+  const getDislikedPosts = async () => {
+    const userId = auth.currentUser?.uid;
+    if (!userId) {
+      console.error('User not authenticated');
       return [];
-  }
-
-  // Fetch user document
-  const userRef = doc(db, `users/${userId}`);
-  const userSnap = await getDoc(userRef);
-  const userData = userSnap.data();
-
-  // Check if likedPosts exists
-  
-  if (!userData || !userData.dislikedPosts) {
+    }
+    const userRef = doc(db, `users/${userId}`);
+    const userSnap = await getDoc(userRef);
+    const userData = userSnap.data();
+    if (!userData || !userData.dislikedPosts) {
       return [];
-  }
-
-  // Return liked post IDs directly
-  return userData.dislikedPosts;
-};
-
+    }
+    return userData.dislikedPosts;
+  };
   const getDislikesForPost = async (postId: string) => {
     const postRef = doc(db, 'posts', postId);
     const postSnap = await getDoc(postRef);
-
     if (postSnap.exists()) {
       const postData = postSnap.data();
       return postData ? postData.dislikes : 0;
@@ -199,126 +146,87 @@ const getDislikedPosts = async () => {
       throw new Error('Post does not exist');
     }
   };
-
   const getPosts = async () => {
     const postsSnapshot = await getDocs(posts);
     const postData = [];
     for (let doc of postsSnapshot.docs) {
       let post = doc.data();
-      post.id = doc.id; // include the document ID here
-      post.likes = await getLikesForPost(post.id); // add likes for each post here
-      post.dislikes = await getDislikesForPost(post.id); // add dislikes for each post here.
+      post.id = doc.id;
+      post.likes = await getLikesForPost(post.id);
+      post.dislikes = await getDislikesForPost(post.id);
       postData.push(post);
     }
     return postData;
   };
-
-  const likePost = async (postId: string, userId: string) => {
+  const likePost = async (postId: unknown, userId: string) => {
     if (!userId) {
       throw new Error('User ID is undefined or null');
     }
-  
-    const postRef = doc(db, 'posts', postId);
+    const postRef = doc(db as any, 'posts', postId as string);
     const userRef = doc(db, 'users', userId);
     const postSnap = await getDoc(postRef);
     const userSnap = await getDoc(userRef);
-  
     if (postSnap.exists() && userSnap.exists()) {
       const userData = userSnap.data();
       if (!userData) throw new Error('User data is undefined');
-  
       const likedPosts = userData.likedPosts || [];
       const dislikedPosts = userData.dislikedPosts || [];
-  
       if (likedPosts.includes(postId)) {
         return { status: 'already_liked' };
       } else {
         if (dislikedPosts.includes(postId)) {
-          // If the user has previously disliked the post, undo the dislike
-          await updateDoc(postRef, {
-            dislikes: increment(-1)
-          });
-          await updateDoc(userRef, {
-            dislikedPosts: arrayRemove(postId)
-          });
+          await updateDoc(postRef, { dislikes: increment(-1) });
+          await updateDoc(userRef, { dislikedPosts: arrayRemove(postId) });
         }
-        // Then, proceed with liking the post
-        await updateDoc(postRef, {
-          likes: increment(1)
-        });
-        await updateDoc(userRef, {
-          likedPosts: arrayUnion(postId)
-        });
-  
-        // If the post was previously disliked, return 'undisliked'. Otherwise, return 'success'.
-        return { status: dislikedPosts.includes(postId) ? 'undisliked' : 'success' };
+        await updateDoc(postRef, { likes: increment(1) });
+        await updateDoc(userRef, { likedPosts: arrayUnion(postId) });
+        return {
+          status: dislikedPosts.includes(postId) ? 'undisliked' : 'success'
+        };
       }
     } else {
       throw new Error('Post or user does not exist');
     }
   };
-
-  const dislikePost = async (postId: string, userId: string) => {
+  const dislikePost = async (postId: unknown, userId: string) => {
     if (!userId) {
       throw new Error('User ID is undefined or null');
     }
-  
-    const postRef = doc(db, 'posts', postId);
+    const postRef = doc(db as any, 'posts', postId as string);
     const userRef = doc(db, 'users', userId);
     const postSnap = await getDoc(postRef);
     const userSnap = await getDoc(userRef);
-  
     if (postSnap.exists() && userSnap.exists()) {
       const userData = userSnap.data();
       if (!userData) throw new Error('User data is undefined');
-  
       const likedPosts = userData.likedPosts || [];
       const dislikedPosts = userData.dislikedPosts || [];
-  
       if (dislikedPosts.includes(postId)) {
         return { status: 'already_disliked' };
       } else {
         if (likedPosts.includes(postId)) {
-          // If the user has previously liked the post, undo the like
-          await updateDoc(postRef, {
-            likes: increment(-1)
-          });
-          await updateDoc(userRef, {
-            likedPosts: arrayRemove(postId)
-          });
+          await updateDoc(postRef, { likes: increment(-1) });
+          await updateDoc(userRef, { likedPosts: arrayRemove(postId) });
         }
-        // Then, proceed with disliking the post
-        await updateDoc(postRef, {
-          dislikes: increment(1)
-        });
-        await updateDoc(userRef, {
-          dislikedPosts: arrayUnion(postId)
-        });
-  
-        // If the post was previously liked, return 'unliked'. Otherwise, return 'success'.
+        await updateDoc(postRef, { dislikes: increment(1) });
+        await updateDoc(userRef, { dislikedPosts: arrayUnion(postId) });
         return { status: likedPosts.includes(postId) ? 'unliked' : 'success' };
       }
     } else {
       throw new Error('Post or user does not exist');
     }
   };
-  // get post id only
-
-const getUsers = async () => {
-  const usersSnapshot = await getDocs(users);
-  const usersData = [];
-  for (let doc of usersSnapshot.docs) {
-    let user = doc.data();
-    user.id = doc.id; // include the document ID here
-    usersData.push(user);
-  }
-  return usersData;
-};
-
-  // Provide the auth and store objects to the nuxt app
+  const getUsers = async () => {
+    const usersSnapshot = await getDocs(users);
+    const usersData = [];
+    for (let doc of usersSnapshot.docs) {
+      let user = doc.data();
+      user.id = doc.id;
+      usersData.push(user);
+    }
+    return usersData;
+  };
   const store = useUsersStore();
-
-  // Set up a listener to update the store when the user logs in or out
   onAuthStateChanged(auth, (user) => {
     if (user) {
       store.loggedIn = true;
@@ -328,7 +236,6 @@ const getUsers = async () => {
       store.user = '';
     }
   });
-
   return {
     provide: {
       db,
@@ -344,7 +251,6 @@ const getUsers = async () => {
       getUsers,
       getLikedPosts,
       getDislikedPosts,
-      getComments,
       getDisplayName
     }
   };

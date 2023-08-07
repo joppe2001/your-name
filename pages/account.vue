@@ -109,12 +109,11 @@
 		onAuthStateChanged,
 	} from "firebase/auth";
 
-	const { $getPosts, $getLikedPosts, $getDislikedPosts, $getComments } = useNuxtApp();
+	const { $getPosts, $getLikedPosts, $getDislikedPosts } = useNuxtApp();
 
 	const posts = ref([]);
 	const likedPosts = ref([]);
 	const dislikedPosts = ref([]);
-	const comments = ref([]);
 
 	const email = ref("");
 	const displayName = ref("");
