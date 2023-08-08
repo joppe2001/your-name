@@ -32,12 +32,7 @@ async function logoutUser() {
 </script>
 
 <style scoped>
-.logout {
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin: 10px;
-}
+
 
 </style>
 
