@@ -1,3 +1,6 @@
+
+
+
 module.exports = {
   darkMode: 'class',
   css: ['main.css'],
@@ -20,7 +23,10 @@ module.exports = {
       },
       borderWidth: {
         '1': '1px'
-      }
+      },
+      zIndex: {
+        '100': '100'
+      },
     }
   },
   variants: {},

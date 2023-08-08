@@ -2,7 +2,7 @@
     <div v-if="modelValue" class="modal" @click="handleClickOutside">
         <div class="modal-content">
             <span class="close-button" @click="closeModal">&times;</span>
-            <slot />
+            <slot class="slot"/>
         </div>
     </div>
 </template>
@@ -39,7 +39,13 @@ onUnmounted(() => {
 </script>
 
 
-<style scoped>
+<style>
+
+.modal, .modal * {
+    all: initial;
+    box-sizing: border-box; /* This is commonly set globally and is useful to have */
+    font-family: sans-serif;
+}
 .modal {
     position: fixed;
     top: 0;
@@ -51,6 +57,7 @@ onUnmounted(() => {
     align-items: center;
     justify-content: center;
     z-index: 1000;
+    opacity: 1;
 }
 
 .modal-content {
@@ -60,6 +67,13 @@ onUnmounted(() => {
     padding: 40px;
     border-radius: 5px;
     position: relative;
+    width: 90%;
+}
+
+@media (min-width: 768px) {
+    .modal-content {
+        width: 20%;
+    }
 }
 
 .close-button {
@@ -69,4 +83,5 @@ onUnmounted(() => {
 	cursor: pointer;
 	font-size: 22px;
 }
+
 </style>
