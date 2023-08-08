@@ -1,5 +1,5 @@
 <template>
-	<div v-if="!loading" class="flex-column items-center justify-center p-4">
+	<div v-show="!loading" class="flex-column items-center justify-center p-4">
 		<div class="max-w-4xl mx-auto text-center">
 			<h1 class="text-2xl sm:text-4xl lg:text-5xl mb-4 sm:mb-6 font-extrabold text-yn-sunset">
 				Welcome to the world of "Your Name"
@@ -25,9 +25,9 @@
 				</div>
 			</div>
 		</div>
-		<MostLikedPost />
+		<MostLikedPost :post="highestLikedPost" />
 	</div>
-	<LoadingSpinner v-else />
+	<LoadingSpinner v-show="loading" />
 </template>
 
 <script setup>
@@ -35,10 +35,23 @@
 
 	const posts = ref([]);
 	const loading = ref(true);
+	const highestLikedPost = ref({})
+
+	const prefetchImage = (url) => {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = resolve;
+        img.onerror = reject;
+        img.src = url;
+    });
+};
 
 	onMounted(async () => {
 		posts.value = await $getPosts();
 		loading.value = false;
+		if (highestLikedPost.value.imageUrl) {
+        await prefetchImage(highestLikedPost.value.imageUrl);
+    }
 	});
 </script>
 
