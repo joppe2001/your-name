@@ -1,5 +1,12 @@
 <template>
-    <button @click="confirmLogout">sign out</button>
+    <button @click="showModal = true">sign out</button>
+    <Modal v-model="showModal">
+        <p>Are you sure you want to sign out?</p>
+        <div>
+            <ButtonsBaseButton @click="confirmLogout" :disabled="false">Yes</ButtonsBaseButton>
+            <ButtonsBaseButton @click="showModal = false" :disabled="false">No</ButtonsBaseButton>
+        </div>
+    </Modal>
 </template>
 <script setup lang="ts">
 import { Auth, signOut } from 'firebase/auth';
@@ -7,6 +14,7 @@ import { useUsersStore } from '@/stores/users';
 
 const store = useUsersStore();
 const nuxtApp = useNuxtApp();
+const showModal = ref(false);
 
 async function logoutUser() {
     try {
