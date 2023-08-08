@@ -72,7 +72,7 @@ onUnmounted(() => {
 
 @media (min-width: 768px) {
     .modal-content {
-        width: 30%;
+        width: 25%;
     }
 }
 
