@@ -21,7 +21,7 @@
 			<Modal v-model="showModal">
 				<p v-if="auth.currentUser">{{ messageForLoggedIn }}</p>
 				<p v-else>{{ messageForGuest }}</p>
-				<div class="buttons-container">
+				<div>
 					<ButtonsBaseButton v-if="auth.currentUser" @click="goToAllPosts" :disabled="false">Go to All Posts
 					</ButtonsBaseButton>
 					<ButtonsBaseButton v-if="!auth.currentUser" @click="goToSignup" :disabled="false">Sign Up
@@ -78,35 +78,6 @@ const goToAllPosts = () => { router.push('/fanhangout/posts'); }; onMounted(asyn
 .fade-enter,
 .fade-leave-to {
 	opacity: 0;
-}
-
-.modal {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background-color: rgba(0, 0, 0, 0.7);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	z-index: 1000;
-}
-
-.modal-content {
-	display: flex;
-	flex-direction: column;
-	background-color: #f4f4f4;
-	padding: 40px;
-	border-radius: 5px;
-	position: relative;
-}
-
-
-
-.buttons-container {
-	display: flex;
-	gap: 10px;
 }
 </style>
 	

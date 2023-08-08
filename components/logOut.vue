@@ -1,12 +1,14 @@
 <template>
+    <div class="logout">
     <button @click="showModal = true">sign out</button>
     <Modal v-model="showModal">
         <p>Are you sure you want to sign out?</p>
         <div>
-            <ButtonsBaseButton @click="confirmLogout" :disabled="false">Yes</ButtonsBaseButton>
+            <ButtonsBaseButton @click="logoutUser()" :disabled="false">Yes</ButtonsBaseButton>
             <ButtonsBaseButton @click="showModal = false" :disabled="false">No</ButtonsBaseButton>
         </div>
     </Modal>
+</div>
 </template>
 <script setup lang="ts">
 import { Auth, signOut } from 'firebase/auth';
@@ -27,11 +29,15 @@ async function logoutUser() {
         }
     }
 }
-
-const confirmLogout = () => { 
-    if (window.confirm('Are you sure you want to sign out?')) {
-        logoutUser();
-    }
-}
 </script>
+
+<style scoped>
+.logout {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 10px;
+}
+
+</style>
 
