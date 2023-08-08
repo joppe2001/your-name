@@ -187,7 +187,7 @@
           dislikedPosts: []
 				});
 
-				await router.push("/");
+				await router.push("/fanhangout/posts");
 			}
 			creds.userName = "";
 			creds.email = "";

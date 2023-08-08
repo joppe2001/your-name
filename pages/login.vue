@@ -122,7 +122,7 @@
 
 			if (user) {
 				showModal.value = true;
-				await router.push("/");
+				await router.push("/fanhangout/posts");
 			}
 		} catch (error: unknown) {
 			if (error instanceof Error) {

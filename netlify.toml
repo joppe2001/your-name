@@ -1,3 +1,8 @@
 [build]
   command = "yarn build"
   publish = "dist"
+
+[dev]
+  framework = "nuxt" 
+  command = "yarn dev"
+  targetPort = 3000

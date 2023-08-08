@@ -25,7 +25,7 @@
 				</div>
 			</div>
 		</div>
-		<MostLikedPost :post="highestLikedPost" />
+		<MostLikedPost :post="highestLikedPost"/>
 	</div>
 	<LoadingSpinner v-show="loading" />
 </template>
