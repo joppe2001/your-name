@@ -1,5 +1,5 @@
 <template>
-	<div class="flex items-center justify-center p-4  mt-20 rounded">
+	<div class="flex items-center justify-center p-4  mt-10 rounded">
 		<div class="post__content backdrop-blur-md w-1/2 p-5 mx-auto text-center">
 			<h2 class="text-2xl sm:text-4xl lg:text-5xl mb-4 sm:mb-6 font-extrabold text-yn-sunset">
 				Most Liked Post
