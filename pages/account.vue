@@ -8,9 +8,9 @@
 							Account Details
 						</h3>
 						<div class="space-y-6 h-50 flex-column justify-center items-center items-display backdrop-blur-sm">
-							<p class="text-md text-gray-700 backdrop-blur-sm w-1/3 rounded">Username: {{ displayName }}</p>
-							<p class="text-md text-gray-700 backdrop-blur-sm w-1/3 rounded">Email: {{ email }}</p>
-							<p class="text-md text-gray-700 backdrop-blur-sm w-1/3 rounded">User ID: {{ uid }}</p>
+							<p class="text-md text-gray-700 backdrop-blur-smrounded">Username: <br/>{{ displayName }}</p>
+							<p class="text-md text-gray-700 backdrop-blur-sm rounded">Email: <br/> {{ email }}</p>
+							<p class="text-md text-gray-700 backdrop-blur-sm rounded">User ID:<br/> {{ uid }}</p>
 
 							<button class="account-action-btn" @click="sendPasswordReset(email)">
 								Reset Password
