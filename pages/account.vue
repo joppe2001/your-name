@@ -12,16 +12,16 @@
 							<p class="text-md text-gray-700 backdrop-blur-sm rounded">Email: <br/> {{ email }}</p>
 							<p class="text-md text-gray-700 backdrop-blur-sm rounded">User ID:<br/> {{ uid }}</p>
 
-							<button class="account-action-btn" @click="sendPasswordReset(email)">
+							<ButtonsBaseButton @click="sendPasswordReset(email)">
 								Reset Password
-							</button>
+							</ButtonsBaseButton>
 
-							<button class="account-action-btn" @click="logout">
+							<ButtonsBaseButton @click="logout">
 								Logout
-							</button>
+							</ButtonsBaseButton>
 
-							<div class="modal-overlay" v-if="resetSent">
-								<div class="modal">
+							<div class="modal" v-if="resetSent" @click="handleClickOutside">
+								<div class="modal-content">
 									<span class="modal-close" @click="resetSent = false">&times;</span>
 									Password reset email successfully sent
 								</div>
@@ -69,6 +69,10 @@
 		await router.push("/");
 	};
 
+	const closeModal = () => {
+		resetSent.value = false;
+	};
+
 	onMounted( async () => {
 		posts.value = await $getPosts();
 		likedPosts.value = await $getLikedPosts();
@@ -82,6 +86,26 @@
 			isLoading.value = false; // Set loading to false after determining auth state
 		});
 	});
+
+	const handleClickOutside = (event) => {
+    if (event.target.classList.contains('modal')) {
+        closeModal();
+    }
+};
+
+const handleEscapeKey = (event) => {
+    if (event.key === 'Escape') {
+        closeModal();
+    }
+};
+
+onMounted(() => {
+    window.addEventListener('keydown', handleEscapeKey);
+});
+
+onUnmounted(() => {
+    window.removeEventListener('keydown', handleEscapeKey);
+});
 </script>
 
 <style scoped>
@@ -190,4 +214,42 @@
 		display: flex;
     flex-direction: column;
 	}
+
+	.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 1;
+}
+
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    background-color: #f4f4f4;
+    padding: 40px;
+    border-radius: 5px;
+    position: relative;
+    width: 90%;
+}
+
+@media (min-width: 768px) {
+    .modal-content {
+        width: 30%;
+    }
+}
+
+.close-button {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	cursor: pointer;
+	font-size: 22px;
+}
 </style>

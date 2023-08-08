@@ -39,7 +39,7 @@ onUnmounted(() => {
 </script>
 
 
-<style>
+<style scoped>
 
 .modal, .modal * {
     all: initial;
@@ -72,7 +72,7 @@ onUnmounted(() => {
 
 @media (min-width: 768px) {
     .modal-content {
-        width: 20%;
+        width: 30%;
     }
 }
 
