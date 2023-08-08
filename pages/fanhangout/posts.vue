@@ -52,7 +52,7 @@
 						</p>
 					</div>
 					<div class="post__image">
-						<img :src="post.imageUrl" class="rounded mx-auto" loading="lazy" />
+						<img :src="post.imageUrl" class="rounded image" loading="lazy" />
 					</div>
 				</div>
 				<div class="buttons">
@@ -401,6 +401,13 @@
 		justify-content: center;
 	}
 
+	.post__image {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+
+	}
 	.main-container {
 		display: flex;
 		flex-direction: column;
@@ -411,7 +418,8 @@
 
 	@media (min-width: 640px) {
 		.main-container {
-			width: 60%;
+			width: 30%;
+			/* height: 30%; */
 		}
 
 		.modal-container {
@@ -444,8 +452,9 @@
 		align-items: flex-end;
 	}
 
-	.image-container img {
-		max-height: 300px;
+	.image {
+		width: auto;
+		max-height: 250px;
 	}
 
 	.comments {

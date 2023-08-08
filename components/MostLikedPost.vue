@@ -92,6 +92,7 @@
 </script>
 <style scoped>
 	.post__content {
+		width: 30%;
 		border-radius: 5px;
 		background-color: rgba(255, 255, 255, 0.5);
 		backdrop-filter: blur(5px);
