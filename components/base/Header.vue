@@ -24,8 +24,11 @@
       </div>
 
       <div v-else class="flex">
-        <LogOut
-        class="text-yn-golden text-m ml-4 p-1 hover:text-yn-sunset hover:bg-yn-lavender transition-all duration-200 rounded"/>
+        <button
+          class="text-yn-golden text-m ml-4 p-1 hover:text-yn-sunset hover:bg-yn-lavender transition-all duration-200 rounded"
+          @click="showModal = true">
+          Logout
+        </button>
         <nuxt-link to="/fanhangout/posts"
           class="text-yn-golden text-m ml-4 p-1 hover:text-yn-sunset hover:bg-yn-lavender transition-all duration-200 rounded">
           Posts
@@ -37,12 +40,35 @@
       </div>
     </div>
   </nav>
+  <Modal v-model="showModal">
+    <p>Are you sure you want to sign out?</p>
+    <div class="logContent">
+      <ButtonsBaseButton @click="logoutUser()" :disabled="false">Yes</ButtonsBaseButton>
+      <ButtonsBaseButton @click="showModal = false" :disabled="false">No</ButtonsBaseButton>
+    </div>
+  </Modal>
 </template>
 <script setup>
 import { useUsersStore } from '@/stores/users'
 import { computed } from 'vue'
+import { signOut } from "firebase/auth";
 const store = useUsersStore()
 const isLoggedIn = computed(() => store.loggedIn === true)
+const showModal = ref(false);
+const nuxtApp = useNuxtApp();
+
+async function logoutUser() {
+  try {
+    await signOut(nuxtApp.$auth);
+    (store.user) = null; // Reset the user in the store
+    nuxtApp.$router.push("/"); // Redirect to the login page
+    showModal.value = false;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error.message); // Log the error message to the console
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -68,5 +94,10 @@ const isLoggedIn = computed(() => store.loggedIn === true)
 
 nav {
   background-color: #12263ab5;
+}
+
+.logContent {
+  display: flex;
+  gap: 10px;
 }
 </style>

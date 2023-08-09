@@ -1,16 +1,16 @@
 <template>
-	<div class="container mx-auto px-4 sm:px-6 lg:px-8">
-		<div v-if="!isLoading" class="flex items-center justify-center min-h-screen">
+	<div class="container mx-auto px-4 sm:px-6 lg:px-8 flex-grow">
+		<div v-if="!isLoading" class="flex items-center justify-center">
 			<div class="w-full max-w-2xl mx-auto rounded-xl shadow-md overflow-hidden">
 				<div class="px-6 py-4">
 					<div class="text-center">
 						<h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">
 							Account Details
 						</h3>
-						<div class="space-y-6 h-50 flex-column justify-center items-center items-display backdrop-blur-sm">
-							<p class="text-md text-gray-700 backdrop-blur-smrounded">Username: <br/>{{ displayName }}</p>
-							<p class="text-md text-gray-700 backdrop-blur-sm rounded">Email: <br/> {{ email }}</p>
-							<p class="text-md text-gray-700 backdrop-blur-sm rounded">User ID:<br/> {{ uid }}</p>
+						<div class="space-y-6 p-5 h-50 flex-column justify-center items-center items-display backdrop-blur-sm">
+							<p class="text-md text-gray-700 bg-yn-sand px-7 py-2 rounded">Username: <br/>{{ displayName }}</p>
+							<p class="text-md text-gray-700 bg-yn-sand px-7 py-2 rounded">Email: <br/> {{ email }}</p>
+							<p class="text-md text-gray-700 bg-yn-sand px-7 py-2 rounded">User ID:<br/> {{ uid }}</p>
 
 							<ButtonsBaseButton @click="sendPasswordReset(email)">
 								Reset Password
@@ -109,18 +109,14 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-	.loadingSpinner {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		height: 100vh;
-	}
 
-	.loadingSpinner svg {
-		width: 50px;
-		height: 50px;
-	}
 
+.container {
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
 	.reset-password-btn {
 		background-color: #ecc7ec; /* Green background */
 		border: none; /* No border */

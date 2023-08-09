@@ -43,7 +43,7 @@ onUnmounted(() => {
 
 .modal, .modal * {
     all: initial;
-    box-sizing: border-box; /* This is commonly set globally and is useful to have */
+    box-sizing: border-box;
     font-family: sans-serif;
 }
 .modal {
@@ -70,7 +70,7 @@ onUnmounted(() => {
     width: 90%;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 850px) {
     .modal-content {
         width: 25%;
     }
