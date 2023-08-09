@@ -5,9 +5,6 @@
 			@submit.prevent="submitForm"
 			class="form flex flex-col w-1/2 mx-auto mb-8 p-4 sm:p-8 border-4 rounded-xl shadow-2xl hover:shadow-2xl transition-all duration-200 backdrop-blur-sm"
 		>
-			<h1 class="text-center mb-3 text-2xl text-yn-deep-purple font-bold">
-				post it!
-			</h1>
 			<input
 				type="text"
 				name="title"
@@ -416,9 +413,9 @@
 		border-image-slice: 1;
 	}
 
-	@media (min-width: 640px) {
+	@media (min-width: 1000px) {
 		.main-container {
-			width: 30%;
+			width: 40%;
 			/* height: 30%; */
 		}
 

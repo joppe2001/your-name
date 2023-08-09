@@ -64,7 +64,7 @@ onUnmounted(() => {
     display: flex;
     flex-direction: column;
     background-color: #f4f4f4;
-    padding: 40px;
+    padding: 30px;
     border-radius: 5px;
     position: relative;
     width: 90%;
