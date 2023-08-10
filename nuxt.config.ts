@@ -6,7 +6,8 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     '@vueuse/nuxt',
     'nuxt-seo-experiments',
-    '@pinia/nuxt'
+    '@pinia/nuxt',
+    '@vite-pwa/nuxt'
   ],
   plugins: ['~/plugins/firebase.plugins.ts'],
   runtimeConfig: {
@@ -18,6 +19,30 @@ export default defineNuxtConfig({
       FIREBASE_MESSAGING_SENDER_ID: process.env.FIREBASE_MESSAGING_SENDER_ID,
       FIREBASE_APP_ID: process.env.FIREBASE_APP_ID,
       FIREBASE_MEASUREMENT_ID: process.env.FIREBASE_MEASUREMENT_ID
+    }
+  },
+  pwa: {
+    manifest: {
+      name: 'your name',
+      short_name: 'your name',
+      description: 'learning app',
+      lang: 'en',
+      theme_color: '#ffffff',
+      background_color: '#ffffff',
+      icons: [
+        {
+          src: './images/cinema.png',
+          sizes: '192x192',
+          type: 'image/png',
+          purpose: 'any maskable'
+        },
+        {
+          src: './images/cinema.png',
+          sizes: '512x512',
+          type: 'image/png',
+          purpose: 'any maskable'
+        }
+      ]
     }
   }
 });
