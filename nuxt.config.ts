@@ -9,6 +9,10 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@vite-pwa/nuxt'
   ],
+  buildModules: [
+    '@nuxt/vite',
+    '@vite-pwa/nuxt'
+  ],
   plugins: ['~/plugins/firebase.plugins.ts'],
   runtimeConfig: {
     public: {
@@ -23,7 +27,6 @@ export default defineNuxtConfig({
   },
   pwa: {
     workbox: {
-      workboxOptions: {
         runtimeCaching: [
           {
             urlPattern: 'https://yourdomain.com/api/*', // Adjust this to your actual domain or API endpoint
@@ -31,7 +34,6 @@ export default defineNuxtConfig({
             method: 'GET'
           }
         ]
-      }
     },
     manifest: {
       name: 'your name',
