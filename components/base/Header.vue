@@ -1,5 +1,5 @@
 <template>
-  <nav class="border-b-2 border-yn-night-sky py-2 px-6 bg-yn-night-sky opacity-70">
+  <nav class="border-b-2 border-yn-night-sky py-2 px-6 bg-yn-night-sky opacity-70 sticky top-0 nav">
     <div class="flex items-center justify-between">
       <div>
         <nuxt-link to="/"
@@ -114,6 +114,11 @@ const loginUser = async () => {
 </script>
 
 <style scoped>
+
+.nav {
+  z-index: 100;
+  backdrop-filter: blur(10px);
+}
 @media (max-width: 420px) {
   * {
     padding: 1px;
