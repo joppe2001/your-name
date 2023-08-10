@@ -22,6 +22,17 @@ export default defineNuxtConfig({
     }
   },
   pwa: {
+    workbox: {
+      workboxOptions: {
+        runtimeCaching: [
+          {
+            urlPattern: 'https://yourdomain.com/api/*', // Adjust this to your actual domain or API endpoint
+            handler: 'NetworkFirst', // Consider using NetworkFirst for frequently changing data
+            method: 'GET'
+          }
+        ]
+      }
+    },
     manifest: {
       name: 'your name',
       short_name: 'your name',
@@ -31,13 +42,13 @@ export default defineNuxtConfig({
       background_color: '#ffffff',
       icons: [
         {
-          src: './images/cinema.png',
+          src: '/images/cinema.png', // Use absolute paths
           sizes: '192x192',
           type: 'image/png',
           purpose: 'any maskable'
         },
         {
-          src: './images/cinema.png',
+          src: '/images/cinema.png', // Use absolute paths
           sizes: '512x512',
           type: 'image/png',
           purpose: 'any maskable'
