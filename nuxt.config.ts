@@ -27,6 +27,7 @@ export default defineNuxtConfig({
   },
   pwa: {
     workbox: {
+      globPatterns: ['**/*.{js,css,html,png,jpg,jpeg,svg}'],
         runtimeCaching: [
           {
             urlPattern: 'https://yourdomain.com/api/*', // Adjust this to your actual domain or API endpoint
