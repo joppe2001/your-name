@@ -1,6 +1,5 @@
 <template>
 	<div class="flex flex-col p-4" v-if="!isLoading">
-		<!-- form -->
 		<form
 			@submit.prevent="submitForm"
 			class="form flex flex-col w-1/2 mx-auto mb-8 p-4 sm:p-8 border-4 rounded-xl shadow-2xl hover:shadow-2xl transition-all duration-200 backdrop-blur-sm"
@@ -17,7 +16,7 @@
 				v-model="postInfo.content"
 				placeholder="content"
 				class="content p-2 mb-4 border rounded placeholder-yn-night-sky h-30 focus:outline-none focus transition duration-500 ease-in-out"
-			/>
+			></textarea>
 			<input
 				type="string"
 				name="image"
@@ -31,7 +30,6 @@
 				>
 			</div>
 		</form>
-
 		<div class="flex-grow w-full main">
 			<div
 				v-for="post in posts"
@@ -118,8 +116,7 @@
 									transition: 0.3s ease-out;
 									font-weight: 700;
 								"
-							>
-								{{ post.dislikes }}</span
+								>{{ post.dislikes }}</span
 							>
 						</div>
 					</button>
@@ -154,7 +151,7 @@
 										<ButtonsBaseButton
 											class="comments__toggle"
 											height="34px"
-											padding="2px"
+											padding="3px"
 											margin="0 0 0 4px"
 										>
 											<svg
@@ -173,7 +170,6 @@
 								</form>
 							</div>
 						</div>
-
 						<div
 							class="comments__display transition-all duration-300 mt-4 overflow-auto text-gray-700"
 							:class="{ 'scrollable-comments': post.comments.length > 5 }"
@@ -185,11 +181,11 @@
 								class="comment comments__background commnet backdrop-blur"
 								style="word-wrap: break-word"
 							>
-								<p class="text-black default-font">
+								<p class="text-black">
 									<strong>{{
 										"" + userNames.get(comment.userId) + ": "
-									}}</strong>
-									<span style="font-weight: lighter;">{{ comment.comment }}</span>
+									}}</strong
+									>{{ comment.comment }}
 								</p>
 							</div>
 						</div>
@@ -197,7 +193,6 @@
 				</div>
 			</div>
 		</div>
-
 		<div
 			class="fixed z-10 pt-24 left-0 top-0 w-full h-full overflow-auto bg-black bg-opacity-40"
 			v-if="success"
@@ -210,12 +205,10 @@
 	</div>
 	<LoadingSpinner v-else />
 </template>
-
 <script setup>
 	import { onMounted } from "vue";
 	import { getAuth } from "firebase/auth";
 	import debounce from "lodash.debounce";
-
 	const {
 		$addPost,
 		$getPosts,
@@ -226,7 +219,6 @@
 		$getDislikedPosts,
 		$getDisplayName,
 	} = useNuxtApp();
-
 	const userNames = ref(new Map());
 	const auth = getAuth();
 	const isLoading = ref(true);
@@ -246,7 +238,6 @@
 		likes: 0,
 		dislikes: 0,
 	});
-
 	const getUserid = () => {
 		return auth.currentUser ? auth.currentUser.uid : null;
 	};
@@ -254,8 +245,6 @@
 		const result = await $likePost(postId, userId);
 		const post = posts.value.find((post) => post.id === postId);
 		likedPostsIds.value = await getLikedPosts();
-
-		// If post was previously disliked, remove from disliked posts
 		if (result.status === "undisliked") {
 			dislikedPostsIds.value = dislikedPostsIds.value.filter(
 				(id) => id !== postId
@@ -274,13 +263,10 @@
 			);
 		}
 	}, 200);
-
 	const dislikePostHandler = debounce(async (postId, userId) => {
 		const result = await $dislikePost(postId, userId);
 		const post = posts.value.find((post) => post.id === postId);
 		dislikedPostsIds.value = await getDislikedPosts();
-
-		// If post was previously liked, remove from liked posts
 		if (result.status === "unliked") {
 			likedPostsIds.value = likedPostsIds.value.filter((id) => id !== postId);
 		}
@@ -297,16 +283,13 @@
 			);
 		}
 	}, 200);
-
 	watchEffect(async () => {
 		try {
 			for (let post of posts.value) {
-				// Get the display name of the user who posted the post
 				if (!userNames.value.has(post.userId)) {
 					const displayName = await getDisplayName(post.userId);
 					userNames.value.set(post.userId, displayName);
 				}
-				// Get the display names of the users who have commented on the post
 				for (let comment of post.comments) {
 					if (!userNames.value.has(comment.userId)) {
 						const displayName = await getDisplayName(comment.userId);
@@ -318,7 +301,6 @@
 			console.error("Error fetching display names:", error);
 		}
 	});
-
 	async function submitForm() {
 		if (
 			(postInfo.value.title && postInfo.value.content) ||
@@ -342,7 +324,6 @@
 			alert("Please fill in all fields");
 		}
 	}
-
 	async function submitComment(postId) {
 		for (let post of posts.value) {
 			if (post.id === postId) {
@@ -358,7 +339,6 @@
 			}
 		}
 	}
-
 	onMounted(async () => {
 		const fetchedPosts = await $getPosts();
 		posts.value = fetchedPosts.map((post) => ({
@@ -374,88 +354,54 @@
 		}, 800);
 	});
 </script>
-
 <style scoped>
 	@media (max-width: 640px) {
 		form {
 			width: 70%;
 		}
 	}
-
-	.form {
+	.form,
+	.main-container {
 		border: none;
 		border-image-slice: 1;
 		border-width: none;
 	}
-
-	.main {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-	}
-
-	.post__comments {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-	}
-
+	.main,
+	.post__comments,
 	.post__image {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		justify-content: center;
 	}
-	.main-container {
-		display: flex;
-		flex-direction: column;
-		width: 100%;
-		border: none;
-		border-image-slice: 1;
-	}
-
 	@media (min-width: 1000px) {
 		.main-container {
 			width: 40%;
-			/* height: 30%; */
 		}
-
 		.modal-container {
 			padding: inherit;
 			max-width: 50vw;
 		}
 	}
-
 	.modal-container {
 		padding: 8px;
 		width: 90vw;
 		height: auto;
 	}
-
 	.big-container {
 		width: 100%;
 		display: flex;
 		flex-direction: row;
 		justify-content: space-around;
 	}
-
-	.text-container {
-		display: flex;
-		flex-direction: column;
-	}
-
+	.text-container,
 	.image-container {
 		display: flex;
 		flex-direction: column;
-		align-items: flex-end;
 	}
-
 	.image {
 		width: auto;
 		max-height: 250px;
 	}
-
 	.comments {
 		display: flex;
 		flex-direction: column;
@@ -464,7 +410,6 @@
 		border-radius: 5px;
 		transition: 0.3s;
 	}
-
 	.comments__background {
 		background: rgb(181, 181, 181);
 		background: linear-gradient(
@@ -477,19 +422,15 @@
 		padding: 5px;
 		margin: 5px;
 	}
-
-	.scrollable-comments {
-		max-height: 200px;
-		/* you can adjust this height as per your requirement */
-		overflow: auto;
-	}
-
 	@media (min-width: 640px) {
 		.scrollable-comments {
 			width: 100%;
 		}
 	}
-
+	.scrollable-comments {
+		max-height: 200px;
+		overflow: auto;
+	}
 	.comments__view {
 		display: flex;
 		width: 100%;
@@ -497,14 +438,11 @@
 		flex-direction: column;
 		align-items: space-around;
 	}
-
 	.comments__input {
 		width: 85%;
 		justify-content: center;
 		align-items: center;
 	}
-
-	/* make scrollbar invisible */
 	.comments__form {
 		height: 100%;
 		width: 100%;
@@ -513,22 +451,9 @@
 		justify-content: center;
 		margin-right: 5px;
 	}
-
-	.comments__form button {
-		width: 40px;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-
-	.comments__input {
-		width: 100%;
-	}
-
 	.comments__input input {
 		border: 0.5px solid #ecececad;
 	}
-
 	.button-container {
 		display: flex;
 		justify-content: center;
@@ -540,56 +465,45 @@
 		box-shadow: #b86a54 -4px -5px 0 -2px;
 		border: 1px solid #fc785365;
 	}
-
 	.button-container button {
 		border: 1px solid #ecba93;
 		background: rgba(224, 200, 200, 0.178);
 	}
-
 	.like-button,
 	.dislike-button {
 		transition: transform 0.3s;
 	}
-
 	.like-button:hover,
 	.dislike-button:hover {
 		transform: scale(1.2);
 		color: white;
 	}
-
 	.like-button svg path,
 	.dislike-button svg path {
 		opacity: 0.5;
 		transition: opacity 0.3s, fill 0.3s ease-in-out;
 		fill: currentColor;
 	}
-
 	.like-button:hover svg path {
 		opacity: 1;
 		fill: red;
 	}
-
 	.dislike-button:hover svg path {
 		opacity: 1;
 		fill: rgb(23, 61, 197);
-		/* Change this to the color you want for the dislike button */
 	}
-
 	.comment-group {
 		width: 100%;
 		display: flex;
 		justify-content: space-around;
 	}
-
 	.comments__display {
 		width: 100%;
 	}
-
 	.comment {
 		border-radius: 4px;
 		margin: 4px 0;
 	}
-
 	.buttons {
 		width: 100%;
 		display: flex;
@@ -597,26 +511,21 @@
 		gap: 20px;
 		margin-top: 10px;
 	}
-
 	input[type="text"] {
 		background: none;
 	}
-
 	::-webkit-scrollbar-track {
 		border-radius: 0 10px 10px 0;
 		opacity: 0;
 	}
-
 	::-webkit-scrollbar {
 		border-radius: 0 10px 10px 0;
 		width: 10px;
 	}
-
 	::-webkit-scrollbar-thumb {
 		border-radius: 25px;
 		background: #fc7753;
 	}
-
 	.content {
 		background: none;
 		border: none;
@@ -626,7 +535,6 @@
 		box-shadow: inset 0px 0px 2px 1px #fc78535a;
 		border-radius: 5px;
 	}
-
 	::placeholder {
 		color: white;
 		opacity: 0.7;
