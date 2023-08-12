@@ -25,8 +25,10 @@
 				placeholder="image url"
 				class="content p-2 mb-4 border rounded placeholder-yn-night-sky focus:outline-none focus:border-yn-golden transition duration-500 ease-in-out"
 			/>
-			<div class="wrapper">
-				<a @click.prevent="submitForm()"> Share post </a>
+			<div class="button-container">
+				<ButtonsBaseButton @click="submitForm()" style="width: 30%"
+					>share post</ButtonsBaseButton
+				>
 			</div>
 		</form>
 
@@ -149,10 +151,11 @@
 										class="comments__input flex-grow p-1 mr-1 border rounded placeholder-gray-700 text-gray-700"
 									/>
 									<div class="wrapper">
-										<a
-											href="#"
-											@click.prevent="submitComment(post.id)"
-											class="comments__submit p-1"
+										<ButtonsBaseButton
+											class="comments__toggle"
+											height="34px"
+											padding="2px"
+											margin="0 0 0 4px"
 										>
 											<svg
 												xmlns="http://www.w3.org/2000/svg"
@@ -165,7 +168,7 @@
 													d="M12 2A10 10 0 0 0 2 12a9.89 9.89 0 0 0 2.26 6.33l-2 2a1 1 0 0 0-.21 1.09A1 1 0 0 0 3 22h9a10 10 0 0 0 0-20Zm0 18H5.41l.93-.93a1 1 0 0 0 0-1.41A8 8 0 1 1 12 20Zm3-9h-2V9a1 1 0 0 0-2 0v2H9a1 1 0 0 0 0 2h2v2a1 1 0 0 0 2 0v-2h2a1 1 0 0 0 0-2Z"
 												/>
 											</svg>
-										</a>
+										</ButtonsBaseButton>
 									</div>
 								</form>
 							</div>
@@ -182,11 +185,11 @@
 								class="comment comments__background commnet backdrop-blur"
 								style="word-wrap: break-word"
 							>
-								<p class="text-black">
+								<p class="text-black default-font">
 									<strong>{{
 										"" + userNames.get(comment.userId) + ": "
 									}}</strong>
-									{{ comment.comment }}
+									<span style="font-weight: lighter;">{{ comment.comment }}</span>
 								</p>
 							</div>
 						</div>
@@ -403,7 +406,6 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-
 	}
 	.main-container {
 		display: flex;
@@ -508,6 +510,7 @@
 		width: 100%;
 		display: flex;
 		align-items: center;
+		justify-content: center;
 		margin-right: 5px;
 	}
 
@@ -526,54 +529,21 @@
 		border: 0.5px solid #ecececad;
 	}
 
-	.comments__toggle {
-		height: 100%;
+	.button-container {
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		color: #e9ab7c;
+	}
+	.button-container button:hover {
+		background: #e9ab7c49;
+		box-shadow: #b86a54 -4px -5px 0 -2px;
+		border: 1px solid #fc785365;
 	}
 
-	a {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		height: 40px;
-		border-radius: 5px;
-		font-size: 1.1rem;
-		font-family: sans-serif;
-		text-decoration: none;
-		color: #333;
-		letter-spacing: 2px;
-		text-align: center;
-		position: relative;
-		transition: all 0.25s ease-out;
-		cursor: pointer;
-	}
-
-	a span {
-		position: relative;
-		z-index: 2;
-	}
-
-	a:after {
-		position: absolute;
-		content: "";
-		top: 0;
-		left: 0;
-		width: 0;
-		height: 100%;
-		background: #fc7753;
-		transition: all 0.25s ease-out;
-		border-radius: 2px;
-		z-index: -1;
-	}
-
-	a:hover {
-		color: #fff;
-	}
-
-	a:hover:after {
-		width: 100%;
+	.button-container button {
+		border: 1px solid #ecba93;
+		background: rgba(224, 200, 200, 0.178);
 	}
 
 	.like-button,

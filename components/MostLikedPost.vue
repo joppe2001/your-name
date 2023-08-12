@@ -32,6 +32,8 @@
 				<div class="button-container">
 					<ButtonsBaseButton v-if="auth.currentUser" @click="goToAllPosts" :disabled="false">Go to All Posts
 					</ButtonsBaseButton>
+					<ButtonsBaseButton v-if="auth.currentUser" @click="closeModal" :disabled="false">cancel
+					</ButtonsBaseButton>
 					<ButtonsBaseButton v-if="!auth.currentUser" @click="goToSignup" :disabled="false">Sign Up
 					</ButtonsBaseButton>
 					<ButtonsBaseButton v-if="!auth.currentUser" @click="showLoginModal = true; showModal = false" :disabled="false">Login
@@ -76,6 +78,10 @@ const creds = reactive({
 	email: "",
 	password: "",
 });
+
+const closeModal = () => {
+	showModal.value = false;
+};
 
 const loginUser = async () => {
 	try {
