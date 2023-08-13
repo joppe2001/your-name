@@ -49,7 +49,7 @@
 						</p>
 					</div>
 					<div class="post__image">
-						<img :src="post.imageUrl" class="rounded image" loading="lazy" />
+						<img :src="post.imageUrl" class="rounded image" loading="lazy" alt="img" />
 					</div>
 				</div>
 				<div class="buttons">
