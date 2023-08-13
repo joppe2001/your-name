@@ -360,11 +360,14 @@
 			width: 70%;
 		}
 	}
+
+	.post__comments {
+		max-width: 70%;
+	}
 	.form,
 	.main-container {
 		border: none;
-		border-image-slice: 1;
-		border-width: none;
+		max-width: 95%;
 	}
 	.main,
 	.post__comments,
