@@ -15,7 +15,6 @@ const userData = ref({});
 
 onMounted(async () => {
     userData.value = await $dataByDisplayName(displayNameFromRoute, $db);
-    console.log(userData);
 });
 
 

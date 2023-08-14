@@ -72,9 +72,10 @@ export default defineNuxtPlugin((nuxtApp) => {
       const displayNameSnapshot = await getDocs(displayNameQuery);
 
       if (!displayNameSnapshot.empty) {
-        console.log(
-          'This display name is already taken. Please choose another.'
-        );
+        //make the error only log clientside
+        if (process.client) {
+          alert('Display name already exists');
+        }
         return;
       }
 
@@ -177,7 +178,10 @@ export default defineNuxtPlugin((nuxtApp) => {
         dislikes: 0
       });
     } catch (e) {
-      console.log('Error adding document: ', e);
+      //make the error only log clientside
+      if (process.client) {
+        alert('You need to be logged in to post');
+      }
     }
   };
 
