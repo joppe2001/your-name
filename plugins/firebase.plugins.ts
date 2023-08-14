@@ -1,5 +1,10 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import {
+  getAuth,
+  onAuthStateChanged,
+  createUserWithEmailAndPassword,
+  updateProfile
+} from 'firebase/auth';
 import { useUsersStore } from '@/stores/users';
 import {
   getFirestore,
@@ -11,7 +16,10 @@ import {
   arrayUnion,
   doc,
   increment,
-  arrayRemove
+  arrayRemove,
+  query,
+  where,
+  setDoc
 } from 'firebase/firestore';
 import { getStorage, ref } from 'firebase/storage';
 import debounce from 'lodash.debounce';
@@ -38,6 +46,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   const db = getFirestore(app);
   const users = collection(db, 'users');
   const storage = getStorage(app);
+  const userDoc = doc(db, 'users', 'testuser');
 
   // Get a list of posts from the database
   const posts = collection(db, 'posts');
@@ -48,6 +57,93 @@ export default defineNuxtPlugin((nuxtApp) => {
   const imageRef = ref(storage, imagePath);
 
   // Add post, has to have a title but content and image are optional
+
+  const registerUser = async (
+    email: string,
+    password: string,
+    displayName: string
+  ) => {
+    try {
+      // Check if displayName already exists
+      const displayNameQuery = query(
+        collection(db, 'users'),
+        where('displayName', '==', displayName)
+      );
+      const displayNameSnapshot = await getDocs(displayNameQuery);
+
+      if (!displayNameSnapshot.empty) {
+        console.log(
+          'This display name is already taken. Please choose another.'
+        );
+        return;
+      }
+
+      const { user } = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+      if (user) {
+        const userDocRef = doc(db, 'users', user.uid);
+
+        await setDoc(userDocRef, {
+          uid: user.uid,
+          displayName: displayName,
+          email: email,
+          followers: [],
+          following: [],
+          likedPosts: [],
+          dislikedPosts: [],
+          genres: []
+        });
+
+        await updateProfile(user, { displayName: displayName });
+      }
+    } catch (e) {
+      console.log('Error adding document: ', e);
+    }
+  };
+
+  const dataByDisplayName = async (displayName: string, db: FirebaseFirestore.Firestore): Promise<any> => {
+    const querySnapshot = await getDocs(query(users, where("displayName", "==", displayName)));
+
+    if (!querySnapshot.empty) {
+        // Assuming there's only one user with the same displayName, return the first one
+        return querySnapshot.docs[0].data();
+    }
+
+    return null;
+};
+
+
+  // function to follow or unfollow user and if u click on follow user again it will unfollow
+  const followUser = async (userId: string, followerId: string) => {
+    const userRef = doc(db, 'users', userId);
+
+    const userSnap = await getDoc(userRef);
+    if (userSnap.exists()) {
+      const userData = userSnap.data();
+      if (!userData) throw new Error('User data is undefined');
+      const followers = userData.followers || [];
+      const following = userData.following || [];
+      if (followers.includes(followerId)) {
+        await updateDoc(userRef, { followers: arrayRemove(followerId) });
+        await updateDoc(doc(db, 'users', followerId), {
+          following: arrayRemove(userId)
+        });
+        return { status: 'unfollowed' };
+      } else {
+        await updateDoc(userRef, { followers: arrayUnion(followerId) });
+        await updateDoc(doc(db, 'users', followerId), {
+          following: arrayUnion(userId)
+        });
+        return { status: 'followed' };
+      }
+    } else {
+      throw new Error('User does not exist');
+    }
+  };
 
   const getDisplayName = async (userId: any) => {
     const userSnapshot = await getDocs(users);
@@ -61,12 +157,14 @@ export default defineNuxtPlugin((nuxtApp) => {
     });
     return displayName;
   };
+
   const addPost = async (
     title: any,
     content: any,
     imageUrl: any,
     userId: any,
-    comments = []
+    comments = [],
+    followers = []
   ) => {
     try {
       const docRef = await addDoc(posts, {
@@ -82,6 +180,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       console.log('Error adding document: ', e);
     }
   };
+
   const addComment = async (postId: string, comment: any, userId: any) => {
     if (!postId) {
       throw new Error('Post ID is undefined or null');
@@ -98,6 +197,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       throw new Error('Post does not exist');
     }
   };
+
   const getLikesForPost = async (postId: string) => {
     const postRef = doc(db, 'posts', postId);
     const postSnap = await getDoc(postRef);
@@ -108,6 +208,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       throw new Error('Post does not exist');
     }
   };
+
   const getLikedPosts = async () => {
     const userId = auth.currentUser?.uid;
     if (!userId) {
@@ -122,6 +223,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     }
     return userData.likedPosts;
   };
+
   const getDislikedPosts = async () => {
     const userId = auth.currentUser?.uid;
     if (!userId) {
@@ -136,6 +238,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     }
     return userData.dislikedPosts;
   };
+
   const getDislikesForPost = async (postId: string) => {
     const postRef = doc(db, 'posts', postId);
     const postSnap = await getDoc(postRef);
@@ -146,6 +249,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       throw new Error('Post does not exist');
     }
   };
+
   const getPosts = async () => {
     const postsSnapshot = await getDocs(posts);
     const postData = [];
@@ -158,6 +262,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     }
     return postData;
   };
+
   const likePost = async (postId: unknown, userId: string) => {
     if (!userId) {
       throw new Error('User ID is undefined or null');
@@ -188,6 +293,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       throw new Error('Post or user does not exist');
     }
   };
+
   const dislikePost = async (postId: unknown, userId: string) => {
     if (!userId) {
       throw new Error('User ID is undefined or null');
@@ -216,6 +322,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       throw new Error('Post or user does not exist');
     }
   };
+
   const getUsers = async () => {
     const usersSnapshot = await getDocs(users);
     const usersData = [];
@@ -226,6 +333,21 @@ export default defineNuxtPlugin((nuxtApp) => {
     }
     return usersData;
   };
+
+  const getTotalLikes = async (userId: string) => {
+    const userPostsQuery = query(
+      collection(db, 'posts'),
+      where('userId', '==', userId)
+    );
+    const userPostsSnapshot = await getDocs(userPostsQuery);
+    let totalLikes = 0;
+    userPostsSnapshot.forEach((postDoc) => {
+      const postData = postDoc.data();
+      totalLikes += postData.likes;
+    });
+    return totalLikes;
+  };
+
   const store = useUsersStore();
   onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -251,7 +373,11 @@ export default defineNuxtPlugin((nuxtApp) => {
       getUsers,
       getLikedPosts,
       getDislikedPosts,
-      getDisplayName
+      getDisplayName,
+      getTotalLikes,
+      followUser,
+      registerUser,
+      dataByDisplayName
     }
   };
 });

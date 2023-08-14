@@ -25,7 +25,7 @@
 				class="content p-2 mb-4 border rounded placeholder-yn-night-sky focus:outline-none focus:border-yn-golden transition duration-500 ease-in-out"
 			/>
 			<div class="button-container">
-				<ButtonsBaseButton @click="submitForm()" style="width: 30%"
+				<ButtonsBaseButton style="width: 30%"
 					>share post</ButtonsBaseButton
 				>
 			</div>
