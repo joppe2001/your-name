@@ -21,8 +21,7 @@ import {
   where,
   setDoc
 } from 'firebase/firestore';
-import { getStorage, ref } from 'firebase/storage';
-import debounce from 'lodash.debounce';
+import { getStorage, ref, uploadBytes } from 'firebase/storage';
 
 export default defineNuxtPlugin((nuxtApp) => {
   const config = useRuntimeConfig();
@@ -55,6 +54,52 @@ export default defineNuxtPlugin((nuxtApp) => {
 
   // Create a reference to the image
   const imageRef = ref(storage, imagePath);
+
+  const uploadImage = (file: any) => {
+    let img = new Image();
+    img.src = URL.createObjectURL(file);
+
+    img.onload = () => {
+      let canvas = document.createElement('canvas');
+      let ctx = canvas.getContext('2d');
+      if (!ctx) {
+        console.error('Failed to get canvas 2D context.');
+        return;
+      }
+
+      const MAX_WIDTH = 800;
+      const MAX_HEIGHT = 600;
+      let width = img.width;
+      let height = img.height;
+
+      if (width > height) {
+        if (width > MAX_WIDTH) {
+          height *= MAX_WIDTH / width;
+          width = MAX_WIDTH;
+        }
+      } else {
+        if (height > MAX_HEIGHT) {
+          width *= MAX_HEIGHT / height;
+          height = MAX_HEIGHT;
+        }
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+      ctx.drawImage(img, 0, 0, width, height);
+
+      canvas.toBlob(
+        (blob) => {
+          const storageRef = ref(storage, 'images/' + file.name);
+          uploadBytes(storageRef, blob as any).then((snapshot) => {
+            console.log('Uploaded successfully!');
+          });
+        },
+        'image/jpeg',
+        0.8
+      );
+    };
+  };
 
   // Add post, has to have a title but content and image are optional
 
@@ -106,17 +151,21 @@ export default defineNuxtPlugin((nuxtApp) => {
     }
   };
 
-  const dataByDisplayName = async (displayName: string, db: FirebaseFirestore.Firestore): Promise<any> => {
-    const querySnapshot = await getDocs(query(users, where("displayName", "==", displayName)));
+  const dataByDisplayName = async (
+    displayName: string,
+    db: FirebaseFirestore.Firestore
+  ): Promise<any> => {
+    const querySnapshot = await getDocs(
+      query(users, where('displayName', '==', displayName))
+    );
 
     if (!querySnapshot.empty) {
-        // Assuming there's only one user with the same displayName, return the first one
-        return querySnapshot.docs[0].data();
+      // Assuming there's only one user with the same displayName, return the first one
+      return querySnapshot.docs[0].data();
     }
 
     return null;
-};
-
+  };
 
   // function to follow or unfollow user and if u click on follow user again it will unfollow
   const followUser = async (userId: string, followerId: string) => {
@@ -342,30 +391,29 @@ export default defineNuxtPlugin((nuxtApp) => {
     // Reference to the post
     const postRef = doc(db, 'posts', postId);
     const postSnap = await getDoc(postRef);
-  
+
     if (postSnap.exists()) {
       const postData = postSnap.data();
-  
+
       if (!postData || !postData.userId) {
         throw new Error('Post data or userId is undefined');
       }
-  
+
       // Fetch user data from the userId
       const userRef = doc(db, 'users', postData.userId);
       const userSnap = await getDoc(userRef);
-  
+
       if (userSnap.exists()) {
         const userData = userSnap.data();
-        return  userData?.displayName;
+        return userData?.displayName;
       } else {
         throw new Error('User does not exist');
       }
-  
     } else {
       throw new Error('Post does not exist');
     }
   };
-  
+
   const getTotalLikes = async (userId: string) => {
     const userPostsQuery = query(
       collection(db, 'posts'),
@@ -410,7 +458,8 @@ export default defineNuxtPlugin((nuxtApp) => {
       followUser,
       registerUser,
       dataByDisplayName,
-      getUserNameFromPost
+      getUserNameFromPost,
+      uploadImage
     }
   };
 });
