@@ -19,11 +19,10 @@
 					<ButtonsBaseButton @click="navigateToUserProfile(post.id)" class="profile-button">
 						<p>{{ userNames.get(post.userId).slice(0, 2) }}</p>
 					</ButtonsBaseButton>
+					<p style="font-size: 12px; margin-left: 5px;">{{ userNames.get(post.userId) }}</p>
 				</div>
 				<div class="post__content mt-8 w-9/10 p-2">
-					<div class="post__image" style="position: relative">
-					<p style="font-size: 12px; margin-left: 5px; position: absolute; color: white; left: 0; backdrop-filter: blur(100px);">{{ userNames.get(post.userId) }}</p>
-
+					<div class="post__image">
 						<img :src="post.imageUrl" class="rounded image" :loading="index === 0 ? 'eager' : 'lazy'"
 							alt="img" />
 					</div>
