@@ -19,7 +19,7 @@
 					<ButtonsBaseButton @click="navigateToUserProfile(post.id)" class="profile-button">
 						<p>{{ userNames.get(post.userId).slice(0, 2) }}</p>
 					</ButtonsBaseButton>
-					<p style="font-size: 12px; margin-left: 5px;">{{ userNames.get(post.userId) }}</p>
+					<p style="font-size: 14px; margin-left: 5px;">{{ userNames.get(post.userId) }}</p>
 				</div>
 				<div class="post__content mt-8 w-9/10 p-2">
 					<div class="post__image">
@@ -373,17 +373,17 @@ input[type="file"]:hover {
 
 .profile-container {
 	display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    top: 0;
-    left: 0;
+	justify-content: center;
+	align-items: center;
+	position: absolute;
+	top: 0;
+	left: 0;
 	margin: 10px 0 0 10px;
 }
 
 .profile-button {
-	height: 50px;
-	width: 50px;
+	height: 30px !important;
+	width: 30px;
 	border-radius: 100%;
 	margin: 0 !important;
 }
