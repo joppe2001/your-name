@@ -123,19 +123,11 @@ const loginUser = async () => {
   * {
     padding: 1px;
   }
-
-  div {
-    font-size: 10px;
-  }
 }
 
 @media (max-width: 280px) {
   * {
     padding: 1px;
-  }
-
-  div {
-    font-size: 8px;
   }
 }
 
