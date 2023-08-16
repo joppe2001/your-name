@@ -7,7 +7,8 @@
 			<textarea name="content" v-model="postInfo.content" placeholder="content"
 				class="content p-2 mb-4 border rounded placeholder-yn-night-sky h-30 focus:outline-none focus transition duration-500 ease-in-out"></textarea>
 			<input type="file" name="image" @change="handleImageUpload" accept="image/*"
-				class="content p-2 mb-4 border rounded placeholder-yn-night-sky focus:outline-none focus:border-yn-golden transition duration-500 ease-in-out" />
+				class="content p-2 mb-4 border rounded placeholder-yn-night-sky focus:outline-none focus:border-yn-golden transition duration-500 ease-in-out" 
+				/>
 			<div class="button-container">
 				<ButtonsBaseButton class="share-button">share post</ButtonsBaseButton>
 			</div>
@@ -323,6 +324,10 @@ onMounted(async () => {
 	form {
 		width: 70%;
 	}
+}
+
+input[type="file"]:hover {
+	cursor: pointer;
 }
 
 .post__comments {

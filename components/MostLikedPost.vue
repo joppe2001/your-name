@@ -122,6 +122,11 @@ onMounted(async () => {
 	transition: all 0.3s ease-in-out;
 }
 
+.post__image img {
+	width: 100%;
+	height: 100%;
+}
+
 @media (max-width: 900px) {
 	.post__content {
 		background-color: rgba(255, 255, 255, 0.5);
