@@ -9,15 +9,17 @@
 			<input type="file" name="image" @change="handleImageUpload" accept="image/*"
 				class="content p-2 mb-4 border rounded placeholder-yn-night-sky focus:outline-none focus:border-yn-golden transition duration-500 ease-in-out" />
 			<div class="button-container">
-				<ButtonsBaseButton style="width: 30%">share post</ButtonsBaseButton>
+				<ButtonsBaseButton class="share-button">share post</ButtonsBaseButton>
 			</div>
 		</form>
 		<div class="flex-grow w-full main">
 			<div v-for="post in posts" :key="post.id" id="post"
 				class="post main-container p-4 sm:p-8 border-4 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-200 backdrop-blur-lg mb-4 max-w-3/4 sm:max-w-3/4 lg:max-w-3/4 flex flex-col items-center justify-center">
 				<div class="post__content w-9/10 p-2">
-					<ButtonsBaseButton @click="navigateToUserProfile(post.id)">
-						<p>{{ }}</p>
+					<ButtonsBaseButton @click="navigateToUserProfile(post.id)"
+						class="profile-button"
+						>
+						<p>{{ userNames.get(post.userId)[0] }}</p>
 					</ButtonsBaseButton>
 					<div class="post__text text-center">
 						<h1 class="post__title text-yn-night-sky text-2xl sm:text-3xl mb-4">
@@ -238,38 +240,38 @@ watchEffect(async () => {
 });
 
 const submitForm = async () => {
-    if (selectedFile.value) {
-        try {
-            const url = await uploadImage(selectedFile.value);
-            postInfo.value.image = url;
-            selectedFile.value = null;  // Reset after upload
-        } catch (error) {
-            console.error("Error uploading the image:", error);
-            return;  // Stop the function if there's an error
-        }
-    }
+	if (selectedFile.value) {
+		try {
+			const url = await uploadImage(selectedFile.value);
+			postInfo.value.image = url;
+			selectedFile.value = null;  // Reset after upload
+		} catch (error) {
+			console.error("Error uploading the image:", error);
+			return;  // Stop the function if there's an error
+		}
+	}
 
-    if (
-        (postInfo.value.title && postInfo.value.content) ||
-        postInfo.value.image
-    ) {
-        const userid = getUserid();
-        await $addPost(
-            postInfo.value.title,
-            postInfo.value.content,
-            postInfo.value.image,
-            userid,
-            postInfo.likes,
-            postInfo.dislikes
-        );
-        success.value = true;
-        postInfo.value.title = "";
-        postInfo.value.content = "";
-        postInfo.value.image = "";
-        posts.value = await $getPosts();
-    } else {
-        alert("Please fill in all fields");
-    }
+	if (
+		(postInfo.value.title && postInfo.value.content) ||
+		postInfo.value.image
+	) {
+		const userid = getUserid();
+		await $addPost(
+			postInfo.value.title,
+			postInfo.value.content,
+			postInfo.value.image,
+			userid,
+			postInfo.likes,
+			postInfo.dislikes
+		);
+		success.value = true;
+		postInfo.value.title = "";
+		postInfo.value.content = "";
+		postInfo.value.image = "";
+		posts.value = await $getPosts();
+	} else {
+		alert("Please fill in all fields");
+	}
 }
 
 
@@ -353,6 +355,37 @@ onMounted(async () => {
 	}
 }
 
+.share-button {
+	width: 50%;
+}
+
+@media (max-width: 640px) {
+	.share-button {
+		width: 100%;
+	}
+}
+
+.profile-button {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 50px;
+	width: 50px;
+	border-radius: 100%;
+	top: -30px;
+	right: 20px;
+}
+
+@media (max-width: 640px) {
+	.profile-button {
+		top: -10px;
+		right: 5px;
+		height: 30px !important;
+		width: 30px;
+	}
+}
 .modal-container {
 	padding: 8px;
 	width: 90vw;

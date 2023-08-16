@@ -86,8 +86,8 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
-const { $db, $registerUser, $followUser } = useNuxtApp();
-const db = $db;
+const { $registerUser, $followUser } = useNuxtApp();
+const router = useRouter();
 // add displayName to the account
 
 const creds = reactive({
@@ -107,10 +107,7 @@ function closeModal() {
 const registerUser = async () => {
 	await $registerUser(creds.email, creds.password, creds.displayName);
 	showModal.value = true;
-	creds.email = "";
-	creds.password = "";
-	creds.displayName = "";
-	creds.passwordConfirm = "";
+	router.push("/");
 };
 
 const follow = async () => {
