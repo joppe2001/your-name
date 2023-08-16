@@ -19,9 +19,10 @@ import {
   arrayRemove,
   query,
   where,
-  setDoc
+  setDoc,
+  DocumentReference
 } from 'firebase/firestore';
-import { getStorage, ref, uploadBytes } from 'firebase/storage';
+import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 
 export default defineNuxtPlugin((nuxtApp) => {
   const config = useRuntimeConfig();
@@ -55,51 +56,67 @@ export default defineNuxtPlugin((nuxtApp) => {
   // Create a reference to the image
   const imageRef = ref(storage, imagePath);
 
-  const uploadImage = (file: any) => {
-    let img = new Image();
-    img.src = URL.createObjectURL(file);
-
-    img.onload = () => {
-      let canvas = document.createElement('canvas');
-      let ctx = canvas.getContext('2d');
-      if (!ctx) {
-        console.error('Failed to get canvas 2D context.');
-        return;
-      }
-
-      const MAX_WIDTH = 800;
-      const MAX_HEIGHT = 600;
-      let width = img.width;
-      let height = img.height;
-
-      if (width > height) {
-        if (width > MAX_WIDTH) {
-          height *= MAX_WIDTH / width;
-          width = MAX_WIDTH;
+  const uploadImage = async (file: any): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      let img = new Image();
+      img.src = URL.createObjectURL(file);
+  
+      img.onload = () => {
+        let canvas = document.createElement('canvas');
+        let ctx = canvas.getContext('2d');
+        if (!ctx) {
+          console.error('Failed to get canvas 2D context.');
+          reject('Failed to get canvas 2D context.');
+          return;
         }
-      } else {
-        if (height > MAX_HEIGHT) {
-          width *= MAX_HEIGHT / height;
-          height = MAX_HEIGHT;
+  
+        const MAX_WIDTH = 800;
+        const MAX_HEIGHT = 600;
+        let width = img.width;
+        let height = img.height;
+  
+        if (width > height) {
+          if (width > MAX_WIDTH) {
+            height *= MAX_WIDTH / width;
+            width = MAX_WIDTH;
+          }
+        } else {
+          if (height > MAX_HEIGHT) {
+            width *= MAX_HEIGHT / height;
+            height = MAX_HEIGHT;
+          }
         }
-      }
-
-      canvas.width = width;
-      canvas.height = height;
-      ctx.drawImage(img, 0, 0, width, height);
-
-      canvas.toBlob(
-        (blob) => {
-          const storageRef = ref(storage, 'images/' + file.name);
-          uploadBytes(storageRef, blob as any).then((snapshot) => {
-            console.log('Uploaded successfully!');
-          });
-        },
-        'image/jpeg',
-        0.8
-      );
-    };
+  
+        canvas.width = width;
+        canvas.height = height;
+        ctx.drawImage(img, 0, 0, width, height);
+  
+        canvas.toBlob(
+          (blob) => {
+            if (!blob) {
+              reject('Failed to generate blob.');
+              return;
+            }
+            const storageRef = ref(storage, 'images/' + file.name);
+            uploadBytes(storageRef, blob as any)
+              .then((snapshot) => {
+                // Get download URL
+                getDownloadURL(snapshot.ref)
+                  .then((downloadURL) => {
+                    console.log('File available at', downloadURL);
+                    resolve(downloadURL);
+                  })
+                  .catch(reject);
+              })
+              .catch(reject);
+          },
+          'image/jpeg',
+          0.8
+        );
+      };
+    });
   };
+  
 
   // Add post, has to have a title but content and image are optional
 
@@ -209,13 +226,13 @@ export default defineNuxtPlugin((nuxtApp) => {
   };
 
   const addPost = async (
-    title: any,
-    content: any,
-    imageUrl: any,
-    userId: any,
-    comments = [],
-    followers = []
-  ) => {
+    title: string,
+    content: string,
+    imageUrl: string,
+    userId: string,
+    comments: any[] = [],
+    followers: any[] = []
+  ): Promise<void | DocumentReference> => {
     try {
       const docRef = await addDoc(posts, {
         title,
@@ -226,13 +243,18 @@ export default defineNuxtPlugin((nuxtApp) => {
         likes: 0,
         dislikes: 0
       });
+  
+      console.log('Document written with ID:', docRef.id);
+      return docRef;
+  
     } catch (e) {
-      //make the error only log clientside
       if (process.client) {
+        console.error(e);  // This will give a detailed error message
         alert('You need to be logged in to post');
       }
-    }
+    }    
   };
+  
 
   const addComment = async (postId: string, comment: any, userId: any) => {
     if (!postId) {

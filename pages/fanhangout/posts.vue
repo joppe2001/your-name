@@ -237,11 +237,16 @@ watchEffect(async () => {
 	}
 });
 
-async function submitForm() {
+const submitForm = async () => {
     if (selectedFile.value) {
-        const url = await uploadImage(selectedFile.value);
-        postInfo.value.image = url;
-        selectedFile.value = null;  // Reset after upload
+        try {
+            const url = await uploadImage(selectedFile.value);
+            postInfo.value.image = url;
+            selectedFile.value = null;  // Reset after upload
+        } catch (error) {
+            console.error("Error uploading the image:", error);
+            return;  // Stop the function if there's an error
+        }
     }
 
     if (
@@ -267,6 +272,7 @@ async function submitForm() {
     }
 }
 
+
 async function submitComment(postId) {
 	for (let post of posts.value) {
 		if (post.id === postId) {
@@ -289,8 +295,10 @@ const goToProfile = () => {
 
 const handleImageUpload = async (event) => {
 	const file = event.target.files[0]; // Get the selected file
+	console.log(file);
 	if (file) {
 		selectedFile.value = file;
+		postInfo.value.image = URL.createObjectURL(file);
 	}
 }
 
