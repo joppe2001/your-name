@@ -15,5 +15,6 @@
 
 * {
     font-family: 'Bangers', cursive;
+    letter-spacing: 0.05rem;
 }
 </style>

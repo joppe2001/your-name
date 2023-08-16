@@ -16,7 +16,7 @@
 				</div>
 				<div class="post__image">
 					<img :src="highestLikedPost.imageUrl" alt="Most liked post" class="mx-auto rounded shadow-lg"
-						loading="lazy" preload />
+						loading="eager" preload />
 				</div>
 				<div class="mb-4 sm:mb-8 mt-5 flex justify-center items-center">
 					<p class="text-black text-sm sm:text-lg w-1/3 bg-yn-sunset p-1 rounded">
