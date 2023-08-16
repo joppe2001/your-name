@@ -338,6 +338,34 @@ export default defineNuxtPlugin((nuxtApp) => {
     return usersData;
   };
 
+  const getUserNameFromPost = async (postId: string) => {
+    // Reference to the post
+    const postRef = doc(db, 'posts', postId);
+    const postSnap = await getDoc(postRef);
+  
+    if (postSnap.exists()) {
+      const postData = postSnap.data();
+  
+      if (!postData || !postData.userId) {
+        throw new Error('Post data or userId is undefined');
+      }
+  
+      // Fetch user data from the userId
+      const userRef = doc(db, 'users', postData.userId);
+      const userSnap = await getDoc(userRef);
+  
+      if (userSnap.exists()) {
+        const userData = userSnap.data();
+        return  userData?.displayName;
+      } else {
+        throw new Error('User does not exist');
+      }
+  
+    } else {
+      throw new Error('Post does not exist');
+    }
+  };
+  
   const getTotalLikes = async (userId: string) => {
     const userPostsQuery = query(
       collection(db, 'posts'),
@@ -381,7 +409,8 @@ export default defineNuxtPlugin((nuxtApp) => {
       getTotalLikes,
       followUser,
       registerUser,
-      dataByDisplayName
+      dataByDisplayName,
+      getUserNameFromPost
     }
   };
 });

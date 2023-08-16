@@ -25,9 +25,7 @@
 				class="content p-2 mb-4 border rounded placeholder-yn-night-sky focus:outline-none focus:border-yn-golden transition duration-500 ease-in-out"
 			/>
 			<div class="button-container">
-				<ButtonsBaseButton style="width: 30%"
-					>share post</ButtonsBaseButton
-				>
+				<ButtonsBaseButton style="width: 30%">share post</ButtonsBaseButton>
 			</div>
 		</form>
 		<div class="flex-grow w-full main">
@@ -38,6 +36,9 @@
 				class="post main-container p-4 sm:p-8 border-4 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-200 backdrop-blur-lg mb-4 max-w-3/4 sm:max-w-3/4 lg:max-w-3/4 flex flex-col items-center justify-center"
 			>
 				<div class="post__content w-9/10 p-2">
+					<ButtonsBaseButton @click="navigateToUserProfile(post.id)">
+						<p>{{  }}</p>
+					</ButtonsBaseButton>
 					<div class="post__text text-center">
 						<h1 class="post__title text-yn-night-sky text-2xl sm:text-3xl mb-4">
 							{{ post.title + " by " + userNames.get(post.userId) }}
@@ -49,7 +50,12 @@
 						</p>
 					</div>
 					<div class="post__image">
-						<img :src="post.imageUrl" class="rounded image" loading="lazy" alt="img" />
+						<img
+							:src="post.imageUrl"
+							class="rounded image"
+							loading="lazy"
+							alt="img"
+						/>
 					</div>
 				</div>
 				<div class="buttons">
@@ -218,6 +224,7 @@
 		$getLikedPosts,
 		$getDislikedPosts,
 		$getDisplayName,
+		$getUserNameFromPost,
 	} = useNuxtApp();
 	const userNames = ref(new Map());
 	const auth = getAuth();
@@ -230,6 +237,8 @@
 	const getLikedPosts = $getLikedPosts;
 	const getDislikedPosts = $getDislikedPosts;
 	const getDisplayName = $getDisplayName;
+	const getUserNameFromPost = $getUserNameFromPost;
+	const router = useRouter();
 	const postInfo = ref({
 		title: "",
 		content: "",
@@ -238,9 +247,17 @@
 		likes: 0,
 		dislikes: 0,
 	});
+
 	const getUserid = () => {
 		return auth.currentUser ? auth.currentUser.uid : null;
 	};
+
+	const navigateToUserProfile = async (postId) => {
+			const userDisplayName = await getUserNameFromPost(postId);
+			// Assuming you want to use the display name as a parameter in the route
+			router.push(`/user/${userDisplayName}`);
+		};
+
 	const likePostHandler = debounce(async (postId, userId) => {
 		const result = await $likePost(postId, userId);
 		const post = posts.value.find((post) => post.id === postId);
@@ -250,6 +267,7 @@
 				(id) => id !== postId
 			);
 		}
+
 		post.lastAction = "liked";
 		if (post) {
 			if (result.status === "success") {
@@ -263,6 +281,7 @@
 			);
 		}
 	}, 200);
+
 	const dislikePostHandler = debounce(async (postId, userId) => {
 		const result = await $dislikePost(postId, userId);
 		const post = posts.value.find((post) => post.id === postId);
@@ -283,6 +302,7 @@
 			);
 		}
 	}, 200);
+
 	watchEffect(async () => {
 		try {
 			for (let post of posts.value) {
@@ -301,6 +321,7 @@
 			console.error("Error fetching display names:", error);
 		}
 	});
+
 	async function submitForm() {
 		if (
 			(postInfo.value.title && postInfo.value.content) ||
@@ -324,6 +345,7 @@
 			alert("Please fill in all fields");
 		}
 	}
+
 	async function submitComment(postId) {
 		for (let post of posts.value) {
 			if (post.id === postId) {
@@ -339,6 +361,11 @@
 			}
 		}
 	}
+
+	const goToProfile = () => {
+		router.push(`${getDisplayName.value}`);
+	};
+
 	onMounted(async () => {
 		const fetchedPosts = await $getPosts();
 		posts.value = fetchedPosts.map((post) => ({
