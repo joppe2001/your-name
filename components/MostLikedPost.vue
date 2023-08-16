@@ -7,9 +7,9 @@
 					Most Liked Post
 				</h2>
 				<div class="post__text text-center">
-					<h1 class="post__title text-yn-night-sky text-2xl sm:text-3xl mb-4">
+					<h2 class="post__title text-yn-night-sky text-2xl sm:text-3xl mb-4">
 						{{ highestLikedPost.title }}
-					</h1>
+					</h2>
 					<p class="post__description text-yn-night-sky text-sm sm:text-lg mb-4 sm:mb-8">
 						{{ highestLikedPost.content }}
 					</p>

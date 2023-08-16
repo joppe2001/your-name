@@ -7,8 +7,7 @@
 			<textarea name="content" v-model="postInfo.content" placeholder="content"
 				class="content p-2 mb-4 border rounded placeholder-yn-night-sky h-30 focus:outline-none focus transition duration-500 ease-in-out"></textarea>
 			<input type="file" name="image" @change="handleImageUpload" accept="image/*"
-				class="content p-2 mb-4 border rounded placeholder-yn-night-sky focus:outline-none focus:border-yn-golden transition duration-500 ease-in-out" 
-				/>
+				class="content p-2 mb-4 border rounded placeholder-yn-night-sky focus:outline-none focus:border-yn-golden transition duration-500 ease-in-out" />
 			<div class="button-container">
 				<ButtonsBaseButton class="share-button">share post</ButtonsBaseButton>
 			</div>
@@ -16,10 +15,18 @@
 		<div class="flex-grow w-full main">
 			<div v-for="(post, index) in posts" :key="post.id" id="post"
 				class="post main-container p-4 sm:p-8 border-4 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-200 backdrop-blur-lg mb-4 max-w-3/4 sm:max-w-3/4 lg:max-w-3/4 flex flex-col items-center justify-center relative">
-				<ButtonsBaseButton @click="navigateToUserProfile(post.id)" class="profile-button">
-					<p>{{ userNames.get(post.userId).slice(0, 2) }}</p>
-				</ButtonsBaseButton>
+				<div class="profile-container">
+					<ButtonsBaseButton @click="navigateToUserProfile(post.id)" class="profile-button">
+						<p>{{ userNames.get(post.userId).slice(0, 2) }}</p>
+					</ButtonsBaseButton>
+				</div>
 				<div class="post__content mt-8 w-9/10 p-2">
+					<div class="post__image" style="position: relative">
+					<p style="font-size: 12px; margin-left: 5px; position: absolute; color: white; left: 0; backdrop-filter: blur(100px);">{{ userNames.get(post.userId) }}</p>
+
+						<img :src="post.imageUrl" class="rounded image" :loading="index === 0 ? 'eager' : 'lazy'"
+							alt="img" />
+					</div>
 					<div class="post__text text-center">
 						<h1 class="post__title text-yn-night-sky text-2xl sm:text-3xl mb-4">
 							{{ post.title + " by " + userNames.get(post.userId) }}
@@ -27,10 +34,6 @@
 						<p class="post__description text-yn-night-sky text-sm sm:text-lg mb-4 sm:mb-8">
 							{{ post.content }}
 						</p>
-					</div>
-					<div class="post__image">
-						<img :src="post.imageUrl" class="rounded image" :loading="index === 0 ? 'eager' : 'lazy'"
-							alt="img" />
 					</div>
 				</div>
 				<div class="buttons">
@@ -369,24 +372,25 @@ input[type="file"]:hover {
 	}
 }
 
-.profile-button {
-	position: absolute;
+.profile-container {
 	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+	margin: 10px 0 0 10px;
+}
+
+.profile-button {
 	height: 50px;
 	width: 50px;
 	border-radius: 100%;
-	top: 10px;
-	left: 20px;
-	margin-bottom: 10px;
+	margin: 0 !important;
 }
 
 @media (max-width: 640px) {
 	.profile-button {
-		top: 10px;
-		left: 15px;
 		height: 30px !important;
 		width: 30px;
 	}

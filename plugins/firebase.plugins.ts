@@ -450,6 +450,21 @@ export default defineNuxtPlugin((nuxtApp) => {
     return totalLikes;
   };
 
+  const getTotalDislikes = async (userId: string) => {
+    const userPostsQuery = query(
+      collection(db, 'posts'),
+      where('userId', '==', userId)
+    );
+    const userPostsSnapshot = await getDocs(userPostsQuery);
+    let totalDislikes = 0;
+    userPostsSnapshot.forEach((postDoc) => {
+      const postData = postDoc.data();
+      totalDislikes += postData.dislikes;
+    });
+    return totalDislikes;
+  };
+
+
   const store = useUsersStore();
   onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -481,7 +496,8 @@ export default defineNuxtPlugin((nuxtApp) => {
       registerUser,
       dataByDisplayName,
       getUserNameFromPost,
-      uploadImage
+      uploadImage,
+      getTotalDislikes
     }
   };
 });
