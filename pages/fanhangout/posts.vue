@@ -14,14 +14,11 @@
 		</form>
 		<div class="flex-grow w-full main">
 			<div v-for="(post, index) in posts" :key="post.id" id="post"
-			
-			class="post main-container p-4 sm:p-8 border-4 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-200 backdrop-blur-lg mb-4 max-w-3/4 sm:max-w-3/4 lg:max-w-3/4 flex flex-col items-center justify-center">
-			<ButtonsBaseButton @click="navigateToUserProfile(post.id)"
-						class="profile-button"
-						>
-						<p>{{ userNames.get(post.userId)[0] }}</p>
-					</ButtonsBaseButton>
-				<div class="post__content w-9/10 p-2">
+				class="post main-container p-4 sm:p-8 border-4 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-200 backdrop-blur-lg mb-4 max-w-3/4 sm:max-w-3/4 lg:max-w-3/4 flex flex-col items-center justify-center relative">
+				<ButtonsBaseButton @click="navigateToUserProfile(post.id)" class="profile-button">
+					<p>{{ userNames.get(post.userId).slice(0, 2) }}</p>
+				</ButtonsBaseButton>
+				<div class="post__content mt-8 w-9/10 p-2">
 					<div class="post__text text-center">
 						<h1 class="post__title text-yn-night-sky text-2xl sm:text-3xl mb-4">
 							{{ post.title + " by " + userNames.get(post.userId) }}
@@ -31,7 +28,8 @@
 						</p>
 					</div>
 					<div class="post__image">
-						<img :src="post.imageUrl" class="rounded image" :loading="index === 0 ? 'eager' : 'lazy'" alt="img" />
+						<img :src="post.imageUrl" class="rounded image" :loading="index === 0 ? 'eager' : 'lazy'"
+							alt="img" />
 					</div>
 				</div>
 				<div class="buttons">
@@ -367,7 +365,7 @@ onMounted(async () => {
 }
 
 .profile-button {
-	position: relative;
+	position: absolute;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -375,18 +373,20 @@ onMounted(async () => {
 	height: 50px;
 	width: 50px;
 	border-radius: 100%;
-	top: -30px;
-	right: 20px;
+	top: 10px;
+	left: 20px;
+	margin-bottom: 10px;
 }
 
 @media (max-width: 640px) {
 	.profile-button {
-		top: -10px;
-		right: 5px;
+		top: 10px;
+		left: 15px;
 		height: 30px !important;
 		width: 30px;
 	}
 }
+
 .modal-container {
 	padding: 8px;
 	width: 90vw;

@@ -115,7 +115,7 @@ onMounted(async () => {
 </script>
 <style scoped>
 .post__content {
-	width: 30%;
+	width: 40%;
 	border-radius: 5px;
 	background-color: rgba(255, 255, 255, 0.5);
 	backdrop-filter: blur(5px);
@@ -127,6 +127,13 @@ onMounted(async () => {
 		background-color: rgba(255, 255, 255, 0.5);
 		backdrop-filter: blur(10px);
 		width: 95%;
+	}
+}
+@media (max-width: 950px) {
+	.post__content {
+		background-color: rgba(255, 255, 255, 0.5);
+		backdrop-filter: blur(10px);
+		width: 100%;
 	}
 }
 

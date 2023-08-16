@@ -70,9 +70,9 @@ onUnmounted(() => {
     width: 90%;
 }
 
-@media (min-width: 850px) {
+@media (min-width: 600px) {
     .modal-content {
-        width: 25%;
+        width: 35%;
     }
 }
 
