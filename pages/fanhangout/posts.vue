@@ -13,7 +13,7 @@
 			</div>
 		</form>
 		<div class="flex-grow w-full main">
-			<div v-for="post in posts" :key="post.id" id="post"
+			<div v-for="(post, index) in posts" :key="post.id" id="post"
 			
 			class="post main-container p-4 sm:p-8 border-4 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-200 backdrop-blur-lg mb-4 max-w-3/4 sm:max-w-3/4 lg:max-w-3/4 flex flex-col items-center justify-center">
 			<ButtonsBaseButton @click="navigateToUserProfile(post.id)"
@@ -31,7 +31,7 @@
 						</p>
 					</div>
 					<div class="post__image">
-						<img :src="post.imageUrl" class="rounded image" loading="lazy" alt="img" />
+						<img :src="post.imageUrl" class="rounded image" :loading="index === 0 ? 'eager' : 'lazy'" alt="img" />
 					</div>
 				</div>
 				<div class="buttons">
