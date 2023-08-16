@@ -21,16 +21,17 @@
 					</ButtonsBaseButton>
 					<p style="font-size: 14px; margin-left: 5px;">{{ userNames.get(post.userId) }}</p>
 				</div>
-				<div class="post__content mt-8 w-9/10 p-2">
+				<div class="post__content mt-5 w-9/10 p-2">
 					<div class="post__image">
 						<img :src="post.imageUrl" class="rounded image" :loading="index === 0 ? 'eager' : 'lazy'"
 							alt="img" />
 					</div>
-					<div class="post__text text-center">
-						<h1 class="post__title text-yn-night-sky text-2xl sm:text-3xl mb-4">
-							{{ post.title + " by " + userNames.get(post.userId) }}
+					<div class="post__text">
+						<h1 class="post__title text-yn-night-sky text-2xl sm:text-3xl mb-2 mt-1">
+							{{ post.title  }}
 						</h1>
-						<p class="post__description text-yn-night-sky text-sm sm:text-lg mb-4 sm:mb-8">
+						<hr style="opacity: 0.3; width: 60%;"/>
+						<p class="post__description text-yn-night-sky text-sm sm:text-lg mt-1">
 							{{ post.content }}
 						</p>
 					</div>
@@ -336,6 +337,11 @@ input[type="file"]:hover {
 	max-width: 70%;
 }
 
+.post__text {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
 .form,
 .main-container {
 	border: none;
