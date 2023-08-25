@@ -4,7 +4,6 @@
 			<h1 class="text-2xl sm:text-4xl lg:text-5xl mb-4 sm:mb-6 font-extrabold text-yn-sunset">
 				Welcome to the world of "Your Name"
 			</h1>
-			<h2>testing new title</h2>
 
 			<div class="flex gap-6 flex-col sm:flex-row">
 				<!-- Mitsuha Section -->
