@@ -47,7 +47,6 @@
 						</button>
 					</div>
 				</form>
-				<buttons-base-button @click="follow">Follow</buttons-base-button>
 			</div>
 		</div>
 

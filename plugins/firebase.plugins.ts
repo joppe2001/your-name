@@ -55,6 +55,8 @@ export default defineNuxtPlugin((nuxtApp) => {
 
   // Create a reference to the image
   const imageRef = ref(storage, imagePath);
+  const store = useUsersStore();
+
 
   const uploadImage = async (file: any): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -465,7 +467,6 @@ export default defineNuxtPlugin((nuxtApp) => {
   };
 
 
-  const store = useUsersStore();
   onAuthStateChanged(auth, (user) => {
     if (user) {
       store.loggedIn = true;

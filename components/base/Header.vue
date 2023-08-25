@@ -94,7 +94,7 @@
 
   <Modal v-model="showLogoutModal">
     <p>Are you sure you want to sign out?</p>
-    <div class="logContent">
+    <div class="logConten" style="display: flex; gap: 10px;">
       <ButtonsBaseButton @click="logoutUser()" :disabled="false">Yes</ButtonsBaseButton>
       <ButtonsBaseButton @click="showLogoutModal = false" :disabled="false">No</ButtonsBaseButton>
     </div>

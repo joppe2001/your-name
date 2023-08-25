@@ -8,8 +8,6 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits } from 'vue';
-
 const { modelValue } = defineProps(['modelValue']);
 const emit = defineEmits();
 
