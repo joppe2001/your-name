@@ -30,8 +30,8 @@ export default defineNuxtConfig({
       globPatterns: ['**/*.{js,css,html,png,jpg,jpeg,svg}'],
         runtimeCaching: [
           {
-            urlPattern: 'https://yourdomain.com/api/*', // Adjust this to your actual domain or API endpoint
-            handler: 'NetworkFirst', // Consider using NetworkFirst for frequently changing data
+            urlPattern: 'https://yourdomain.com/api/*',
+            handler: 'NetworkFirst',
             method: 'GET'
           }
         ]
@@ -45,13 +45,13 @@ export default defineNuxtConfig({
       background_color: '#ffffff',
       icons: [
         {
-          src: '/images/cinema.png', // Use absolute paths
+          src: '/images/cinema.png',
           sizes: '192x192',
           type: 'image/png',
           purpose: 'any maskable'
         },
         {
-          src: '/images/cinema.png', // Use absolute paths
+          src: '/images/cinema.png',
           sizes: '512x512',
           type: 'image/png',
           purpose: 'any maskable'
